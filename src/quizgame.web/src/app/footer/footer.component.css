@@ -1,0 +1,27 @@
+footer {
+    width: 100%;
+    background-color: #005cbb;
+    color: var(--mat-app-background-color);
+}
+
+.footer-container {
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+    padding:  1rem 5rem;
+}
+
+.footer-icons {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+  }
+
+.footer-icon {
+    fill: var(--mat-app-background-color);
+}
+
+.footer-text {
+    font-size: small;
+    flex-grow: 1;
+}

@@ -1,0 +1,22 @@
+.header-spacer {
+  flex: 1 1 auto;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-logo {
+  border-radius: 50%;
+  max-height: 2.5rem;
+  max-width: 2.5rem;
+  width: 100%;
+  object-fit: cover;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
