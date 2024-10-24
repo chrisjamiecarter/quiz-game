@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using QuizGame.Infrastructure.Contexts;
+using QuizGame.Infrastructure.Services;
 
 namespace QuizGame.Infrastructure.Installers;
 
@@ -19,6 +20,8 @@ public static class Installer
             options.UseSqlServer(connectionString);
         });
 
+        services.AddScoped<ISeederService, SeederService>();
+
         return services;
     }
 
@@ -26,6 +29,9 @@ public static class Installer
     {
         var context = serviceProvider.GetRequiredService<QuizGameDataContext>();
         context.Database.Migrate();
+
+        var seeder = serviceProvider.GetRequiredService<ISeederService>();
+        seeder.SeedDatabase();
 
         return serviceProvider;
     }

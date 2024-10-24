@@ -9,6 +9,8 @@ internal class GameModel
 
     public required DateTime Played { get; set; }
 
+    public required int Score { get; set; }
+
     public required Guid QuizId { get; set; }
 
     public QuizModel? Quiz { get; set; }

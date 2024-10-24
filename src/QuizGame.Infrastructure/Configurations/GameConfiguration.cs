@@ -16,6 +16,7 @@ internal class GameConfiguration : IEntityTypeConfiguration<GameModel>
         builder.HasKey(pk => pk.Id);
 
         builder.Property(p => p.Played).IsRequired();
+        builder.Property(p => p.Score).IsRequired();
 
         builder.HasOne(q => q.Quiz)
                .WithMany(a => a.Games)

@@ -8,4 +8,6 @@ public class Game
     public required Guid Id { get; set; }
 
     public required DateTime Played { get; set; }
+
+    public required int Score { get; set; }
 }
