@@ -47,14 +47,14 @@ public static class AnswerEndpoints
 
     public static async Task<IResult> GetAnswersAsync([FromServices] IAnswerService service)
     {
-        var entities = await service.ReturnAll();
+        var entities = await service.ReturnAllAsync();
         return TypedResults.Ok(entities.Select(x => x.ToResponse()));
     }
 
     public static async Task<IResult> GetQuestionAnswersAsync([FromRoute] Guid id, [FromServices] IAnswerService service)
     {
         // TODO:
-        var entities = await service.ReturnAll();
+        var entities = await service.ReturnAllAsync();
 
         return TypedResults.Ok(entities.Where(x => x.QuestionId == id).Select(x => x.ToResponse()));
     }
@@ -67,7 +67,7 @@ public static class AnswerEndpoints
             return TypedResults.NotFound();
         }
 
-        var updatedAnswer = new Answer
+        var updatedEntity = new Answer
         {
             Id = entity.Id,
             QuestionId = entity.QuestionId,
@@ -75,10 +75,10 @@ public static class AnswerEndpoints
             IsCorrect = request.IsCorrect,
         };
 
-        var updated = await service.UpdateAsync(updatedAnswer);
+        var updated = await service.UpdateAsync(updatedEntity);
 
         return updated
-            ? TypedResults.Ok(updatedAnswer.ToResponse())
+            ? TypedResults.Ok(updatedEntity.ToResponse())
             : TypedResults.BadRequest(new { error = "Unable to update answer." });
     }
 }
