@@ -38,4 +38,19 @@ public static class MappingExtensions
     {
         return new GameResponse(entity.Id, entity.QuizId, entity.Played, entity.Score);
     }
+
+    public static Question ToDomain(this QuestionCreateRequest request)
+    {
+        return new Question
+        {
+            Id = Guid.NewGuid(),
+            QuizId = request.QuizId,
+            Text = request.Text,
+        };
+    }
+
+    public static QuestionResponse ToResponse(this Question entity)
+    {
+        return new QuestionResponse(entity.Id, entity.QuizId, entity.Text);
+    }
 }

@@ -10,7 +10,7 @@ public interface IQuestionRepository
 {
     Task CreateAsync(Question question);
     Task DeleteAsync(Question question);
-    Task<IQueryable<Question>> ReturnAsync();
+    Task<IReadOnlyList<Question>> ReturnAsync();
     Task<Question?> ReturnAsync(Guid id);
     Task UpdateAsync(Question question);
 }

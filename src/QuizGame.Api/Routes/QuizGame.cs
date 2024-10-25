@@ -11,7 +11,8 @@ public static class QuizGame
     public static WebApplication MapQuizGameEndpoints(this WebApplication app)
     {
         app.MapAnswerEndpoints()
-           .MapGameEndpoints();
+           .MapGameEndpoints()
+           .MapQuestionEndpoints();
 
         return app;
     }
@@ -76,6 +77,38 @@ public static class QuizGame
         builder.MapDelete("/{id}", GameEndpoints.DeleteGameAsync)
                .WithName(nameof(GameEndpoints.DeleteGameAsync))
                .WithSummary("Delete an existing Quiz Game game.");
+
+        return app;
+    }
+
+    private static WebApplication MapQuestionEndpoints(this WebApplication app)
+    {
+        var builder = app.MapGroup("/api/v1/quizgame/questions")
+                         .WithOpenApi();
+
+        builder.MapGet("/", QuestionEndpoints.GetQuestionsAsync)
+               .WithName(nameof(QuestionEndpoints.GetQuestionsAsync))
+               .WithSummary("Get all Quiz Question games.");
+
+        builder.MapGet("/{id}", QuestionEndpoints.GetQuestionAsync)
+               .WithName(nameof(QuestionEndpoints.GetQuestionAsync))
+               .WithSummary("Get a Quiz Question game by ID.");
+
+        builder.MapGet("/quiz/{id}", QuestionEndpoints.GetQuizQuestionsAsync)
+               .WithName(nameof(QuestionEndpoints.GetQuizQuestionsAsync))
+               .WithSummary("Gets all Quiz Question games for a quiz ID.");
+
+        builder.MapPost("/", QuestionEndpoints.CreateQuestionAsync)
+               .WithName(nameof(QuestionEndpoints.CreateQuestionAsync))
+               .WithSummary("Create a new Quiz Question game.");
+
+        builder.MapPut("/{id}", QuestionEndpoints.UpdateQuestionAsync)
+               .WithName(nameof(QuestionEndpoints.UpdateQuestionAsync))
+               .WithSummary("Update an existing Quiz Question game.");
+
+        builder.MapDelete("/{id}", QuestionEndpoints.DeleteQuestionAsync)
+               .WithName(nameof(QuestionEndpoints.DeleteQuestionAsync))
+               .WithSummary("Delete an existing Quiz Question game.");
 
         return app;
     }
