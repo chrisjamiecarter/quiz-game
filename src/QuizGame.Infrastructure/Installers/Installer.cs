@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using QuizGame.Application.Repositories;
 using QuizGame.Infrastructure.Contexts;
+using QuizGame.Infrastructure.Repositories;
 using QuizGame.Infrastructure.Services;
 
 namespace QuizGame.Infrastructure.Installers;
@@ -20,6 +22,12 @@ public static class Installer
             options.UseSqlServer(connectionString);
         });
 
+        services.AddScoped<IAnswerRepository, AnswerRepository>();
+        services.AddScoped<IGameRepository, GameRepository>();
+        services.AddScoped<IQuestionRepository, QuestionRepository>();
+        services.AddScoped<IQuizRepository, QuizRepository>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        
         services.AddScoped<ISeederService, SeederService>();
 
         return services;

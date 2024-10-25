@@ -1,7 +1,7 @@
 ﻿using Bogus;
 using Microsoft.EntityFrameworkCore;
+using QuizGame.Domain.Entities;
 using QuizGame.Infrastructure.Contexts;
-using QuizGame.Infrastructure.Models;
 
 namespace QuizGame.Infrastructure.Services;
 
@@ -32,11 +32,11 @@ internal class SeederService : ISeederService
         SeedGames();
     }
 
-    private record Answer(string Text, bool IsCorrect = false);
+    private record AnswerRecord(string Text, bool IsCorrect = false);
 
-    private void AddQuestion(Guid quizId, string text, IEnumerable<Answer> answers)
+    private void AddQuestion(Guid quizId, string text, IEnumerable<AnswerRecord> answers)
     {
-        var question = new QuestionModel
+        var question = new Question
         {
             Id = Guid.NewGuid(),
             Text = text,
@@ -46,7 +46,7 @@ internal class SeederService : ISeederService
 
         foreach (var answer in answers)
         {
-            _context.Answer.Add(new AnswerModel
+            _context.Answer.Add(new Answer
             {
                 Id = Guid.NewGuid(),
                 Text = answer.Text,
@@ -58,7 +58,7 @@ internal class SeederService : ISeederService
 
     private void SeedGameOfThronesQuiz()
     {
-        var quiz = new QuizModel
+        var quiz = new Quiz
         {
             Id = Guid.NewGuid(),
             Name = "The Iron Throne Challenge",
@@ -72,10 +72,10 @@ internal class SeederService : ISeederService
             quiz.Id,
             "What is the motto of House Stark?",
             [
-                new Answer("Winter is Coming", true ),
-                new Answer("Fire and Blood"),
-                new Answer("We Do Not Sow"),
-                new Answer("Hear Me Roar")
+                new AnswerRecord("Winter is Coming", true ),
+                new AnswerRecord("Fire and Blood"),
+                new AnswerRecord("We Do Not Sow"),
+                new AnswerRecord("Hear Me Roar")
             ]
         );
 
@@ -83,10 +83,10 @@ internal class SeederService : ISeederService
             quiz.Id,
             "Who is known as the 'Mother of Dragon'?",
             [
-                new Answer("Cersei Lannister"),
-                new Answer("Melisandre"),
-                new Answer("Daenerys Targaryen", true),
-                new Answer("Ygritte")
+                new AnswerRecord("Cersei Lannister"),
+                new AnswerRecord("Melisandre"),
+                new AnswerRecord("Daenerys Targaryen", true),
+                new AnswerRecord("Ygritte")
             ]
         );
 
@@ -94,10 +94,10 @@ internal class SeederService : ISeederService
             quiz.Id,
             "What is the name of Arya Stark's sword?",
             [
-                new Answer("Oathkeeper"),
-                new Answer("Needle", true),
-                new Answer("Longclaw"),
-                new Answer("Ice")
+                new AnswerRecord("Oathkeeper"),
+                new AnswerRecord("Needle", true),
+                new AnswerRecord("Longclaw"),
+                new AnswerRecord("Ice")
             ]
         );
 
@@ -105,10 +105,10 @@ internal class SeederService : ISeederService
             quiz.Id,
             "Who was responsible for the creation of the Night King?",
             [
-                new Answer("The White Walkers"),
-                new Answer("The First Men"),
-                new Answer("The Children of the Forest", true),
-                new Answer("The Three-Eyed Raven")
+                new AnswerRecord("The White Walkers"),
+                new AnswerRecord("The First Men"),
+                new AnswerRecord("The Children of the Forest", true),
+                new AnswerRecord("The Three-Eyed Raven")
             ]
         );
 
@@ -116,10 +116,10 @@ internal class SeederService : ISeederService
             quiz.Id,
             "Which character famously declares, 'I drink and I know things'?",
             [
-                new Answer("Jon Snow"),
-                new Answer("Jaime Lannister"),
-                new Answer("Tyrion Lannister", true),
-                new Answer("Bronn")
+                new AnswerRecord("Jon Snow"),
+                new AnswerRecord("Jaime Lannister"),
+                new AnswerRecord("Tyrion Lannister", true),
+                new AnswerRecord("Bronn")
             ]
         );
 
@@ -132,7 +132,7 @@ internal class SeederService : ISeederService
 
         var quizzes = _context.Quiz.Include(q => q.Questions).ToList();
 
-        var fakeData = new Faker<GameModel>()
+        var fakeData = new Faker<Game>()
             .RuleFor(m => m.Id, f => f.Random.Guid())
             .RuleFor(m => m.Played, f => f.Date.Recent(7))
             .RuleFor(m => m.Quiz, f => f.PickRandom(quizzes))
@@ -149,7 +149,7 @@ internal class SeederService : ISeederService
 
     private void SeedHarryPotterQuiz()
     {
-        var quiz = new QuizModel
+        var quiz = new Quiz
         {
             Id = Guid.NewGuid(),
             Name = "The Wizarding World Challenge",
@@ -163,10 +163,10 @@ internal class SeederService : ISeederService
             quiz.Id,
             "What is the name of Harry Potter's owl?",
             [
-                new Answer("Crookshanks"),
-                new Answer("Hedwig", true),
-                new Answer("Errol"),
-                new Answer("Scabbers")
+                new AnswerRecord("Crookshanks"),
+                new AnswerRecord("Hedwig", true),
+                new AnswerRecord("Errol"),
+                new AnswerRecord("Scabbers")
             ]
         );
 
@@ -174,10 +174,10 @@ internal class SeederService : ISeederService
             quiz.Id,
             "Which spell is used to disarm an opponent?",
             [
-                new Answer("Expelliarmus", true),
-                new Answer("Lumos"),
-                new Answer("Accio"),
-                new Answer("Avada Kedavra")
+                new AnswerRecord("Expelliarmus", true),
+                new AnswerRecord("Lumos"),
+                new AnswerRecord("Accio"),
+                new AnswerRecord("Avada Kedavra")
             ]
         );
 
@@ -185,10 +185,10 @@ internal class SeederService : ISeederService
             quiz.Id,
             "Who is the Half-Blood Prince?",
             [
-                new Answer("Albus Dumbledore"),
-                new Answer("Severus Snape", true),
-                new Answer("Sirius Black"),
-                new Answer("Remus Lupin")
+                new AnswerRecord("Albus Dumbledore"),
+                new AnswerRecord("Severus Snape", true),
+                new AnswerRecord("Sirius Black"),
+                new AnswerRecord("Remus Lupin")
             ]
         );
 
@@ -196,10 +196,10 @@ internal class SeederService : ISeederService
             quiz.Id,
             "What is the name of the magical map that shows everyone’s location in Hogwarts?",
             [
-                new Answer("The Marauder's Map", true),
-                new Answer("The Daily Prophet"),
-                new Answer("The Elder Wand"),
-                new Answer("The Invisibility Cloak")
+                new AnswerRecord("The Marauder's Map", true),
+                new AnswerRecord("The Daily Prophet"),
+                new AnswerRecord("The Elder Wand"),
+                new AnswerRecord("The Invisibility Cloak")
             ]
         );
 
@@ -207,10 +207,10 @@ internal class SeederService : ISeederService
             quiz.Id,
             "What creature is Aragog?",
             [
-                new Answer("A Basilisk"),
-                new Answer("A Hippogriff"),
-                new Answer("A Werewolf"),
-                new Answer("A Giant Spider", true)
+                new AnswerRecord("A Basilisk"),
+                new AnswerRecord("A Hippogriff"),
+                new AnswerRecord("A Werewolf"),
+                new AnswerRecord("A Giant Spider", true)
             ]
         );
 

@@ -14,5 +14,4 @@ internal class QuestionModel
     public required Guid QuizId { get; set; }
 
     public QuizModel? Quiz { get; set; }
-
 }

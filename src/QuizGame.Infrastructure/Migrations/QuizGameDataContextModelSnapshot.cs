@@ -22,7 +22,7 @@ namespace QuizGame.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("QuizGame.Infrastructure.Models.AnswerModel", b =>
+            modelBuilder.Entity("QuizGame.Domain.Entities.Answer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -45,7 +45,7 @@ namespace QuizGame.Infrastructure.Migrations
                     b.ToTable("Answer", (string)null);
                 });
 
-            modelBuilder.Entity("QuizGame.Infrastructure.Models.GameModel", b =>
+            modelBuilder.Entity("QuizGame.Domain.Entities.Game", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -67,7 +67,7 @@ namespace QuizGame.Infrastructure.Migrations
                     b.ToTable("Game", (string)null);
                 });
 
-            modelBuilder.Entity("QuizGame.Infrastructure.Models.QuestionModel", b =>
+            modelBuilder.Entity("QuizGame.Domain.Entities.Question", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -87,7 +87,7 @@ namespace QuizGame.Infrastructure.Migrations
                     b.ToTable("Question", (string)null);
                 });
 
-            modelBuilder.Entity("QuizGame.Infrastructure.Models.QuizModel", b =>
+            modelBuilder.Entity("QuizGame.Domain.Entities.Quiz", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -108,9 +108,9 @@ namespace QuizGame.Infrastructure.Migrations
                     b.ToTable("Quiz", (string)null);
                 });
 
-            modelBuilder.Entity("QuizGame.Infrastructure.Models.AnswerModel", b =>
+            modelBuilder.Entity("QuizGame.Domain.Entities.Answer", b =>
                 {
-                    b.HasOne("QuizGame.Infrastructure.Models.QuestionModel", "Question")
+                    b.HasOne("QuizGame.Domain.Entities.Question", "Question")
                         .WithMany("Answers")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -119,9 +119,9 @@ namespace QuizGame.Infrastructure.Migrations
                     b.Navigation("Question");
                 });
 
-            modelBuilder.Entity("QuizGame.Infrastructure.Models.GameModel", b =>
+            modelBuilder.Entity("QuizGame.Domain.Entities.Game", b =>
                 {
-                    b.HasOne("QuizGame.Infrastructure.Models.QuizModel", "Quiz")
+                    b.HasOne("QuizGame.Domain.Entities.Quiz", "Quiz")
                         .WithMany("Games")
                         .HasForeignKey("QuizId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -130,9 +130,9 @@ namespace QuizGame.Infrastructure.Migrations
                     b.Navigation("Quiz");
                 });
 
-            modelBuilder.Entity("QuizGame.Infrastructure.Models.QuestionModel", b =>
+            modelBuilder.Entity("QuizGame.Domain.Entities.Question", b =>
                 {
-                    b.HasOne("QuizGame.Infrastructure.Models.QuizModel", "Quiz")
+                    b.HasOne("QuizGame.Domain.Entities.Quiz", "Quiz")
                         .WithMany("Questions")
                         .HasForeignKey("QuizId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -141,12 +141,12 @@ namespace QuizGame.Infrastructure.Migrations
                     b.Navigation("Quiz");
                 });
 
-            modelBuilder.Entity("QuizGame.Infrastructure.Models.QuestionModel", b =>
+            modelBuilder.Entity("QuizGame.Domain.Entities.Question", b =>
                 {
                     b.Navigation("Answers");
                 });
 
-            modelBuilder.Entity("QuizGame.Infrastructure.Models.QuizModel", b =>
+            modelBuilder.Entity("QuizGame.Domain.Entities.Quiz", b =>
                 {
                     b.Navigation("Games");
 

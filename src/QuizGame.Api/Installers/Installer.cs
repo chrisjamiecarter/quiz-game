@@ -1,4 +1,5 @@
-﻿using QuizGame.Infrastructure.Installers;
+﻿using QuizGame.Api.Routes;
+using QuizGame.Infrastructure.Installers;
 
 namespace QuizGame.Api.Installers;
 
@@ -18,6 +19,8 @@ public static class Installer
 
     public static WebApplication AddMiddleware(this WebApplication app)
     {
+        app.MapQuizGameEndpoints();
+
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();

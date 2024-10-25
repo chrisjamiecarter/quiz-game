@@ -5,9 +5,9 @@
 /// </summary>
 public interface IUnitOfWork
 {
-    IAnswerRepository Answers { get; set; }
-    IGameRepository Games{ get; set; }
-    IQuestionRepository Questions { get; set; }
-    IQuizRepository Quizzes { get; set; }
+    IAnswerRepository Answers { get; }
+    IGameRepository Games{ get; }
+    IQuestionRepository Questions { get; }
+    IQuizRepository Quizzes { get; }
     Task<int> SaveAsync();
 }

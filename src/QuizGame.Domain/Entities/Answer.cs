@@ -10,4 +10,8 @@ public class Answer
     public required string Text { get; set; }
 
     public required bool IsCorrect { get; set; }
+
+    public required Guid QuestionId { get; set; }
+
+    public Question? Question { get; set; }
 }

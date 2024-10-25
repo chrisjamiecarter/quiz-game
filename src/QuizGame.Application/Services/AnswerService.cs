@@ -32,10 +32,10 @@ public class AnswerService : IAnswerService
         return deleted > 0;
     }
 
-    public async Task<IEnumerable<Answer>> ReturnAllAsync()
+    public IEnumerable<Answer> ReturnAll()
     {
-        var answers = await _unitOfWork.Answers.ReturnAsync();
-        return answers.OrderBy(x => Random.Shared.Next());
+        var list = _unitOfWork.Answers.Return().ToList();
+        return list.OrderBy(x => Random.Shared.Next());
     }
 
     public async Task<Answer?> ReturnByIdAsync(Guid id)

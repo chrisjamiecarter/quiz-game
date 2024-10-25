@@ -1,15 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using QuizGame.Infrastructure.Models;
+using QuizGame.Domain.Entities;
 
 namespace QuizGame.Infrastructure.Configurations;
 
 /// <summary>
-/// Configures a <see cref="GameModel"/>, specifying table, primary key, and relationships with <see cref="QuizModel"/>.
+/// Configures a <see cref="Game"/>, specifying table, primary key, and relationships with <see cref="Quiz"/>.
 /// </summary>
-internal class GameConfiguration : IEntityTypeConfiguration<GameModel>
+internal class GameConfiguration : IEntityTypeConfiguration<Game>
 {
-    public void Configure(EntityTypeBuilder<GameModel> builder)
+    public void Configure(EntityTypeBuilder<Game> builder)
     {
         builder.ToTable("Game");
 

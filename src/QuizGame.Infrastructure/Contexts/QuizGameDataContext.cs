@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using QuizGame.Domain.Entities;
 using QuizGame.Infrastructure.Configurations;
-using QuizGame.Infrastructure.Models;
 
 namespace QuizGame.Infrastructure.Contexts;
 
@@ -9,13 +9,13 @@ namespace QuizGame.Infrastructure.Contexts;
 /// </summary>
 internal class QuizGameDataContext(DbContextOptions<QuizGameDataContext> options) : DbContext(options)
 {
-    public DbSet<AnswerModel> Answer { get; set; } = default!;
-    
-    public DbSet<GameModel> Game { get; set; } = default!;
-    
-    public DbSet<QuestionModel> Question { get; set; } = default!;
-    
-    public DbSet<QuizModel> Quiz { get; set; } = default!;
+    public DbSet<Answer> Answer { get; set; } = default!;
+
+    public DbSet<Game> Game { get; set; } = default!;
+
+    public DbSet<Question> Question { get; set; } = default!;
+
+    public DbSet<Quiz> Quiz { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

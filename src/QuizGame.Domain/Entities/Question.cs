@@ -9,5 +9,9 @@ public class Question
 
     public required string Text { get; set; }
 
+    public required Guid QuizId { get; set; }
+
+    public Quiz? Quiz { get; set; }
+
     public ICollection<Answer> Answers { get; set; } = [];
 }

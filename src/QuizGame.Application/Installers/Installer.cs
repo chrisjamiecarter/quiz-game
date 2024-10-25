@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using QuizGame.Application.Services;
+using QuizGame.Domain.Services;
 
 namespace QuizGame.Application.Installers;
 
@@ -9,6 +11,8 @@ public static class Installer
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
+        services.AddScoped<IAnswerService, AnswerService>();
+
         return services;
     }
 }
