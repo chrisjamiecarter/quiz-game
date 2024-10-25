@@ -11,7 +11,7 @@ public class Quiz
 
     public string Description { get; set; } = "";
 
-    public required ICollection<Game> Games { get; set; } = [];
+    public ICollection<Game> Games { get; set; } = [];
 
-    public required ICollection<Question> Questions { get; set; } = [];
+    public ICollection<Question> Questions { get; set; } = [];
 }

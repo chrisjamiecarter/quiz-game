@@ -63,8 +63,6 @@ internal class SeederService : ISeederService
             Id = Guid.NewGuid(),
             Name = "The Iron Throne Challenge",
             Description = "Test your knowledge of the Seven Kingdoms with our thrilling Game of Thrones trivia quiz!",
-            Games = [],
-            Questions = [],
         };
         _context.Quiz.Add(quiz);
 
@@ -154,8 +152,6 @@ internal class SeederService : ISeederService
             Id = Guid.NewGuid(),
             Name = "The Wizarding World Challenge",
             Description = "Step into the magical world of Harry Potter and test your knowledge with our enchanting trivia quiz!",
-            Games = [],
-            Questions = [],
         };
         _context.Quiz.Add(quiz);
 
