@@ -1,4 +1,5 @@
-﻿using QuizGame.Application.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using QuizGame.Application.Repositories;
 using QuizGame.Domain.Entities;
 using QuizGame.Infrastructure.Contexts;
 
@@ -32,9 +33,9 @@ internal class AnswerRepository : IAnswerRepository
         }
     }
 
-    public IQueryable<Answer> Return()
+    public async Task<IReadOnlyList<Answer>> ReturnAsync()
     {
-        return _context.Set<Answer>();
+        return await _context.Answer.ToListAsync();
     }
 
     public async Task<Answer?> ReturnAsync(Guid id)
