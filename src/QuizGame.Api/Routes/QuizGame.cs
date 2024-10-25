@@ -20,28 +20,28 @@ public static class QuizGame
         var builder = app.MapGroup("/api/v1/quizgame/answers")
                          .WithOpenApi();
 
-        builder.MapGet("/", AnswerEndpoints.GetAnswers)
-               .WithName(nameof(AnswerEndpoints.GetAnswers))
+        builder.MapGet("/", AnswerEndpoints.GetAnswersAsync)
+               .WithName("GetAnswers")
                .WithSummary("Get all Quiz Game answers.");
 
-        builder.MapGet("/{id}", AnswerEndpoints.GetAnswer)
-               .WithName(nameof(AnswerEndpoints.GetAnswer))
+        builder.MapGet("/{id}", AnswerEndpoints.GetAnswerAsync)
+               .WithName("GetAnswer")
                .WithSummary("Get a Quiz Game answer by ID.");
 
-        builder.MapGet("/quiz/{id}", AnswerEndpoints.GetQuestionAnswers)
-               .WithName(nameof(AnswerEndpoints.GetQuestionAnswers))
+        builder.MapGet("/quiz/{id}", AnswerEndpoints.GetQuestionAnswersAsync)
+               .WithName("GetQuestionAnswers")
                .WithSummary("Gets all Quiz Game answers for a question ID.");
 
-        builder.MapPost("/", AnswerEndpoints.CreateAnswer)
-               .WithName(nameof(AnswerEndpoints.CreateAnswer))
+        builder.MapPost("/", AnswerEndpoints.CreateAnswerAsync)
+               .WithName("CreateAnswer")
                .WithSummary("Create a new Quiz Game answer.");
 
-        builder.MapPut("/{id}", AnswerEndpoints.UpdateAnswer)
-               .WithName(nameof(AnswerEndpoints.UpdateAnswer))
+        builder.MapPut("/{id}", AnswerEndpoints.UpdateAnswerAsync)
+               .WithName("UpdateAnswer")
                .WithSummary("Update an existing Quiz Game answer.");
 
-        builder.MapDelete("/{id}", AnswerEndpoints.DeleteAnswer)
-               .WithName(nameof(AnswerEndpoints.DeleteAnswer))
+        builder.MapDelete("/{id}", AnswerEndpoints.DeleteAnswerAsync)
+               .WithName("DeleteAnswer")
                .WithSummary("Delete an existing Quiz Game answer.");
 
         return app;

@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using QuizGame.Domain.Entities;
+﻿using QuizGame.Domain.Entities;
 
 namespace QuizGame.Api.Contracts.V1;
 

@@ -10,7 +10,7 @@ public interface IAnswerRepository
 {
     Task CreateAsync(Answer answer);
     Task DeleteAsync(Answer answer);
-    IQueryable<Answer> Return();
+    Task<IReadOnlyList<Answer>> ReturnAsync();
     Task<Answer?> ReturnAsync(Guid id);
     Task UpdateAsync(Answer answer);
 }

@@ -2,6 +2,9 @@
 
 namespace QuizGame.Domain.Services;
 
+/// <summary>
+/// Defines the contract for a service that manages <see cref="Quiz"/> entities.
+/// </summary>
 public interface IQuizService
 {
     Task<bool> CreateAsync(Quiz quiz);

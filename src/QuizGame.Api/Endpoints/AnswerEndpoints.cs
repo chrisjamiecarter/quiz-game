@@ -5,20 +5,23 @@ using QuizGame.Domain.Services;
 
 namespace QuizGame.Api.Endpoints;
 
+/// <summary>
+/// Defines endpoints for CRUD operations related to <see cref="Answer"/>.
+/// </summary>
 public static class AnswerEndpoints
 {
-    public static async Task<IResult> CreateAnswer([FromBody] AnswerCreateRequest request, [FromServices] IAnswerService service)
+    public static async Task<IResult> CreateAnswerAsync([FromBody] AnswerCreateRequest request, [FromServices] IAnswerService service)
     {
         var entity = request.ToDomain();
 
         var created = await service.CreateAsync(entity);
 
         return created
-            ? TypedResults.CreatedAtRoute(entity.ToResponse(), nameof(GetAnswer), new { id = entity.Id })
+            ? TypedResults.CreatedAtRoute(entity.ToResponse(), nameof(GetAnswerAsync), new { id = entity.Id })
             : TypedResults.BadRequest(new { error = "Unable to create answer." });
     }
 
-    public static async Task<IResult> DeleteAnswer([FromRoute] Guid id, [FromServices] IAnswerService service)
+    public static async Task<IResult> DeleteAnswerAsync([FromRoute] Guid id, [FromServices] IAnswerService service)
     {
         var entity = await service.ReturnByIdAsync(id);
         if (entity is null)
@@ -33,7 +36,7 @@ public static class AnswerEndpoints
             : TypedResults.BadRequest(new { error = "Unable to delete answer." });
     }
 
-    public static async Task<IResult> GetAnswer([FromRoute] Guid id, [FromServices] IAnswerService service)
+    public static async Task<IResult> GetAnswerAsync([FromRoute] Guid id, [FromServices] IAnswerService service)
     {
         var entity = await service.ReturnByIdAsync(id);
 
@@ -42,21 +45,21 @@ public static class AnswerEndpoints
             : TypedResults.Ok(entity.ToResponse());
     }
 
-    public static IResult GetAnswers([FromServices] IAnswerService service)
+    public static async Task<IResult> GetAnswersAsync([FromServices] IAnswerService service)
     {
-        var entities = service.ReturnAll();
+        var entities = await service.ReturnAll();
         return TypedResults.Ok(entities.Select(x => x.ToResponse()));
     }
 
-    public static IResult GetQuestionAnswers([FromRoute] Guid id, [FromServices] IAnswerService service)
+    public static async Task<IResult> GetQuestionAnswersAsync([FromRoute] Guid id, [FromServices] IAnswerService service)
     {
         // TODO:
-        var entities = service.ReturnAll().Where(x => x.QuestionId == id);
-        
-        return TypedResults.Ok(entities.Select(x => x.ToResponse()));
+        var entities = await service.ReturnAll();
+
+        return TypedResults.Ok(entities.Where(x => x.QuestionId == id).Select(x => x.ToResponse()));
     }
 
-    public static async Task<IResult> UpdateAnswer([FromRoute] Guid id, [FromBody] AnswerUpdateRequest request, [FromServices] IAnswerService service)
+    public static async Task<IResult> UpdateAnswerAsync([FromRoute] Guid id, [FromBody] AnswerUpdateRequest request, [FromServices] IAnswerService service)
     {
         var entity = await service.ReturnByIdAsync(id);
         if (entity is null)
