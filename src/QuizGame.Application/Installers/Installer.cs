@@ -12,6 +12,7 @@ public static class Installer
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddScoped<IAnswerService, AnswerService>();
+        services.AddScoped<IGameService, GameService>();
 
         return services;
     }

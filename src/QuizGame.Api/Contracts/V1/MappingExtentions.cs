@@ -22,4 +22,20 @@ public static class MappingExtensions
     {
         return new AnswerResponse(entity.Id, entity.QuestionId, entity.Text, entity.IsCorrect);
     }
+
+    public static Game ToDomain(this GameCreateRequest request)
+    {
+        return new Game
+        {
+            Id = Guid.NewGuid(),
+            QuizId = request.QuizId,
+            Played = request.Played,
+            Score = request.Score,
+        };
+    }
+
+    public static GameResponse ToResponse(this Game entity)
+    {
+        return new GameResponse(entity.Id, entity.QuizId, entity.Played, entity.Score);
+    }
 }
