@@ -1,5 +1,5 @@
-﻿using Azure.Core;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using QuizGame.Api.Contracts.V1;
 using QuizGame.Domain.Entities;
 using QuizGame.Domain.Services;
 
@@ -7,13 +7,14 @@ namespace QuizGame.Api.Endpoints;
 
 public static class AnswerEndpoints
 {
-    public static async Task<IResult> CreateAnswer([FromBody] Answer request, [FromServices] IAnswerService service)
+    public static async Task<IResult> CreateAnswer([FromBody] AnswerCreateRequest request, [FromServices] IAnswerService service)
     {
-        request.Id = Guid.NewGuid();
-        var created = await service.CreateAsync(request);
+        var entity = request.ToDomain();
+
+        var created = await service.CreateAsync(entity);
 
         return created
-            ? TypedResults.CreatedAtRoute(request, nameof(GetAnswer), new { id = request.Id })
+            ? TypedResults.CreatedAtRoute(entity.ToResponse(), nameof(GetAnswer), new { id = entity.Id })
             : TypedResults.BadRequest(new { error = "Unable to create answer." });
     }
 
@@ -38,13 +39,13 @@ public static class AnswerEndpoints
 
         return entity is null
             ? TypedResults.NotFound()
-            : TypedResults.Ok(entity);
+            : TypedResults.Ok(entity.ToResponse());
     }
 
     public static IResult GetAnswers([FromServices] IAnswerService service)
     {
         var entities = service.ReturnAll();
-        return TypedResults.Ok(entities);
+        return TypedResults.Ok(entities.Select(x => x.ToResponse()));
     }
 
     public static IResult GetQuestionAnswers([FromRoute] Guid id, [FromServices] IAnswerService service)
@@ -52,10 +53,10 @@ public static class AnswerEndpoints
         // TODO:
         var entities = service.ReturnAll().Where(x => x.QuestionId == id);
         
-        return TypedResults.Ok(entities);
+        return TypedResults.Ok(entities.Select(x => x.ToResponse()));
     }
 
-    public static async Task<IResult> UpdateAnswer([FromRoute] Guid id, [FromBody] Answer request, [FromServices] IAnswerService service)
+    public static async Task<IResult> UpdateAnswer([FromRoute] Guid id, [FromBody] AnswerUpdateRequest request, [FromServices] IAnswerService service)
     {
         var entity = await service.ReturnByIdAsync(id);
         if (entity is null)
@@ -74,7 +75,7 @@ public static class AnswerEndpoints
         var updated = await service.UpdateAsync(updatedAnswer);
 
         return updated
-            ? TypedResults.Ok(updatedAnswer)
+            ? TypedResults.Ok(updatedAnswer.ToResponse())
             : TypedResults.BadRequest(new { error = "Unable to update answer." });
     }
 }
