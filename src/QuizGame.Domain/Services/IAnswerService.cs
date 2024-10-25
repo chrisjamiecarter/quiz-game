@@ -9,7 +9,7 @@ public interface IAnswerService
 {
     Task<bool> CreateAsync(Answer answer);
     Task<bool> DeleteAsync(Answer answer);
-    Task<IEnumerable<Answer>> ReturnAll();
+    Task<IEnumerable<Answer>> ReturnAllAsync();
     Task<Answer?> ReturnByIdAsync(Guid id);
     Task<bool> UpdateAsync(Answer answer);
 }
