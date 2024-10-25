@@ -1,4 +1,5 @@
-﻿using QuizGame.Application.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using QuizGame.Application.Repositories;
 using QuizGame.Domain.Entities;
 using QuizGame.Infrastructure.Contexts;
 
@@ -18,28 +19,38 @@ internal class QuizRepository : IQuizRepository
         _context = context;
     }
 
-    public Task CreateAsync(Quiz quiz)
+    public async Task CreateAsync(Quiz quiz)
     {
-        throw new NotImplementedException();
+        await _context.Quiz.AddAsync(quiz);
     }
 
-    public Task DeleteAsync(Quiz quiz)
+    public async Task DeleteAsync(Quiz quiz)
     {
-        throw new NotImplementedException();
+        var entity = await _context.Quiz.FindAsync(quiz.Id);
+        if (entity is not null)
+        {
+            _context.Quiz.Remove(entity);
+        }
     }
 
-    public Task<IQueryable<Quiz>> ReturnAsync()
+    public async Task<IReadOnlyList<Quiz>> ReturnAsync()
     {
-        throw new NotImplementedException();
+        return await _context.Quiz.ToListAsync();
     }
 
-    public Task<Quiz?> ReturnAsync(Guid id)
+    public async Task<Quiz?> ReturnAsync(Guid id)
     {
-        throw new NotImplementedException();
+        return await _context.Quiz.FindAsync(id);
     }
 
-    public Task UpdateAsync(Quiz quiz)
+    public async Task UpdateAsync(Quiz quiz)
     {
-        throw new NotImplementedException();
+        var entity = await _context.Quiz.FindAsync(quiz.Id);
+        if (entity is not null)
+        {
+            entity.Name = quiz.Name;
+            entity.Description = quiz.Description;
+            _context.Quiz.Update(entity);
+        }
     }
 }

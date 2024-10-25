@@ -10,7 +10,7 @@ public interface IQuizRepository
 {
     Task CreateAsync(Quiz quiz);
     Task DeleteAsync(Quiz quiz);
-    Task<IQueryable<Quiz>> ReturnAsync();
+    Task<IReadOnlyList<Quiz>> ReturnAsync();
     Task<Quiz?> ReturnAsync(Guid id);
     Task UpdateAsync(Quiz quiz);
 }

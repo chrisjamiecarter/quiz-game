@@ -14,6 +14,7 @@ public static class Installer
         services.AddScoped<IAnswerService, AnswerService>();
         services.AddScoped<IGameService, GameService>();
         services.AddScoped<IQuestionService, QuestionService>();
+        services.AddScoped<IQuizService, QuizService>();
 
         return services;
     }

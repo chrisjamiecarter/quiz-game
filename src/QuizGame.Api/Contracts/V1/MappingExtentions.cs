@@ -53,4 +53,29 @@ public static class MappingExtensions
     {
         return new QuestionResponse(entity.Id, entity.QuizId, entity.Text);
     }
+
+    public static Quiz ToDomain(this QuizCreateRequest request)
+    {
+        return new Quiz
+        {
+            Id = Guid.NewGuid(),
+            Name = request.Name,
+            Description = request.Description,
+        };
+    }
+
+    public static Quiz ToDomain(this QuizUpdateRequest request, Quiz entity)
+    {
+        return new Quiz
+        {
+            Id = entity.Id,
+            Name = request.Name,
+            Description = request.Description,
+        };
+    }
+
+    public static QuizResponse ToResponse(this Quiz entity)
+    {
+        return new QuizResponse(entity.Id, entity.Name, entity.Description);
+    }
 }

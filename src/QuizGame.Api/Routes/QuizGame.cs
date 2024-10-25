@@ -12,7 +12,8 @@ public static class QuizGame
     {
         app.MapAnswerEndpoints()
            .MapGameEndpoints()
-           .MapQuestionEndpoints();
+           .MapQuestionEndpoints()
+           .MapQuizEndpoints();
 
         return app;
     }
@@ -109,6 +110,34 @@ public static class QuizGame
         builder.MapDelete("/{id}", QuestionEndpoints.DeleteQuestionAsync)
                .WithName(nameof(QuestionEndpoints.DeleteQuestionAsync))
                .WithSummary("Delete an existing Quiz Game question.");
+
+        return app;
+    }
+
+    private static WebApplication MapQuizEndpoints(this WebApplication app)
+    {
+        var builder = app.MapGroup("/api/v1/quizgame/quizzes")
+                         .WithOpenApi();
+
+        builder.MapGet("/", QuizEndpoints.GetQuizsAsync)
+               .WithName(nameof(QuizEndpoints.GetQuizsAsync))
+               .WithSummary("Get all Quiz Game quizzes.");
+
+        builder.MapGet("/{id}", QuizEndpoints.GetQuizAsync)
+               .WithName(nameof(QuizEndpoints.GetQuizAsync))
+               .WithSummary("Get a Quiz Game quiz by ID.");
+
+        builder.MapPost("/", QuizEndpoints.CreateQuizAsync)
+               .WithName(nameof(QuizEndpoints.CreateQuizAsync))
+               .WithSummary("Create a new Quiz Game quiz.");
+
+        builder.MapPut("/{id}", QuizEndpoints.UpdateQuizAsync)
+               .WithName(nameof(QuizEndpoints.UpdateQuizAsync))
+               .WithSummary("Update an existing Quiz Game quiz.");
+
+        builder.MapDelete("/{id}", QuizEndpoints.DeleteQuizAsync)
+               .WithName(nameof(QuizEndpoints.DeleteQuizAsync))
+               .WithSummary("Delete an existing Quiz Game quiz.");
 
         return app;
     }
