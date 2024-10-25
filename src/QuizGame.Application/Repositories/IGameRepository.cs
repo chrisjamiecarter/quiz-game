@@ -10,7 +10,7 @@ public interface IGameRepository
 {
     Task CreateAsync(Game game);
     Task DeleteAsync(Game game);
-    Task<IQueryable<Game>> ReturnAsync();
+    Task<IReadOnlyList<Game>> ReturnAsync();
     Task<Game?> ReturnAsync(Guid id);
     Task UpdateAsync(Game game);
 }
