@@ -30,7 +30,7 @@ public static class QuizGame
                .WithName(nameof(AnswerEndpoints.GetAnswerAsync))
                .WithSummary("Get a Quiz Game answer by ID.");
 
-        builder.MapGet("/quiz/{id}", AnswerEndpoints.GetQuestionAnswersAsync)
+        builder.MapGet("/question/{id}", AnswerEndpoints.GetQuestionAnswersAsync)
                .WithName(nameof(AnswerEndpoints.GetQuestionAnswersAsync))
                .WithSummary("Gets all Quiz Game answers for a question ID.");
 
@@ -88,27 +88,27 @@ public static class QuizGame
 
         builder.MapGet("/", QuestionEndpoints.GetQuestionsAsync)
                .WithName(nameof(QuestionEndpoints.GetQuestionsAsync))
-               .WithSummary("Get all Quiz Question games.");
+               .WithSummary("Get all Quiz Game questions.");
 
         builder.MapGet("/{id}", QuestionEndpoints.GetQuestionAsync)
                .WithName(nameof(QuestionEndpoints.GetQuestionAsync))
-               .WithSummary("Get a Quiz Question game by ID.");
+               .WithSummary("Get a Quiz Game question by ID.");
 
         builder.MapGet("/quiz/{id}", QuestionEndpoints.GetQuizQuestionsAsync)
                .WithName(nameof(QuestionEndpoints.GetQuizQuestionsAsync))
-               .WithSummary("Gets all Quiz Question games for a quiz ID.");
+               .WithSummary("Gets all Quiz Game questions for a quiz ID.");
 
         builder.MapPost("/", QuestionEndpoints.CreateQuestionAsync)
                .WithName(nameof(QuestionEndpoints.CreateQuestionAsync))
-               .WithSummary("Create a new Quiz Question game.");
+               .WithSummary("Create a new Quiz Game question.");
 
         builder.MapPut("/{id}", QuestionEndpoints.UpdateQuestionAsync)
                .WithName(nameof(QuestionEndpoints.UpdateQuestionAsync))
-               .WithSummary("Update an existing Quiz Question game.");
+               .WithSummary("Update an existing Quiz Game question.");
 
         builder.MapDelete("/{id}", QuestionEndpoints.DeleteQuestionAsync)
                .WithName(nameof(QuestionEndpoints.DeleteQuestionAsync))
-               .WithSummary("Delete an existing Quiz Question game.");
+               .WithSummary("Delete an existing Quiz Game question.");
 
         return app;
     }
