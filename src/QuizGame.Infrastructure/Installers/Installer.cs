@@ -33,10 +33,19 @@ public static class Installer
         return services;
     }
 
-    public static IServiceProvider SeedDatabase(this IServiceProvider serviceProvider)
+    public static IServiceProvider SeedDatabase(this IServiceProvider serviceProvider, string environmentName)
     {
         var context = serviceProvider.GetRequiredService<QuizGameDataContext>();
-        context.Database.Migrate();
+
+        switch (environmentName)
+        {
+            case "IntegrationTesting":
+                context.Database.EnsureCreated();
+                break;
+            default:
+                context.Database.Migrate();
+                break;
+        }
 
         var seeder = serviceProvider.GetRequiredService<ISeederService>();
         seeder.SeedDatabase();

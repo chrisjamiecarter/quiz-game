@@ -7,7 +7,7 @@ namespace QuizGame.Infrastructure.Contexts;
 /// <summary>
 /// Represents the Entity Framework Core database context for the QuizGame data store.
 /// </summary>
-internal class QuizGameDataContext(DbContextOptions<QuizGameDataContext> options) : DbContext(options)
+public class QuizGameDataContext(DbContextOptions<QuizGameDataContext> options) : DbContext(options)
 {
     public DbSet<Answer> Answer { get; set; } = default!;
 

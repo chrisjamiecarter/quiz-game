@@ -25,7 +25,9 @@ Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "QuizGame.Web", "src\QuizGam
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{61FEE848-EDF7-44F9-BD9F-EC57D80EC4C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizGame.Api.Tests", "test\QuizGame.Api.Tests\QuizGame.Api.Tests.csproj", "{871F51AD-1D89-4BE4-B461-7A0E188FA014}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuizGame.Api.Tests", "test\QuizGame.Api.Tests\QuizGame.Api.Tests.csproj", "{871F51AD-1D89-4BE4-B461-7A0E188FA014}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizGame.Api.IntegrationTests", "test\QuizGame.Api.IntegrationTests\QuizGame.Api.IntegrationTests.csproj", "{B4C10ACE-FA3F-4DC6-882B-08B2C45CD2E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +61,10 @@ Global
 		{871F51AD-1D89-4BE4-B461-7A0E188FA014}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{871F51AD-1D89-4BE4-B461-7A0E188FA014}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{871F51AD-1D89-4BE4-B461-7A0E188FA014}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4C10ACE-FA3F-4DC6-882B-08B2C45CD2E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4C10ACE-FA3F-4DC6-882B-08B2C45CD2E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4C10ACE-FA3F-4DC6-882B-08B2C45CD2E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4C10ACE-FA3F-4DC6-882B-08B2C45CD2E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -70,6 +76,7 @@ Global
 		{5AB8BFCF-0C3F-4D73-91E6-8BF39E8295FF} = {1F5D262E-0CE3-4BD1-9C8F-4A76A8ECEAC7}
 		{95599639-8BAA-46DB-A3E5-F7CA63F22D8C} = {1F5D262E-0CE3-4BD1-9C8F-4A76A8ECEAC7}
 		{871F51AD-1D89-4BE4-B461-7A0E188FA014} = {61FEE848-EDF7-44F9-BD9F-EC57D80EC4C2}
+		{B4C10ACE-FA3F-4DC6-882B-08B2C45CD2E8} = {61FEE848-EDF7-44F9-BD9F-EC57D80EC4C2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {105F3CE9-4B5D-4F26-9BE4-EAF261A73870}

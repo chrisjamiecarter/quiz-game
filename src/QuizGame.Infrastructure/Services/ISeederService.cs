@@ -5,7 +5,7 @@
 /// Implementations of this service will be responsible for populating the database with default or required data
 /// when the application is first run or during specific seeding operations.
 /// </summary>
-internal interface ISeederService
+public interface ISeederService
 {
     void SeedDatabase();
 }
