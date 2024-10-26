@@ -6,10 +6,12 @@ using Microsoft.Extensions.DependencyInjection;
 using QuizGame.Api.Contracts.V1;
 using QuizGame.Infrastructure.Contexts;
 using QuizGame.Infrastructure.Services;
+using QuizGame.Integration.Tests.Factories;
 
 namespace QuizGame.Integration.Tests.Endpoints;
 
-public class AnswerEndpointsTests : IClassFixture<QuizGameApiFactory>
+[Collection(nameof(QuizGameApiFactoryCollection))]
+public class AnswerEndpointsTests
 {
     private readonly HttpClient _client;
     private readonly QuizGameDataContext _context;
