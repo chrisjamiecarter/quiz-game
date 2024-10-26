@@ -4,7 +4,6 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using QuizGame.Api.Contracts.V1;
-using QuizGame.Domain.Entities;
 using QuizGame.Infrastructure.Contexts;
 using QuizGame.Infrastructure.Services;
 using QuizGame.Integration.Tests.Factories;
