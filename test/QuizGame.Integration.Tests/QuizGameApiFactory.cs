@@ -4,10 +4,11 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using QuizGame.Api;
 using QuizGame.Infrastructure.Contexts;
 using Testcontainers.MsSql;
 
-namespace QuizGame.Api.IntegrationTests;
+namespace QuizGame.Integration.Tests;
 
 public class QuizGameApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
@@ -15,11 +16,6 @@ public class QuizGameApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
         .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
         .WithPortBinding(1433, 1433)
         .Build();
-
-    public async Task InitializeAsync()
-    {
-        await _container.StartAsync();
-    }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -37,6 +33,11 @@ public class QuizGameApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
         });
 
         builder.UseEnvironment("IntegrationTesting");
+    }
+
+    public async Task InitializeAsync()
+    {
+        await _container.StartAsync();
     }
 
     public new async Task DisposeAsync()

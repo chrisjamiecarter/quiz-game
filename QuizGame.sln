@@ -27,7 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{61FEE848-E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuizGame.Api.Tests", "test\QuizGame.Api.Tests\QuizGame.Api.Tests.csproj", "{871F51AD-1D89-4BE4-B461-7A0E188FA014}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizGame.Api.IntegrationTests", "test\QuizGame.Api.IntegrationTests\QuizGame.Api.IntegrationTests.csproj", "{B4C10ACE-FA3F-4DC6-882B-08B2C45CD2E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuizGame.Integration.Tests", "test\QuizGame.Integration.Tests\QuizGame.Integration.Tests.csproj", "{B4C10ACE-FA3F-4DC6-882B-08B2C45CD2E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
