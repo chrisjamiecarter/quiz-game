@@ -33,7 +33,7 @@ public static class QuizGame
 
         builder.MapGet("/question/{id}", AnswerEndpoints.GetQuestionAnswersAsync)
                .WithName(nameof(AnswerEndpoints.GetQuestionAnswersAsync))
-               .WithSummary("Gets all Quiz Game answers for a question ID.");
+               .WithSummary("Get all Quiz Game answers for a question ID.");
 
         builder.MapPost("/", AnswerEndpoints.CreateAnswerAsync)
                .WithName(nameof(AnswerEndpoints.CreateAnswerAsync))
@@ -54,10 +54,14 @@ public static class QuizGame
     {
         var builder = app.MapGroup("/api/v1/quizgame/games")
                          .WithOpenApi();
-
+        
         builder.MapGet("/", GameEndpoints.GetGamesAsync)
                .WithName(nameof(GameEndpoints.GetGamesAsync))
                .WithSummary("Get all Quiz Game games.");
+
+        builder.MapGet("/page", GameEndpoints.GetPaginatedGamesAsync)
+               .WithName(nameof(GameEndpoints.GetPaginatedGamesAsync))
+               .WithSummary("Get a paginated list of Quiz Game games.");
 
         builder.MapGet("/{id}", GameEndpoints.GetGameAsync)
                .WithName(nameof(GameEndpoints.GetGameAsync))
@@ -65,7 +69,7 @@ public static class QuizGame
 
         builder.MapGet("/quiz/{id}", GameEndpoints.GetQuizGamesAsync)
                .WithName(nameof(GameEndpoints.GetQuizGamesAsync))
-               .WithSummary("Gets all Quiz Game games for a quiz ID.");
+               .WithSummary("Get all Quiz Game games for a quiz ID.");
 
         builder.MapPost("/", GameEndpoints.CreateGameAsync)
                .WithName(nameof(GameEndpoints.CreateGameAsync))
@@ -97,7 +101,7 @@ public static class QuizGame
 
         builder.MapGet("/quiz/{id}", QuestionEndpoints.GetQuizQuestionsAsync)
                .WithName(nameof(QuestionEndpoints.GetQuizQuestionsAsync))
-               .WithSummary("Gets all Quiz Game questions for a quiz ID.");
+               .WithSummary("Get all Quiz Game questions for a quiz ID.");
 
         builder.MapPost("/", QuestionEndpoints.CreateQuestionAsync)
                .WithName(nameof(QuestionEndpoints.CreateQuestionAsync))
@@ -119,8 +123,8 @@ public static class QuizGame
         var builder = app.MapGroup("/api/v1/quizgame/quizzes")
                          .WithOpenApi();
 
-        builder.MapGet("/", QuizEndpoints.GetQuizsAsync)
-               .WithName(nameof(QuizEndpoints.GetQuizsAsync))
+        builder.MapGet("/", QuizEndpoints.GetQuizzesAsync)
+               .WithName(nameof(QuizEndpoints.GetQuizzesAsync))
                .WithSummary("Get all Quiz Game quizzes.");
 
         builder.MapGet("/{id}", QuizEndpoints.GetQuizAsync)

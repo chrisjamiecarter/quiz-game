@@ -45,7 +45,7 @@ public static class QuizEndpoints
             : TypedResults.Ok(entity.ToResponse());
     }
 
-    public static async Task<IResult> GetQuizsAsync([FromServices] IQuizService service)
+    public static async Task<IResult> GetQuizzesAsync([FromServices] IQuizService service)
     {
         var entities = await service.ReturnAllAsync();
         return TypedResults.Ok(entities.Select(x => x.ToResponse()));

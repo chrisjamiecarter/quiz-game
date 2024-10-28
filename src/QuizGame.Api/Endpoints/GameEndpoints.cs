@@ -51,6 +51,34 @@ public static class GameEndpoints
         return TypedResults.Ok(entities.Select(x => x.ToResponse()));
     }
 
+    public static async Task<IResult> GetPaginatedGamesAsync([FromServices] IGameService service, [FromQuery] Guid? quizId = null, [FromQuery] string? sortBy = null, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+    {
+        var entities = await service.ReturnAllAsync();
+
+        var query = entities.AsQueryable();
+
+        if (quizId != null)
+        {
+            query = query.Where(x => x.QuizId == quizId);
+        }
+
+        query = sortBy switch
+        {
+            "played-desc" => query.OrderByDescending(x => x.Played),
+            "score" => query.OrderBy(x => x.Score),
+            "score-desc" => query.OrderByDescending(x => x.Score),
+            _ => query.OrderBy(x => x.Played),
+        };
+                
+        var totalRecords = query.Count();
+        var gameRecords = query.Skip((page - 1) * pageSize).Take(pageSize).Select(x => x.ToResponse()).ToList();
+
+        var result = new PaginatedGameResponse(totalRecords, gameRecords);
+
+        //return TypedResults.Ok(entities.Select(x => x.ToResponse()));
+        return TypedResults.Ok(result);
+    }
+
     public static async Task<IResult> GetQuizGamesAsync([FromRoute] Guid id, [FromServices] IGameService service)
     {
         // TODO:
