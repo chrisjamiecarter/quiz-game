@@ -12,5 +12,6 @@ public interface IAnswerRepository
     Task DeleteAsync(Answer answer);
     Task<IReadOnlyList<Answer>> ReturnAsync();
     Task<Answer?> ReturnAsync(Guid id);
+    Task<IReadOnlyList<Answer>> ReturnByQuestionIdAsync(Guid questionId);
     Task UpdateAsync(Answer answer);
 }

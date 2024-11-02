@@ -43,6 +43,11 @@ internal class AnswerRepository : IAnswerRepository
         return await _context.Answer.FindAsync(id);
     }
 
+    public async Task<IReadOnlyList<Answer>> ReturnByQuestionIdAsync(Guid questionId)
+    {
+        return await _context.Answer.Where(a => a.QuestionId == questionId).ToListAsync();
+    }
+
     public async Task UpdateAsync(Answer answer)
     {
         var entity = await _context.Answer.FindAsync(answer.Id);

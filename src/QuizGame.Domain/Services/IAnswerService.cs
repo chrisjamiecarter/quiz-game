@@ -11,5 +11,6 @@ public interface IAnswerService
     Task<bool> DeleteAsync(Answer answer);
     Task<IEnumerable<Answer>> ReturnAllAsync();
     Task<Answer?> ReturnByIdAsync(Guid id);
+    Task<IEnumerable<Answer>> ReturnByQuestionIdAsync(Guid questionId);
     Task<bool> UpdateAsync(Answer answer);
 }

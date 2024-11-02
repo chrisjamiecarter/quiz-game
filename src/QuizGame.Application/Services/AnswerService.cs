@@ -43,6 +43,11 @@ public class AnswerService : IAnswerService
         return await _unitOfWork.Answers.ReturnAsync(id);
     }
 
+    public async Task<IEnumerable<Answer>> ReturnByQuestionIdAsync(Guid questionId)
+    {
+        return await _unitOfWork.Answers.ReturnByQuestionIdAsync(questionId);
+    }
+
     public async Task<bool> UpdateAsync(Answer answer)
     {
         await _unitOfWork.Answers.UpdateAsync(answer);
