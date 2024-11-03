@@ -56,8 +56,8 @@ public class GameService : IGameService
     {
         var games = await _unitOfWork.Games.ReturnByQuizIdAsync(quizId);
         return games.OrderBy(x => x.Played);
-
     }
+
     public async Task<bool> UpdateAsync(Game game)
     {
         await _unitOfWork.Games.UpdateAsync(game);
