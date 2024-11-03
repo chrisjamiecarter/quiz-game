@@ -33,6 +33,29 @@ internal class GameRepository : IGameRepository
         }
     }
 
+    public async Task<(int totalRecords, IReadOnlyList<Game> gameRecords)> GetPaginatedGames(Guid? quizId, string? sortBy, int pageNumber, int pageSize)
+    {
+        var query = _context.Game.AsQueryable();
+
+        if (quizId != null)
+        {
+            query = query.Where(x => x.QuizId == quizId);
+        }
+
+        query = sortBy switch
+        {
+            "played-desc" => query.OrderByDescending(x => x.Played),
+            "score" => query.OrderBy(x => x.Score),
+            "score-desc" => query.OrderByDescending(x => x.Score),
+            _ => query.OrderBy(x => x.Played),
+        };
+
+        var totalRecords = await query.CountAsync();
+        var gameRecords = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+
+        return (totalRecords, gameRecords);
+    }
+
     public async Task<IReadOnlyList<Game>> ReturnAsync()
     {
         return await _context.Game.ToListAsync();
@@ -41,6 +64,11 @@ internal class GameRepository : IGameRepository
     public async Task<Game?> ReturnAsync(Guid id)
     {
         return await _context.Game.FindAsync(id);
+    }
+
+    public async Task<IReadOnlyList<Game>> ReturnByQuizIdAsync(Guid quizId)
+    {
+        return await _context.Game.Where(a => a.QuizId == quizId).ToListAsync();
     }
 
     public async Task UpdateAsync(Game game)

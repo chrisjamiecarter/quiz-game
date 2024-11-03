@@ -1,4 +1,5 @@
-﻿using QuizGame.Application.Repositories;
+﻿using System.Linq;
+using QuizGame.Application.Repositories;
 using QuizGame.Domain.Entities;
 using QuizGame.Domain.Services;
 
@@ -32,10 +33,18 @@ public class GameService : IGameService
         return deleted > 0;
     }
 
+    public async Task<(int totalRecords, IEnumerable<Game> gameRecords)> GetPaginatedGames(Guid? quizId, string? sortBy, int? pageNumber, int? pageSize)
+    {
+        pageNumber ??= 1;
+        pageSize ??= 10;
+
+        return await _unitOfWork.Games.GetPaginatedGames(quizId, sortBy, pageNumber.Value, pageSize.Value);
+    }
+
     public async Task<IEnumerable<Game>> ReturnAllAsync()
     {
-        var answers = await _unitOfWork.Games.ReturnAsync();
-        return answers.OrderBy(x => x.Played);
+        var games = await _unitOfWork.Games.ReturnAsync();
+        return games.OrderBy(x => x.Played);
     }
 
     public async Task<Game?> ReturnByIdAsync(Guid id)
@@ -43,6 +52,12 @@ public class GameService : IGameService
         return await _unitOfWork.Games.ReturnAsync(id);
     }
 
+    public async Task<IEnumerable<Game>> ReturnByQuizIdAsync(Guid quizId)
+    {
+        var games = await _unitOfWork.Games.ReturnByQuizIdAsync(quizId);
+        return games.OrderBy(x => x.Played);
+
+    }
     public async Task<bool> UpdateAsync(Game game)
     {
         await _unitOfWork.Games.UpdateAsync(game);
