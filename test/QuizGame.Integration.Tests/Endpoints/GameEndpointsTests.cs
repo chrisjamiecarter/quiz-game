@@ -123,6 +123,56 @@ public class GameEndpointsTests
     }
 
     [Fact]
+    public async Task GetPaginatedGamesAsync_ShouldGet_WhenDefaultParametersSupplied()
+    {
+        // Arrange.
+
+        // Act.
+        var response = await _client.GetAsync($"/api/v1/quizgame/games/page");
+        var apiResult = await response.Content.ReadFromJsonAsync<PaginatedGameResponse>();
+
+        var dbCount = await _context.Game.AsNoTracking().CountAsync();
+        var dbRecords = await _context.Game.AsNoTracking().OrderBy(x => x.Played).Skip(0).Take(10).ToListAsync();
+        var dbResult = new PaginatedGameResponse(dbCount, dbRecords.Select(x => x.ToResponse()).ToList());
+
+        // Assert.
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        apiResult.Should().NotBeNull();
+        dbResult.Should().NotBeNull();
+
+        apiResult.Should().BeEquivalentTo(dbResult);
+    }
+
+    [Fact]
+    public async Task GetPaginatedGamesAsync_ShouldGet_WhenCustomParametersSupplied()
+    {
+        // Arrange.
+        var quiz = await _context.Quiz.AsNoTracking().FirstAsync();
+        string sortBy = "score-desc";
+        int page = 2;
+        int size = 5;
+
+        // Act.
+        var response = await _client.GetAsync($"/api/v1/quizgame/games/page?quizId={quiz.Id}&sortBy={sortBy}&page={page}&size={size}");
+        var apiResult = await response.Content.ReadFromJsonAsync<PaginatedGameResponse>();
+
+        var query = _context.Game.AsNoTracking().Where(x => x.QuizId == quiz.Id).OrderByDescending(x => x.Score);
+
+        var dbCount = await query.CountAsync();
+        var dbRecords = await query.Skip((page - 1) * size).Take(size).ToListAsync();
+        var dbResult = new PaginatedGameResponse(dbCount, dbRecords.Select(x => x.ToResponse()).ToList());
+
+        // Assert.
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        apiResult.Should().NotBeNull();
+        dbResult.Should().NotBeNull();
+
+        apiResult.Should().BeEquivalentTo(dbResult);
+    }
+
+    [Fact]
     public async Task UpdateGameAsync_ShouldUpdate_WhenDataIsValid()
     {
         // Arrange.
