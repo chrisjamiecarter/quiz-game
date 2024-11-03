@@ -45,7 +45,8 @@ public class AnswerService : IAnswerService
 
     public async Task<IEnumerable<Answer>> ReturnByQuestionIdAsync(Guid questionId)
     {
-        return await _unitOfWork.Answers.ReturnByQuestionIdAsync(questionId);
+        var answers = await _unitOfWork.Answers.ReturnByQuestionIdAsync(questionId);
+        return answers.OrderBy(x => Random.Shared.Next());
     }
 
     public async Task<bool> UpdateAsync(Answer answer)
