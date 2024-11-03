@@ -48,15 +48,15 @@ public static class QuestionEndpoints
     public static async Task<IResult> GetQuestionsAsync([FromServices] IQuestionService service)
     {
         var entities = await service.ReturnAllAsync();
+        
         return TypedResults.Ok(entities.Select(x => x.ToResponse()));
     }
 
     public static async Task<IResult> GetQuizQuestionsAsync([FromRoute] Guid id, [FromServices] IQuestionService service)
     {
-        // TODO:
-        var entities = await service.ReturnAllAsync();
+        var entities = await service.ReturnByQuizIdAsync(id);
 
-        return TypedResults.Ok(entities.Where(x => x.QuizId == id).Select(x => x.ToResponse()));
+        return TypedResults.Ok(entities.Select(x => x.ToResponse()));
     }
 
     public static async Task<IResult> UpdateQuestionAsync([FromRoute] Guid id, [FromBody] QuestionUpdateRequest request, [FromServices] IQuestionService service)

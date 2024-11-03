@@ -34,13 +34,19 @@ public class QuestionService : IQuestionService
 
     public async Task<IEnumerable<Question>> ReturnAllAsync()
     {
-        var answers = await _unitOfWork.Questions.ReturnAsync();
-        return answers.OrderBy(x => Random.Shared.Next());
+        var questions = await _unitOfWork.Questions.ReturnAsync();
+        return questions.OrderBy(_ => Random.Shared.Next());
     }
 
     public async Task<Question?> ReturnByIdAsync(Guid id)
     {
         return await _unitOfWork.Questions.ReturnAsync(id);
+    }
+
+    public async Task<IEnumerable<Question>> ReturnByQuizIdAsync(Guid quizId)
+    {
+        var questions = await _unitOfWork.Questions.ReturnByQuizIdAsync(quizId);
+        return questions.OrderBy(_ => Random.Shared.Next());
     }
 
     public async Task<bool> UpdateAsync(Question question)

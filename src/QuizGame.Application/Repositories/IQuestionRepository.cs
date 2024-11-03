@@ -12,5 +12,6 @@ public interface IQuestionRepository
     Task DeleteAsync(Question question);
     Task<IReadOnlyList<Question>> ReturnAsync();
     Task<Question?> ReturnAsync(Guid id);
+    Task<IReadOnlyList<Question>> ReturnByQuizIdAsync(Guid quizId);
     Task UpdateAsync(Question question);
 }

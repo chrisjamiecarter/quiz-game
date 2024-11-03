@@ -44,6 +44,11 @@ internal class QuestionRepository : IQuestionRepository
         return await _context.Question.FindAsync(id);
     }
 
+    public async Task<IReadOnlyList<Question>> ReturnByQuizIdAsync(Guid quizId)
+    {
+        return await _context.Question.Where(a => a.QuizId == quizId).ToListAsync();
+    }
+
     public async Task UpdateAsync(Question question)
     {
         var entity = await _context.Question.FindAsync(question.Id);
