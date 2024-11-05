@@ -1,0 +1,13 @@
+<div class="component-container">
+
+    <div *ngIf="isLoading" class="loading-shade">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <app-error *ngIf="isError" [message]="errorMessage"></app-error>
+
+    <div class="table-container mat-elevation-z8">
+
+    </div>
+    
+</div>

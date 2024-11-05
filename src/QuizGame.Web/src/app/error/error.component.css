@@ -1,0 +1,10 @@
+.error-header {
+    flex-direction: row-reverse;
+    justify-content: start;
+    align-items: center;
+    padding-bottom: 1rem;
+}
+
+.mat-mdc-card-title {
+    padding-left: 1rem;
+}
