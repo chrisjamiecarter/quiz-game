@@ -7,14 +7,14 @@ import { PaginatedGames } from './paginated-game.interface';
   providedIn: 'root'
 })
 export class QuizGameService {
-  private url = 'https://localhost:7083/api/v1/quizgame';
+  private url = 'http://localhost:5283/api/v1/quizgame';
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
   
   constructor(private http: HttpClient) { }
   
-  getGames(): Observable<PaginatedGames> {
-    return this.http.get<PaginatedGames>(`${this.url}/games`);
+  getGames(pageIndex: number, pageSize: number, sortBy: string): Observable<PaginatedGames> {
+    return this.http.get<PaginatedGames>(`${this.url}/games/page?sortBy=${sortBy}&page=${pageIndex + 1}&size=${pageSize}`);
   }
 }
