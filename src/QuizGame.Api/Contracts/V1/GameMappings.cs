@@ -31,6 +31,6 @@ public static class GameMappings
 
     public static GameResponse ToResponse(this Game entity)
     {
-        return new GameResponse(entity.Id, entity.QuizId, entity.Played, entity.Score);
+        return new GameResponse(entity.Id, entity.QuizId, entity.Quiz?.Name ?? "", entity.Played, entity.Score);
     }
 }
