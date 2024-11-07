@@ -35,7 +35,7 @@ internal class GameRepository : IGameRepository
 
     public async Task<(int totalRecords, IReadOnlyList<Game> gameRecords)> GetPaginatedGames(Guid? quizId, string? sortBy, int pageNumber, int pageSize)
     {
-        var query = _context.Game.AsQueryable();
+        var query = _context.Game.Include(x => x.Quiz).AsQueryable();
 
         if (quizId != null)
         {
@@ -58,17 +58,17 @@ internal class GameRepository : IGameRepository
 
     public async Task<IReadOnlyList<Game>> ReturnAsync()
     {
-        return await _context.Game.ToListAsync();
+        return await _context.Game.Include(x => x.Quiz).ToListAsync();
     }
 
     public async Task<Game?> ReturnAsync(Guid id)
     {
-        return await _context.Game.FindAsync(id);
+        return await _context.Game.Include(x => x.Quiz).FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<IReadOnlyList<Game>> ReturnByQuizIdAsync(Guid quizId)
     {
-        return await _context.Game.Where(a => a.QuizId == quizId).ToListAsync();
+        return await _context.Game.Include(x => x.Quiz).Where(a => a.QuizId == quizId).ToListAsync();
     }
 
     public async Task UpdateAsync(Game game)
