@@ -43,7 +43,7 @@ internal class UnitOfWork : IUnitOfWork
         {
             return await _context.SaveChangesAsync();
         }
-        catch (DbUpdateConcurrencyException exception)
+        catch (Exception exception)
         {
             // Database wins - return 0.
             Trace.TraceWarning(exception.Message);
