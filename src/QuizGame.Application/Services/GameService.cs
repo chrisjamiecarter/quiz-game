@@ -33,12 +33,12 @@ public class GameService : IGameService
         return deleted > 0;
     }
 
-    public async Task<(int totalRecords, IEnumerable<Game> gameRecords)> GetPaginatedGames(Guid? quizId, string? sortBy, int? pageNumber, int? pageSize)
+    public async Task<(int totalRecords, IEnumerable<Game> gameRecords)> ReturnPaginatedGames(Guid? quizId, string? sortBy, int? pageIndex, int? pageSize)
     {
-        pageNumber ??= 1;
+        pageIndex ??= 1;
         pageSize ??= 10;
 
-        return await _unitOfWork.Games.GetPaginatedGames(quizId, sortBy, pageNumber.Value, pageSize.Value);
+        return await _unitOfWork.Games.ReturnPaginatedGames(quizId, sortBy, pageIndex.Value, pageSize.Value);
     }
 
     public async Task<IEnumerable<Game>> ReturnAllAsync()

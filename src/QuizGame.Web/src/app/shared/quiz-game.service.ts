@@ -15,6 +15,6 @@ export class QuizGameService {
   constructor(private http: HttpClient) { }
   
   getGames(pageIndex: number, pageSize: number, sortBy: string): Observable<PaginatedGames> {
-    return this.http.get<PaginatedGames>(`${this.url}/games/page?sortBy=${sortBy}&page=${pageIndex + 1}&size=${pageSize}`);
+    return this.http.get<PaginatedGames>(`${this.url}/games/page?sortBy=${sortBy}&index=${pageIndex + 1}&size=${pageSize}`);
   }
 }
