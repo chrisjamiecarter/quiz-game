@@ -35,7 +35,7 @@ internal class GameRepository : IGameRepository
 
     public async Task<(int totalRecords, IReadOnlyList<Game> gameRecords)> ReturnPaginatedGames(Guid? quizId, string? sortBy, int pageIndex, int pageSize)
     {
-        var query = _context.Game.AsQueryable();
+        var query = _context.Game.Include(x => x.Quiz).AsQueryable();
 
         if (quizId != null)
         {
@@ -46,9 +46,11 @@ internal class GameRepository : IGameRepository
         {
             "played-asc" => query.OrderBy(x => x.Played),
             "played-desc" => query.OrderByDescending(x => x.Played),
+            "quiz-asc" => query.OrderBy(x => x.Quiz!.Name),
+            "quiz-desc" => query.OrderByDescending(x => x.Quiz!.Name),
             "score-asc" => query.OrderBy(x => x.Score),
             "score-desc" => query.OrderByDescending(x => x.Score),
-            _ => query.OrderBy(x => x.Played),
+            _ => query.OrderByDescending(x => x.Played),
         };
 
         var totalRecords = await query.CountAsync();
@@ -59,17 +61,17 @@ internal class GameRepository : IGameRepository
 
     public async Task<IReadOnlyList<Game>> ReturnAsync()
     {
-        return await _context.Game.ToListAsync();
+        return await _context.Game.Include(x => x.Quiz).ToListAsync();
     }
 
     public async Task<Game?> ReturnAsync(Guid id)
     {
-        return await _context.Game.FindAsync(id);
+        return await _context.Game.Include(x => x.Quiz).SingleOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<IReadOnlyList<Game>> ReturnByQuizIdAsync(Guid quizId)
     {
-        return await _context.Game.Where(a => a.QuizId == quizId).ToListAsync();
+        return await _context.Game.Include(x => x.Quiz).Where(a => a.QuizId == quizId).ToListAsync();
     }
 
     public async Task UpdateAsync(Game game)
