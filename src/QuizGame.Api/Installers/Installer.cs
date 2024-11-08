@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using FluentValidation;
 using Microsoft.Extensions.Options;
 using QuizGame.Api.OpenApi;
 using QuizGame.Api.Routes;
@@ -34,6 +35,8 @@ public static class Installer
         services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 
         services.AddSwaggerGen(options => options.OperationFilter<SwaggerDefaultValues>());
+
+        services.AddValidatorsFromAssemblyContaining<Program>();
 
         return services;
     }

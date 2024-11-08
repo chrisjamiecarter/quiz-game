@@ -1,6 +1,8 @@
 ﻿using Asp.Versioning.Builder;
 using Asp.Versioning.Conventions;
+using QuizGame.Api.Contracts.V1;
 using QuizGame.Api.Endpoints;
+using QuizGame.Api.Filters;
 
 namespace QuizGame.Api.Routes;
 
@@ -49,12 +51,14 @@ public static class QuizGame
         builder.MapPost("/", AnswerEndpoints.CreateAnswerAsync)
                .WithName(nameof(AnswerEndpoints.CreateAnswerAsync))
                .WithSummary("Create a new Quiz Game answer.")
-               .MapToApiVersion(1);
+               .MapToApiVersion(1)
+               .WithRequestValidation<AnswerCreateRequest>();
 
         builder.MapPut("/{id}", AnswerEndpoints.UpdateAnswerAsync)
                .WithName(nameof(AnswerEndpoints.UpdateAnswerAsync))
                .WithSummary("Update an existing Quiz Game answer.")
-               .MapToApiVersion(1);
+               .MapToApiVersion(1)
+               .WithRequestValidation<AnswerUpdateRequest>();
 
         builder.MapDelete("/{id}", AnswerEndpoints.DeleteAnswerAsync)
                .WithName(nameof(AnswerEndpoints.DeleteAnswerAsync))
@@ -93,12 +97,14 @@ public static class QuizGame
         builder.MapPost("/", GameEndpoints.CreateGameAsync)
                .WithName(nameof(GameEndpoints.CreateGameAsync))
                .WithSummary("Create a new Quiz Game game.")
-               .MapToApiVersion(1);
+               .MapToApiVersion(1)
+               .WithRequestValidation<GameCreateRequest>();
 
         builder.MapPut("/{id}", GameEndpoints.UpdateGameAsync)
                .WithName(nameof(GameEndpoints.UpdateGameAsync))
                .WithSummary("Update an existing Quiz Game game.")
-               .MapToApiVersion(1);
+               .MapToApiVersion(1)
+               .WithRequestValidation<GameUpdateRequest>();
 
         builder.MapDelete("/{id}", GameEndpoints.DeleteGameAsync)
                .WithName(nameof(GameEndpoints.DeleteGameAsync))
@@ -132,12 +138,14 @@ public static class QuizGame
         builder.MapPost("/", QuestionEndpoints.CreateQuestionAsync)
                .WithName(nameof(QuestionEndpoints.CreateQuestionAsync))
                .WithSummary("Create a new Quiz Game question.")
-               .MapToApiVersion(1);
+               .MapToApiVersion(1)
+               .WithRequestValidation<QuestionCreateRequest>();
 
         builder.MapPut("/{id}", QuestionEndpoints.UpdateQuestionAsync)
                .WithName(nameof(QuestionEndpoints.UpdateQuestionAsync))
                .WithSummary("Update an existing Quiz Game question.")
-               .MapToApiVersion(1);
+               .MapToApiVersion(1)
+               .WithRequestValidation<QuestionUpdateRequest>();
 
         builder.MapDelete("/{id}", QuestionEndpoints.DeleteQuestionAsync)
                .WithName(nameof(QuestionEndpoints.DeleteQuestionAsync))
@@ -166,12 +174,14 @@ public static class QuizGame
         builder.MapPost("/", QuizEndpoints.CreateQuizAsync)
                .WithName(nameof(QuizEndpoints.CreateQuizAsync))
                .WithSummary("Create a new Quiz Game quiz.")
-               .MapToApiVersion(1);
+               .MapToApiVersion(1)
+               .WithRequestValidation<QuizCreateRequest>();
 
         builder.MapPut("/{id}", QuizEndpoints.UpdateQuizAsync)
                .WithName(nameof(QuizEndpoints.UpdateQuizAsync))
                .WithSummary("Update an existing Quiz Game quiz.")
-               .MapToApiVersion(1);
+               .MapToApiVersion(1)
+               .WithRequestValidation<QuizUpdateRequest>();
 
         builder.MapDelete("/{id}", QuizEndpoints.DeleteQuizAsync)
                .WithName(nameof(QuizEndpoints.DeleteQuizAsync))
