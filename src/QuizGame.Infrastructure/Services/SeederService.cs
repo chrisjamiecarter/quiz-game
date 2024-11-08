@@ -25,8 +25,10 @@ internal class SeederService : ISeederService
             return;
         }
 
+        SeedBreakingBadQuiz();
         SeedGameOfThronesQuiz();
         SeedHarryPotterQuiz();
+        SeedLordOfTheRingsQuiz();
 
         // Requires quizzes.
         SeedGames();
