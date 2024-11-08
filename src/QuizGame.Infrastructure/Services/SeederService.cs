@@ -56,6 +56,85 @@ internal class SeederService : ISeederService
         }
     }
 
+    private void SeedBreakingBadQuiz()
+    {
+        var quiz = new Quiz
+        {
+            Id = Guid.NewGuid(),
+            Name = "The Breaking Bad Challenge",
+            Description = "Test your knowledge of Walter White’s transformation and the dark world of Breaking Bad!",
+        };
+        _context.Quiz.Add(quiz);
+
+        AddQuestion(
+            quiz.Id,
+            "What is Walter White's street name in the drug trade?",
+            [
+                new AnswerRecord("Heisenberg", true),
+                new AnswerRecord("Scarface"),
+                new AnswerRecord("Jesse"),
+                new AnswerRecord("Gus")
+            ]
+        );
+
+        AddQuestion(
+            quiz.Id,
+            "Who is Walter White's former student and business partner?",
+            [
+                new AnswerRecord("Hank Schrader"),
+                new AnswerRecord("Skyler White"),
+                new AnswerRecord("Jesse Pinkman", true),
+                new AnswerRecord("Mike Ehrmantraut")
+            ]
+        );
+
+        AddQuestion(
+            quiz.Id,
+            "What type of business does Gustavo 'Gus' Fring use as a front for his drug empire?",
+            [
+                new AnswerRecord("A car wash"),
+                new AnswerRecord("A chicken restaurant", true),
+                new AnswerRecord("A laundromat"),
+                new AnswerRecord("A bar")
+            ]
+        );
+
+        AddQuestion(
+            quiz.Id,
+            "Which chemical element does Walter White choose for his methamphetamine logo?",
+            [
+                new AnswerRecord("Li (Lithium)"),
+                new AnswerRecord("Br (Bromine)", true),
+                new AnswerRecord("Hg (Mercury)"),
+                new AnswerRecord("Na (Sodium)")
+            ]
+        );
+
+        AddQuestion(
+            quiz.Id,
+            "What is the name of the lawyer often called 'Better Call Saul'?",
+            [
+                new AnswerRecord("Howard Hamlin"),
+                new AnswerRecord("Saul Goodman", true),
+                new AnswerRecord("Chuck McGill"),
+                new AnswerRecord("Kim Wexler")
+            ]
+        );
+
+        AddQuestion(
+            quiz.Id,
+            "What is the street drug that Walter White produces?",
+            [
+                new AnswerRecord("Heroin"),
+                new AnswerRecord("Methamphetamine", true),
+                new AnswerRecord("Cocaine"),
+                new AnswerRecord("Ecstasy")
+            ]
+        );
+
+        _context.SaveChanges();
+    }
+
     private void SeedGameOfThronesQuiz()
     {
         var quiz = new Quiz
@@ -132,12 +211,12 @@ internal class SeederService : ISeederService
 
         var fakeData = new Faker<Game>()
             .RuleFor(m => m.Id, f => f.Random.Guid())
-            .RuleFor(m => m.Played, f => f.Date.Recent(7))
+            .RuleFor(m => m.Played, f => f.Date.Recent(30))
             .RuleFor(m => m.Quiz, f => f.PickRandom(quizzes))
             .RuleFor(m => m.QuizId, (f, m) => m.Quiz!.Id)
             .RuleFor(m => m.Score, (f, m) => f.Random.Int(0, m.Quiz!.Questions.Count));
 
-        foreach (var fake in fakeData.Generate(20))
+        foreach (var fake in fakeData.Generate(100))
         {
             _context.Game.Add(fake);
         }
@@ -207,6 +286,85 @@ internal class SeederService : ISeederService
                 new AnswerRecord("A Hippogriff"),
                 new AnswerRecord("A Werewolf"),
                 new AnswerRecord("A Giant Spider", true)
+            ]
+        );
+
+        _context.SaveChanges();
+    }
+
+    private void SeedLordOfTheRingsQuiz()
+    {
+        var quiz = new Quiz
+        {
+            Id = Guid.NewGuid(),
+            Name = "The One Ring Quest",
+            Description = "Dive into the epic world of Middle-earth with our Lord of the Rings trivia quiz!",
+        };
+        _context.Quiz.Add(quiz);
+
+        AddQuestion(
+            quiz.Id,
+            "What is the Elvish word for 'friend' that opens the doors of Moria?",
+            [
+                new AnswerRecord("Mellon", true),
+                new AnswerRecord("Aiya"),
+                new AnswerRecord("Elendil"),
+                new AnswerRecord("Galad")
+            ]
+        );
+
+        AddQuestion(
+            quiz.Id,
+            "Who is the steward of Gondor during the War of the Ring?",
+            [
+                new AnswerRecord("Theoden"),
+                new AnswerRecord("Denethor", true),
+                new AnswerRecord("Faramir"),
+                new AnswerRecord("Boromir")
+            ]
+        );
+
+        AddQuestion(
+            quiz.Id,
+            "What is the name of Frodo’s sword?",
+            [
+                new AnswerRecord("Orcrist"),
+                new AnswerRecord("Glamdring"),
+                new AnswerRecord("Sting", true),
+                new AnswerRecord("Anduril")
+            ]
+        );
+
+        AddQuestion(
+            quiz.Id,
+            "Which creature did Gollum refer to as ‘my precious’?",
+            [
+                new AnswerRecord("The Arkenstone"),
+                new AnswerRecord("The One Ring", true),
+                new AnswerRecord("The Palantír"),
+                new AnswerRecord("The Silmaril")
+            ]
+        );
+
+        AddQuestion(
+            quiz.Id,
+            "Who kills the Witch-king of Angmar?",
+            [
+                new AnswerRecord("Aragorn"),
+                new AnswerRecord("Legolas"),
+                new AnswerRecord("Éowyn", true),
+                new AnswerRecord("Gandalf")
+            ]
+        );
+
+        AddQuestion(
+            quiz.Id,
+            "What is the name of the inn where Frodo first meets Aragorn?",
+            [
+                new AnswerRecord("The Green Dragon"),
+                new AnswerRecord("The Golden Perch"),
+                new AnswerRecord("The Prancing Pony", true),
+                new AnswerRecord("The Ivy Bush")
             ]
         );
 
