@@ -72,7 +72,7 @@ public class GameEndpointsTests
         // Act.
         var response = await _client.GetAsync($"/api/v1/quizgame/games/{request.Id}");
         var apiResult = await response.Content.ReadFromJsonAsync<GameResponse>();
-        var dbResult = await _context.Game.AsNoTracking().SingleOrDefaultAsync(x => x.Id == request.Id);
+        var dbResult = await _context.Game.Include(x => x.Quiz).AsNoTracking().SingleOrDefaultAsync(x => x.Id == request.Id);
 
         // Assert.
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -91,7 +91,7 @@ public class GameEndpointsTests
         // Act.
         var response = await _client.GetAsync($"/api/v1/quizgame/games");
         var apiResult = await response.Content.ReadFromJsonAsync<IReadOnlyList<GameResponse>>();
-        var dbResult = await _context.Game.AsNoTracking().ToListAsync();
+        var dbResult = await _context.Game.Include(x => x.Quiz).AsNoTracking().ToListAsync();
 
         // Assert.
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -111,7 +111,7 @@ public class GameEndpointsTests
         // Act.
         var response = await _client.GetAsync($"/api/v1/quizgame/games/quiz/{request.Id}");
         var apiResult = await response.Content.ReadFromJsonAsync<IReadOnlyList<GameResponse>>();
-        var dbResult = await _context.Game.AsNoTracking().Where(x => x.QuizId == request.Id).ToListAsync();
+        var dbResult = await _context.Game.Include(x => x.Quiz).AsNoTracking().Where(x => x.QuizId == request.Id).ToListAsync();
 
         // Assert.
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -132,7 +132,7 @@ public class GameEndpointsTests
         var apiResult = await response.Content.ReadFromJsonAsync<PaginatedGameResponse>();
 
         var dbCount = await _context.Game.AsNoTracking().CountAsync();
-        var dbRecords = await _context.Game.AsNoTracking().OrderBy(x => x.Played).Skip(0).Take(10).ToListAsync();
+        var dbRecords = await _context.Game.Include(x => x.Quiz).AsNoTracking().OrderBy(x => x.Played).Skip(0).Take(10).ToListAsync();
         var dbResult = new PaginatedGameResponse(dbCount, dbRecords.Select(x => x.ToResponse()).ToList());
 
         // Assert.
@@ -157,7 +157,7 @@ public class GameEndpointsTests
         var response = await _client.GetAsync($"/api/v1/quizgame/games/page?quizId={quiz.Id}&sortBy={sortBy}&page={page}&size={size}");
         var apiResult = await response.Content.ReadFromJsonAsync<PaginatedGameResponse>();
 
-        var query = _context.Game.AsNoTracking().Where(x => x.QuizId == quiz.Id).OrderByDescending(x => x.Score);
+        var query = _context.Game.Include(x => x.Quiz).AsNoTracking().Where(x => x.QuizId == quiz.Id).OrderByDescending(x => x.Score);
 
         var dbCount = await query.CountAsync();
         var dbRecords = await query.Skip((page - 1) * size).Take(size).ToListAsync();
