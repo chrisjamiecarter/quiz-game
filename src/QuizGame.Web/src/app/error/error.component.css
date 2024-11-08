@@ -1,3 +1,7 @@
+.error-card {
+    margin-bottom: 2rem;
+}
+
 .error-header {
     flex-direction: row-reverse;
     justify-content: start;
