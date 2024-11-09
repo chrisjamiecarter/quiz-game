@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>Add Quiz</h2>
+
+<mat-dialog-content>
+  <mat-stepper linear #stepper>
+    <mat-step [stepControl]="firstFormGroup">
+      <form [formGroup]="firstFormGroup">
+        <ng-template matStepLabel>Quiz</ng-template>
+        <div>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup" label="Questions">
+      <form [formGroup]="secondFormGroup">
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Publish</ng-template>
+      <p>You are now done.</p>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="stepper.reset()">Reset</button>
+      </div>
+    </mat-step>
+  </mat-stepper>
+</mat-dialog-content>
+
+<mat-dialog-actions class="buttons-container">
+    <button
+      mat-stroked-button
+      mat-dialog-close
+      color="accent"
+      cdkFocusInitial
+    >
+      Cancel
+    </button>
+    <button mat-stroked-button (click)="onCreate()">
+      Create
+    </button>
+  </mat-dialog-actions>
+  
