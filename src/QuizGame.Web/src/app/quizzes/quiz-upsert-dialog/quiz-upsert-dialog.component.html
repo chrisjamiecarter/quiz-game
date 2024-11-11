@@ -2,9 +2,31 @@
 
 <mat-dialog-content>
   <mat-stepper linear #stepper>
-    <mat-step [stepControl]="firstFormGroup">
-      <form [formGroup]="firstFormGroup">
+    <mat-step [stepControl]="quizForm">
+      <form [formGroup]="quizForm">
         <ng-template matStepLabel>Quiz</ng-template>
+        <mat-form-field appearance="outline" class="mt">
+          <mat-label>Name</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="name"
+            required
+          />
+          <mat-error *ngIf="quizForm.get('name')?.hasError('required')">
+            Name is required.
+          </mat-error>
+          <mat-icon matPrefix>abc</mat-icon>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="mt">
+          <mat-label>Description</mat-label>
+          <textarea 
+            matInput
+            type="text"
+            formControlName="description"
+          ></textarea>
+          <mat-icon matPrefix>description</mat-icon>
+        </mat-form-field>
         <div>
           <button mat-button matStepperNext>Next</button>
         </div>
