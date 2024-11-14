@@ -125,9 +125,7 @@ export class QuizUpsertDialogComponent implements OnInit {
                     isCorrect: answer.isCorrect,
                   };
 
-                  this.quizGameService
-                    .addAnswer(answerRequest)
-                    .subscribe((answerResponse: Answer) => {});
+                  this.quizGameService.addAnswer(answerRequest);
                 });
               });
           }
