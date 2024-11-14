@@ -12,6 +12,6 @@ public class AnswerCreateRequestValidator : AbstractValidator<AnswerCreateReques
     {
         RuleFor(x => x.QuestionId).NotEmpty();
         RuleFor(x => x.Text).NotEmpty();
-        RuleFor(x => x.IsCorrect).NotEmpty();
+        RuleFor(x => x.IsCorrect).NotNull();
     }
 }
