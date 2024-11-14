@@ -1,6 +1,6 @@
 import { Game } from './game.interface';
 
-export interface PaginatedGames {
+export interface Games {
   totalRecords: number;
   games: Game[];
 }
