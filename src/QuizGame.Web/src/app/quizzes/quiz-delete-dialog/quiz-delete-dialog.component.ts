@@ -12,6 +12,8 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { QuizGameService } from '../../shared/quiz-game.service';
+import { Quiz } from '../../shared/quiz.interface';
 
 @Component({
   selector: 'app-quiz-delete-dialog',
@@ -36,9 +38,10 @@ export class QuizDeleteDialogComponent implements OnInit {
   quizForm!: FormGroup;
   
   readonly dialogRef = inject(MatDialogRef<QuizDeleteDialogComponent>);
-  data = inject(MAT_DIALOG_DATA);
-  formBuilder = inject(FormBuilder);
-  
+  data: Quiz = inject(MAT_DIALOG_DATA);
+  private formBuilder = inject(FormBuilder);
+  private quizGameService = inject(QuizGameService);
+
   ngOnInit(): void {
     this.quizForm = this.formBuilder.group({
       name: this.data.name,
@@ -47,6 +50,7 @@ export class QuizDeleteDialogComponent implements OnInit {
   }
 
   onDelete() {
+    this.quizGameService.deleteQuiz(this.data.id);
     this.dialogRef.close();
   }
 }

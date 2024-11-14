@@ -38,6 +38,12 @@ export class QuizGameService {
     return this.http.post<Quiz>(url, request, this.httpOptions);
   }
 
+  deleteQuiz(id: string): Observable<object> {
+    let url = `${this.baseUrl}/quizzes/${id}`;
+
+    return this.http.delete<object>(url);
+  }
+
   getGames(index: number, size: number, sort: string): Observable<Games> {
     let url = `${this.baseUrl}/games/page?`;
 
