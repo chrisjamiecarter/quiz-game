@@ -20,6 +20,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatStepperModule } from '@angular/material/stepper';
+import { Quiz } from '../../shared/quiz.interface';
+import { QuizGameService } from '../../shared/quiz-game.service';
+import { QuizCreate } from '../../shared/quiz-create.interface';
+import { QuestionCreate } from '../../shared/question-create.interface';
+import { Question } from '../../shared/question.interface';
+import { AnswerCreate } from '../../shared/answer-create.interface';
+import { Answer } from '../../shared/answer.interface';
 
 @Component({
   selector: 'app-quiz-upsert-dialog',
@@ -47,6 +54,7 @@ export class QuizUpsertDialogComponent implements OnInit {
 
   readonly dialogRef = inject(MatDialogRef<QuizUpsertDialogComponent>);
   private formBuilder = inject(FormBuilder);
+  private quizGameService = inject(QuizGameService);
 
   ngOnInit(): void {
     this.quizForm = this.formBuilder.group({
@@ -55,9 +63,7 @@ export class QuizUpsertDialogComponent implements OnInit {
     });
 
     this.questionsForm = this.formBuilder.group({
-      questions: this.formBuilder.array([
-        this.createQuestionFormGroup()
-      ]),
+      questions: this.formBuilder.array([this.createQuestionFormGroup()]),
     });
   }
 
@@ -68,7 +74,7 @@ export class QuizUpsertDialogComponent implements OnInit {
   createAnswerFormGroup(): FormGroup {
     return this.formBuilder.group({
       text: ['', Validators.required],
-      isTrue: false,
+      isCorrect: false,
     });
   }
 
@@ -89,7 +95,46 @@ export class QuizUpsertDialogComponent implements OnInit {
   }
 
   onCreate() {
-    this.dialogRef.close();
+    const quizRequest: QuizCreate = {
+      name: this.quizForm.value.name,
+      description: this.quizForm.value.description,
+    };
+
+    this.quizGameService
+      .addQuiz(quizRequest)
+      .subscribe((quizResponse: Quiz) => {
+        const questions = this.questionsForm.value.questions;
+
+        questions.forEach(
+          (question: {
+            text: string;
+            answers: Array<{ text: string; isCorrect: boolean }>;
+          }) => {
+            const questionRequest: QuestionCreate = {
+              quizId: quizResponse.id,
+              text: question.text,
+            };
+
+            this.quizGameService
+              .addQuestion(questionRequest)
+              .subscribe((questionResponse: Question) => {
+                question.answers.forEach((answer) => {
+                  const answerRequest: AnswerCreate = {
+                    questionId: questionResponse.id,
+                    text: answer.text,
+                    isCorrect: answer.isCorrect,
+                  };
+
+                  this.quizGameService
+                    .addAnswer(answerRequest)
+                    .subscribe((answerResponse: Answer) => {});
+                });
+              });
+          }
+        );
+
+        this.dialogRef.close();
+      });
   }
 
   onDeleteQuestion(index: number): void {
