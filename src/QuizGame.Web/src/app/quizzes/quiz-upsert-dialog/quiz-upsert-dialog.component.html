@@ -24,7 +24,14 @@
           <mat-icon matPrefix>description</mat-icon>
         </mat-form-field>
         <div class="buttons-container">
-          <button mat-stroked-button mat-dialog-close color="accent" cdkFocusInitial>Cancel</button>
+          <button
+            mat-stroked-button
+            mat-dialog-close
+            color="accent"
+            cdkFocusInitial
+          >
+            Cancel
+          </button>
           <button mat-stroked-button matStepperNext>Next</button>
         </div>
       </form>
@@ -34,35 +41,62 @@
       <form [formGroup]="questionsForm">
         <div formArrayName="questions">
           <ng-template matStepLabel>Questions</ng-template>
-          <div
-            *ngFor="let question of questions.controls; let i = index"
-            [formGroupName]="i"
-          >
-            <h3>Question {{ i + 1 }}</h3>
-            <button mat-stroked-button (click)="onDeleteQuestion(i)">Delete Question</button>
-            <mat-form-field appearance="outline">
-              <mat-label>Question Text</mat-label>
-              <input matInput type="text" formControlName="text" required />
-              <mat-icon matPrefix>abc</mat-icon>
-            </mat-form-field>
-            <div formArrayName="answers">
-              <div
-                *ngFor="let answer of onGetAnswers(i).controls; let j = index"
-                [formGroupName]="j"
-              >
+          <mat-accordion>
+            <mat-expansion-panel *ngFor="let question of questions.controls; let i = index"
+              [formGroupName]="i">
+                <mat-expansion-panel-header>
+                  <mat-panel-title> Question {{ i + 1 }} </mat-panel-title>
+                  <mat-panel-description class="question-button">
+                    <button
+                      mat-icon-button
+                      class="my"
+                      aria-label="Delete question"
+                      (click)="onDeleteQuestion(i)"
+                    >
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
                 <mat-form-field appearance="outline">
-                  <mat-label>Answer {{ j + 1 }}</mat-label>
-                  <input matInput formControlName="text" required />
+                  <mat-label>Question Text</mat-label>
+                  <input matInput type="text" formControlName="text" required />
+                  <mat-icon matPrefix>question_mark</mat-icon>
                 </mat-form-field>
-                <mat-checkbox formControlName="isCorrect"></mat-checkbox>
-              </div>
-            </div>
-          </div>          
+                <div formArrayName="answers">
+                  <div
+                    *ngFor="
+                      let answer of onGetAnswers(i).controls;
+                      let j = index
+                    "
+                    [formGroupName]="j"
+                  >
+                    <mat-form-field appearance="outline">
+                      <mat-label>Answer {{ j + 1 }}</mat-label>
+                      <input matInput formControlName="text" required />
+                      <mat-icon matPrefix>abc</mat-icon>
+                    </mat-form-field>
+                    <mat-checkbox
+                      class="my"
+                      formControlName="isCorrect"
+                    ></mat-checkbox>
+                  </div>
+                </div>
+              </mat-expansion-panel>
+          </mat-accordion>
         </div>
-        <div class="buttons-container">
-          <button mat-stroked-button mat-dialog-close color="accent" cdkFocusInitial>Cancel</button>
+        <div class="buttons-container mt">
+          <button
+            mat-stroked-button
+            mat-dialog-close
+            color="accent"
+            cdkFocusInitial
+          >
+            Cancel
+          </button>
           <button mat-stroked-button matStepperPrevious>Back</button>
-          <button mat-stroked-button (click)="onAddQuestion()">Add Question</button>
+          <button mat-stroked-button (click)="onAddQuestion()">
+            Add Question
+          </button>
           <button mat-stroked-button matStepperNext>Next</button>
         </div>
       </form>
@@ -72,7 +106,14 @@
       <ng-template matStepLabel>Publish</ng-template>
       <p>You are now done.</p>
       <div class="buttons-container">
-        <button mat-stroked-button mat-dialog-close color="accent" cdkFocusInitial>Cancel</button>
+        <button
+          mat-stroked-button
+          mat-dialog-close
+          color="accent"
+          cdkFocusInitial
+        >
+          Cancel
+        </button>
         <button mat-button matStepperPrevious>Back</button>
         <button mat-button (click)="stepper.reset()">Reset</button>
         <button mat-stroked-button (click)="onCreate()">Create</button>

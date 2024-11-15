@@ -15,7 +15,9 @@ import {
   MatDialogTitle,
   MatDialogContent,
   MatDialogRef,
+  MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
+import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -26,7 +28,6 @@ import { QuizCreate } from '../../shared/quiz-create.interface';
 import { QuestionCreate } from '../../shared/question-create.interface';
 import { Question } from '../../shared/question.interface';
 import { AnswerCreate } from '../../shared/answer-create.interface';
-import { Answer } from '../../shared/answer.interface';
 
 @Component({
   selector: 'app-quiz-upsert-dialog',
@@ -34,6 +35,8 @@ import { Answer } from '../../shared/answer.interface';
   imports: [
     CommonModule,
     FormsModule,
+    MatAccordion,
+    MatExpansionModule,
     MatFormFieldModule,
     MatButtonModule,
     MatCheckboxModule,
@@ -52,6 +55,7 @@ export class QuizUpsertDialogComponent implements OnInit {
   quizForm!: FormGroup;
   questionsForm!: FormGroup;
 
+  data: Quiz = inject(MAT_DIALOG_DATA);
   readonly dialogRef = inject(MatDialogRef<QuizUpsertDialogComponent>);
   private formBuilder = inject(FormBuilder);
   private quizGameService = inject(QuizGameService);
@@ -65,6 +69,8 @@ export class QuizUpsertDialogComponent implements OnInit {
     this.questionsForm = this.formBuilder.group({
       questions: this.formBuilder.array([this.createQuestionFormGroup()]),
     });
+
+    console.log('data', this.data);
   }
 
   get questions(): FormArray {

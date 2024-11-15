@@ -38,6 +38,11 @@ body {
   margin-top: 1rem;
 }
 
+.my {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
 .loading-shade {
   position: absolute;
   top: 0;
