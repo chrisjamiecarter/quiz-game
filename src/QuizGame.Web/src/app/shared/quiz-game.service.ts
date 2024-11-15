@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { BehaviorSubject, map, Observable, Subject } from 'rxjs';
 import { Games } from './games.interface';
 import { Quiz } from './quiz.interface';
 import { QuizCreate } from './quiz-create.interface';
@@ -17,8 +17,17 @@ export class QuizGameService {
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
-  
-  constructor(private http: HttpClient) { }
+
+  private _apiError = new BehaviorSubject<string>('');
+  public ApiError = this._apiError.asObservable();
+
+  private _isLoading = new BehaviorSubject<boolean>(true);
+  public IsLoading = this._isLoading.asObservable();
+
+  private _quizzes = new BehaviorSubject<Quiz[]>([]);
+  public Quizzes = this._quizzes.asObservable();
+
+  http = inject(HttpClient);
   
   addAnswer(request: AnswerCreate):Observable<Answer> {
     let url = `${this.baseUrl}/answers`;
@@ -35,7 +44,12 @@ export class QuizGameService {
   addQuiz(request: QuizCreate):Observable<Quiz> {
     let url = `${this.baseUrl}/quizzes`;
 
-    return this.http.post<Quiz>(url, request, this.httpOptions);
+    return this.http.post<Quiz>(url, request, this.httpOptions).pipe(
+      map((quiz) => {
+        this.getQuizzes();
+        return quiz;
+      })
+    );
   }
 
   deleteQuiz(id: string): Observable<object> {
@@ -60,7 +74,18 @@ export class QuizGameService {
     return this.http.get<Games>(url);
   }
 
-  getQuizzes(): Observable<Quiz[]> {
-    return this.http.get<Quiz[]>(`${this.baseUrl}/quizzes`);
+  getQuizzes(): void {
+    this._isLoading.next(true);
+    this.http.get<Quiz[]>(`${this.baseUrl}/quizzes`).subscribe({
+      next: (quizzes) => {
+        this._quizzes.next(quizzes);
+        this._isLoading.next(false);
+      },
+      error: (error) => {
+        console.error('Error getting quizzes:', error);
+        this._apiError.next(`Error getting quizzes: ${error.message}`);
+        this._isLoading.next(false);
+        },
+    });
   }
 }
