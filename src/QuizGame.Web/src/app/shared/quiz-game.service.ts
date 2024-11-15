@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, map, Observable, Subject, tap } from 'rxjs';
 import { Games } from './games.interface';
 import { Quiz } from './quiz.interface';
 import { QuizCreate } from './quiz-create.interface';
@@ -45,17 +45,15 @@ export class QuizGameService {
     let url = `${this.baseUrl}/quizzes`;
 
     return this.http.post<Quiz>(url, request, this.httpOptions).pipe(
-      map((quiz) => {
-        this.getQuizzes();
-        return quiz;
-      })
+      tap(() => this.getQuizzes())
     );
   }
 
   deleteQuiz(id: string): Observable<object> {
     let url = `${this.baseUrl}/quizzes/${id}`;
-
-    return this.http.delete<object>(url);
+    return this.http.delete<object>(url).pipe(
+      tap(() => this.getQuizzes())
+    );
   }
 
   getGames(index: number, size: number, sort: string): Observable<Games> {

@@ -50,7 +50,7 @@ export class QuizDeleteDialogComponent implements OnInit {
   }
 
   onDelete() {
-    this.quizGameService.deleteQuiz(this.data.id);
+    this.quizGameService.deleteQuiz(this.data.id).subscribe();
     this.dialogRef.close();
   }
 }
