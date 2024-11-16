@@ -43,26 +43,32 @@ export class QuizzesComponent implements AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   ngAfterViewInit(): void {
-    this.quizGameService.Quizzes.subscribe({
+    this.quizGameService.IsStale.subscribe({
+      next: (isStale) => {
+        if (isStale) {
+          this.getQuizzes();
+        }
+      },
+    });
+
+    this.getQuizzes();
+  }
+
+  getQuizzes(): void {
+    this.isLoading = true;
+    this.quizGameService.getQuizzes().subscribe({
       next: (quizzes) => {
+        this.isLoading = false;
         this.tableDataSource = new MatTableDataSource<Quiz>(quizzes);
         this.tableDataSource.paginator = this.paginator;
         this.tableDataSource.sort = this.sort;
       },
-    });
-
-    this.quizGameService.ApiError.subscribe({
-      next: (errorMessage) => {
-        this.isError = errorMessage !== '';
-        this.errorMessage = errorMessage;
+      error: (error) => {
+        this.isLoading = false;
+        this.isError = true;
+        this.errorMessage = error;
       },
     });
-
-    this.quizGameService.IsLoading.subscribe({
-      next: (isLoading) => this.isLoading = isLoading,
-    })
-
-    this.quizGameService.getQuizzes();
   }
 
   onCreateQuiz() {
