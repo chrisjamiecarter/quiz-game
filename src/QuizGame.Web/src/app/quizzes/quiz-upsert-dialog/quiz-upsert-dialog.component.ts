@@ -30,6 +30,7 @@ import { Question } from '../../shared/question.interface';
 import { AnswerCreate } from '../../shared/answer-create.interface';
 import { Answer } from '../../shared/answer.interface';
 import { catchError, map, Observable, throwError } from 'rxjs';
+import { QuizUpdate } from '../../shared/quiz-update.interface';
 
 @Component({
   selector: 'app-quiz-upsert-dialog',
@@ -58,7 +59,7 @@ export class QuizUpsertDialogComponent implements OnInit {
   quizForm!: FormGroup;
   questionsForm!: FormGroup;
 
-  data: Quiz = inject(MAT_DIALOG_DATA);
+  readonly data: Quiz = inject(MAT_DIALOG_DATA);
   readonly dialogRef = inject(MatDialogRef<QuizUpsertDialogComponent>);
   private formBuilder = inject(FormBuilder);
   private quizGameService = inject(QuizGameService);
@@ -166,6 +167,36 @@ export class QuizUpsertDialogComponent implements OnInit {
     return this.questions.at(index).get('answers') as FormArray;
   }
 
+  insertQuestions(quizId: string) {
+    const questions = this.questionsForm.value.questions;
+
+    questions.forEach(
+      (question: {
+        text: string;
+        answers: Array<{ text: string; isCorrect: boolean }>;
+      }) => {
+        const questionRequest: QuestionCreate = {
+          quizId: quizId,
+          text: question.text,
+        };
+
+        this.quizGameService
+          .addQuestion(questionRequest)
+          .subscribe((questionResponse: Question) => {
+            question.answers.forEach((answer) => {
+              const answerRequest: AnswerCreate = {
+                questionId: questionResponse.id,
+                text: answer.text,
+                isCorrect: answer.isCorrect,
+              };
+
+              this.quizGameService.addAnswer(answerRequest).subscribe();
+            });
+          });
+      }
+    );
+  }
+
   insertQuiz() {
     const quizRequest: QuizCreate = {
       name: this.quizForm.value.name,
@@ -175,37 +206,28 @@ export class QuizUpsertDialogComponent implements OnInit {
     this.quizGameService
       .addQuiz(quizRequest)
       .subscribe((quizResponse: Quiz) => {
-        const questions = this.questionsForm.value.questions;
-
-        questions.forEach(
-          (question: {
-            text: string;
-            answers: Array<{ text: string; isCorrect: boolean }>;
-          }) => {
-            const questionRequest: QuestionCreate = {
-              quizId: quizResponse.id,
-              text: question.text,
-            };
-
-            this.quizGameService
-              .addQuestion(questionRequest)
-              .subscribe((questionResponse: Question) => {
-                question.answers.forEach((answer) => {
-                  const answerRequest: AnswerCreate = {
-                    questionId: questionResponse.id,
-                    text: answer.text,
-                    isCorrect: answer.isCorrect,
-                  };
-
-                  this.quizGameService.addAnswer(answerRequest).subscribe();
-                });
-              });
-          }
-        );
+        this.insertQuestions(quizResponse.id);
       });
   }
 
-  updateQuiz() {}
+  updateQuiz() {
+    const quiz: Quiz = {
+      id: this.quizForm.value.id,
+      name: this.quizForm.value.name,
+      description: this.quizForm.value.description,
+    };
+    console.log("quiz", quiz);
+    
+    this.quizGameService.getQuestionsByQuizId(quiz.id).subscribe({
+      next: (questions: Question[]) => questions.map((question: Question) => this.quizGameService.deleteQuestion(question.id).subscribe()),
+    });
+
+    this.quizGameService
+      .editQuiz(quiz)
+      .subscribe((quizResponse: Quiz) => {
+        this.insertQuestions(quizResponse.id);
+      });
+  }
 
   onPublish() {
     if (this.quizForm.invalid || this.questionsForm.invalid) {

@@ -19,6 +19,9 @@ import { QuestionCreate } from './question-create.interface';
 import { Question } from './question.interface';
 import { AnswerCreate } from './answer-create.interface';
 import { Answer } from './answer.interface';
+import { QuizUpdate } from './quiz-update.interface';
+import { AnswerUpdate } from './answer-update.interface';
+import { QuestionUpdate } from './question-update.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -37,35 +40,101 @@ export class QuizGameService {
   addAnswer(request: AnswerCreate): Observable<Answer> {
     let url = `${this.baseUrl}/answers`;
 
-    return this.http.post<Answer>(url, request, this.httpOptions);
+    return this.http
+      .post<Answer>(url, request, this.httpOptions)
+      .pipe(retry(3), catchError(this.handleError));
   }
 
   addQuestion(request: QuestionCreate): Observable<Question> {
     let url = `${this.baseUrl}/questions`;
 
-    return this.http.post<Question>(url, request, this.httpOptions);
+    return this.http
+      .post<Question>(url, request, this.httpOptions)
+      .pipe(retry(3), catchError(this.handleError));
   }
 
   addQuiz(request: QuizCreate): Observable<Quiz> {
     let url = `${this.baseUrl}/quizzes`;
 
-    return this.http.post<Quiz>(url, request, this.httpOptions).pipe(
+    return this.http
+    .post<Quiz>(url, request, this.httpOptions)
+    .pipe(
       retry(3),
       catchError(this.handleError),
       tap(() => this._isStale.next(true))
     );
   }
 
+  deleteQuestion(id: string): Observable<object> {
+    let url = `${this.baseUrl}/questions/${id}`;
+
+    return this.http
+    .delete<object>(url)
+    .pipe(
+      retry(3),
+      catchError(this.handleError),
+    );
+  }
   deleteQuiz(id: string): Observable<object> {
     let url = `${this.baseUrl}/quizzes/${id}`;
 
-    return this.http.delete<object>(url).pipe(
+    return this.http
+    .delete<object>(url)
+    .pipe(
       retry(3),
       catchError(this.handleError),
       tap(() => this._isStale.next(true))
     );
   }
   
+  editAnswer(answer: Answer): Observable<Answer> {
+    let url = `${this.baseUrl}/answers/${answer.id}`;
+
+    const request: AnswerUpdate = {
+      text: answer.text,
+      isCorrect: answer.isCorrect,
+    };
+
+    return this.http
+      .post<Answer>(url, request, this.httpOptions)
+      .pipe(
+        retry(3),
+        catchError(this.handleError),
+      );
+  }
+
+  editQuestion(question: Question): Observable<Question> {
+    let url = `${this.baseUrl}/questions/${question.id}`;
+
+    const request: QuestionUpdate = {
+      text: question.text,
+    };
+
+    return this.http
+      .post<Question>(url, request, this.httpOptions)
+      .pipe(
+        retry(3),
+        catchError(this.handleError),
+      );
+  }
+
+  editQuiz(quiz: Quiz): Observable<Quiz> {
+    let url = `${this.baseUrl}/quizzes/${quiz.id}`;
+
+    const request: QuizUpdate = {
+      name: quiz.name,
+      description: quiz.description,
+    };
+
+    return this.http
+      .put<Quiz>(url, request, this.httpOptions)
+      .pipe(
+        retry(3),
+        catchError(this.handleError),
+        tap(() => this._isStale.next(true))
+      );
+  }
+
   getAnswersByQuestionId(questionId: string): Observable<Answer[]> {
     return this.http
       .get<Answer[]>(`${this.baseUrl}/answers/question/${questionId}`)

@@ -5,7 +5,7 @@
   <mat-stepper linear #stepper>
     <!-- Quiz -->
     <mat-step [stepControl]="quizForm">
-      <form [formGroup]="quizForm">
+      <form [formGroup]="quizForm" class="form-container">
         <ng-template matStepLabel>Quiz</ng-template>
         <mat-form-field appearance="outline" class="mt">
           <mat-label>Name</mat-label>
@@ -60,7 +60,7 @@
                 </mat-expansion-panel-header>
                 <mat-form-field appearance="outline">
                   <mat-label>Question Text</mat-label>
-                  <input matInput type="text" formControlName="text" required />
+                  <textarea matInput type="text" formControlName="text" required></textarea>
                   <mat-icon matPrefix>question_mark</mat-icon>
                 </mat-form-field>
                 <div formArrayName="answers">
@@ -70,8 +70,9 @@
                       let j = index
                     "
                     [formGroupName]="j"
+                    class="answer-container"
                   >
-                    <mat-form-field appearance="outline">
+                    <mat-form-field appearance="outline" class="answer-input">
                       <mat-label>Answer {{ j + 1 }}</mat-label>
                       <input matInput formControlName="text" required />
                       <mat-icon matPrefix>abc</mat-icon>

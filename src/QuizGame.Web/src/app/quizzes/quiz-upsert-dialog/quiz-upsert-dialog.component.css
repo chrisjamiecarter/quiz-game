@@ -5,3 +5,18 @@
 .question-button {
   justify-content: flex-end;
 }
+
+mat-form-field {
+  width: 100%;
+}
+
+.answer-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Input field takes up remaining space */
+.answer-input {
+  flex: 1;
+}
