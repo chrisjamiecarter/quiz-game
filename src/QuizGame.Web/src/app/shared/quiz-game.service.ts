@@ -65,6 +65,12 @@ export class QuizGameService {
       tap(() => this._isStale.next(true))
     );
   }
+  
+  getAnswersByQuestionId(questionId: string): Observable<Answer[]> {
+    return this.http
+      .get<Answer[]>(`${this.baseUrl}/answers/question/${questionId}`)
+      .pipe(retry(3), catchError(this.handleError));
+  }
 
   getGames(index: number, size: number, sort: string): Observable<Games> {
     let url = `${this.baseUrl}/games/page?`;
@@ -80,6 +86,12 @@ export class QuizGameService {
     console.log('sort', sort);
     console.log('url', url);
     return this.http.get<Games>(url);
+  }
+
+  getQuestionsByQuizId(quizId: string): Observable<Question[]> {
+    return this.http
+      .get<Question[]>(`${this.baseUrl}/questions/quiz/${quizId}`)
+      .pipe(retry(3), catchError(this.handleError));
   }
 
   getQuizzes(): Observable<Quiz[]> {

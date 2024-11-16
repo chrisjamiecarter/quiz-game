@@ -28,6 +28,8 @@ import { QuizCreate } from '../../shared/quiz-create.interface';
 import { QuestionCreate } from '../../shared/question-create.interface';
 import { Question } from '../../shared/question.interface';
 import { AnswerCreate } from '../../shared/answer-create.interface';
+import { Answer } from '../../shared/answer.interface';
+import { catchError, map, Observable, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-quiz-upsert-dialog',
@@ -52,6 +54,7 @@ import { AnswerCreate } from '../../shared/answer-create.interface';
   styleUrl: './quiz-upsert-dialog.component.css',
 })
 export class QuizUpsertDialogComponent implements OnInit {
+  isUpdate: boolean = false;
   quizForm!: FormGroup;
   questionsForm!: FormGroup;
 
@@ -61,46 +64,109 @@ export class QuizUpsertDialogComponent implements OnInit {
   private quizGameService = inject(QuizGameService);
 
   ngOnInit(): void {
+    this.isUpdate = !!this.data;
+
     this.quizForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      description: '',
+      id: this.isUpdate ? this.data.id : '',
+      name: [this.isUpdate ? this.data.name : '', Validators.required],
+      description: this.isUpdate ? this.data.description : '',
     });
 
-    this.questionsForm = this.formBuilder.group({
-      questions: this.formBuilder.array([this.createQuestionFormGroup()]),
-    });
+    this.initialiseInsertForm();
 
-    console.log('data', this.data);
+    if (this.isUpdate) {
+      this.initialiseUpdateForm(this.data.id);
+    }
   }
 
   get questions(): FormArray {
     return this.questionsForm.get('questions') as FormArray;
   }
 
-  createAnswerFormGroup(): FormGroup {
+  initialiseInsertForm(): void {
+    this.questionsForm = this.formBuilder.group({
+      questions: this.formBuilder.array([this.createEmptyQuestionFormGroup()]),
+    });
+  }
+
+  initialiseUpdateForm(quizId: string): void {
+    this.quizGameService.getQuestionsByQuizId(quizId).subscribe({
+      next: (questions: Question[]) => {
+        const questionFormGroups: FormGroup[] = [];
+
+        questions.forEach((question: Question, index: number) => {
+          this.quizGameService.getAnswersByQuestionId(question.id).subscribe({
+            next: (answers) => {
+              const questionFormGroup = this.createQuestionFormGroup(
+                question,
+                answers
+              );
+              questionFormGroups.push(questionFormGroup);
+
+              if (index === questions.length - 1) {
+                this.questionsForm = this.formBuilder.group({
+                  questions: this.formBuilder.array(questionFormGroups),
+                });
+              }
+            },
+          });
+        });
+      },
+    });
+  }
+
+  createEmptyAnswerFormGroup(): FormGroup {
     return this.formBuilder.group({
+      id: '',
       text: ['', Validators.required],
       isCorrect: false,
     });
   }
 
-  createQuestionFormGroup(): FormGroup {
+  createAnswerFormGroup(answer: Answer): FormGroup {
+    return this.formBuilder.group({
+      id: answer.id,
+      text: [answer.text, Validators.required],
+      isCorrect: answer.isCorrect,
+    });
+  }
+
+  createEmptyQuestionFormGroup(): FormGroup {
     return this.formBuilder.group({
       text: ['', Validators.required],
       answers: this.formBuilder.array([
-        this.createAnswerFormGroup(),
-        this.createAnswerFormGroup(),
-        this.createAnswerFormGroup(),
-        this.createAnswerFormGroup(),
+        this.createEmptyAnswerFormGroup(),
+        this.createEmptyAnswerFormGroup(),
+        this.createEmptyAnswerFormGroup(),
+        this.createEmptyAnswerFormGroup(),
       ]),
     });
   }
 
-  onAddQuestion(): void {
-    this.questions.push(this.createQuestionFormGroup());
+  createQuestionFormGroup(question: Question, answers: Answer[]): FormGroup {
+    const answerFormGroups = answers.map((answer: Answer) =>
+      this.createAnswerFormGroup(answer)
+    );
+    return this.formBuilder.group({
+      id: question.id,
+      text: [question.text, Validators.required],
+      answers: this.formBuilder.array(answerFormGroups),
+    });
   }
 
-  onCreate() {
+  onAddQuestion(): void {
+    this.questions.push(this.createEmptyQuestionFormGroup());
+  }
+
+  onDeleteQuestion(index: number): void {
+    this.questions.removeAt(index);
+  }
+
+  onGetAnswers(index: number): FormArray {
+    return this.questions.at(index).get('answers') as FormArray;
+  }
+
+  insertQuiz() {
     const quizRequest: QuizCreate = {
       name: this.quizForm.value.name,
       description: this.quizForm.value.description,
@@ -131,21 +197,27 @@ export class QuizUpsertDialogComponent implements OnInit {
                     isCorrect: answer.isCorrect,
                   };
 
-                  this.quizGameService.addAnswer(answerRequest);
+                  this.quizGameService.addAnswer(answerRequest).subscribe();
                 });
               });
           }
         );
-
-        this.dialogRef.close();
       });
   }
 
-  onDeleteQuestion(index: number): void {
-    this.questions.removeAt(index);
-  }
+  updateQuiz() {}
 
-  onGetAnswers(index: number): FormArray {
-    return this.questions.at(index).get('answers') as FormArray;
+  onPublish() {
+    if (this.quizForm.invalid || this.questionsForm.invalid) {
+      return;
+    }
+
+    if (this.isUpdate) {
+      this.updateQuiz();
+    } else {
+      this.insertQuiz();
+    }
+
+    this.dialogRef.close();
   }
 }

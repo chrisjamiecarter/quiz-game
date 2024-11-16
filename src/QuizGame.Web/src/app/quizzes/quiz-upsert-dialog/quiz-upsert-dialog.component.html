@@ -1,4 +1,5 @@
-<h2 mat-dialog-title>Add Quiz</h2>
+<h2 mat-dialog-title *ngIf="!isUpdate">Add Quiz</h2>
+<h2 mat-dialog-title *ngIf="isUpdate">Edit Quiz</h2>
 
 <mat-dialog-content>
   <mat-stepper linear #stepper>
@@ -114,9 +115,8 @@
         >
           Cancel
         </button>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button (click)="stepper.reset()">Reset</button>
-        <button mat-stroked-button (click)="onCreate()">Create</button>
+        <button mat-stroked-button matStepperPrevious>Back</button>
+        <button mat-stroked-button (click)="onPublish()">Publish</button>
       </div>
     </mat-step>
   </mat-stepper>
