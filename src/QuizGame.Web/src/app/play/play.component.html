@@ -1,0 +1,28 @@
+<div class="component-container">
+    <div *ngIf="isLoading" class="loading-shade">
+      <mat-spinner></mat-spinner>
+    </div>
+
+    <app-error *ngIf="isError" [message]="errorMessage"></app-error>
+
+    <mat-grid-list cols="2" rowHeight="4:3">
+        <mat-grid-tile *ngFor="let quiz of quizzes">
+            <mat-card appearance="outlined">
+                <mat-card-header>
+                    <mat-card-title-group>
+                        <mat-card-title> {{ quiz.name }} </mat-card-title>
+                    </mat-card-title-group>
+                </mat-card-header>
+                <mat-card-content>
+                    {{ quiz.description}}
+                </mat-card-content>
+                <mat-card-actions>
+                    <a mat-fab extended [routerLink]="['/play/quiz', quiz.id]">
+                        <mat-icon>sports_esports</mat-icon>
+                        Play
+                      </a>
+                  </mat-card-actions>
+            </mat-card>
+        </mat-grid-tile>
+    </mat-grid-list>    
+</div>
