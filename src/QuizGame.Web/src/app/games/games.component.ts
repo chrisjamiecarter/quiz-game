@@ -84,7 +84,6 @@ export class GamesComponent implements AfterViewInit {
     } else {
       this.sortBy = `${e.active}-${e.direction}`;
     }
-    console.log("sortBy", this.sortBy);
     this.pageIndex = 0;
   }
 }

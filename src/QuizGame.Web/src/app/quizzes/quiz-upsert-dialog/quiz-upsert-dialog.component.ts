@@ -29,8 +29,6 @@ import { QuestionCreate } from '../../shared/question-create.interface';
 import { Question } from '../../shared/question.interface';
 import { AnswerCreate } from '../../shared/answer-create.interface';
 import { Answer } from '../../shared/answer.interface';
-import { catchError, map, Observable, throwError } from 'rxjs';
-import { QuizUpdate } from '../../shared/quiz-update.interface';
 
 @Component({
   selector: 'app-quiz-upsert-dialog',
@@ -216,7 +214,6 @@ export class QuizUpsertDialogComponent implements OnInit {
       name: this.quizForm.value.name,
       description: this.quizForm.value.description,
     };
-    console.log("quiz", quiz);
     
     this.quizGameService.getQuestionsByQuizId(quiz.id).subscribe({
       next: (questions: Question[]) => questions.map((question: Question) => this.quizGameService.deleteQuestion(question.id).subscribe()),
