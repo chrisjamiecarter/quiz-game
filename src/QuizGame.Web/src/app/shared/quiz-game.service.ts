@@ -149,11 +149,7 @@ export class QuizGameService {
     }
 
     url += `index=${index}&size=${size}`;
-
-    console.log('index', index);
-    console.log('size', size);
-    console.log('sort', sort);
-    console.log('url', url);
+    
     return this.http.get<Games>(url);
   }
 
