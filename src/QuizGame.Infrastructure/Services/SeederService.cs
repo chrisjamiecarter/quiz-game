@@ -20,15 +20,19 @@ internal class SeederService : ISeederService
 
     public void SeedDatabase()
     {
-        if (_context.Quiz.Any() && _context.Game.Any())
+        if (_context.Quiz.Any())
         {
             return;
         }
 
+        SeedAnimalsQuiz();
         SeedBreakingBadQuiz();
+        SeedFootballQuiz();
+        SeedFormulaOneQuiz();
         SeedGameOfThronesQuiz();
         SeedHarryPotterQuiz();
         SeedLordOfTheRingsQuiz();
+        SeedNatureQuiz();
 
         // Requires quizzes.
         SeedGames();
@@ -58,13 +62,81 @@ internal class SeederService : ISeederService
         }
     }
 
+    private void SeedAnimalsQuiz()
+    {
+        var quiz = new Quiz
+        {
+            Id = Guid.NewGuid(),
+            Name = "Animal Kingdom Challenge",
+            Description = "Test your knowledge of the amazing creatures that roam the Earth in this animal trivia quiz!",
+        };
+        _context.Quiz.Add(quiz);
+
+        AddQuestion(
+            quiz.Id,
+            "What is the fastest land animal?",
+            [
+                new AnswerRecord("Cheetah", true),
+                new AnswerRecord("Lion"),
+                new AnswerRecord("Horse"),
+                new AnswerRecord("Greyhound")
+            ]
+        );
+
+        AddQuestion(
+            quiz.Id,
+            "Which bird is known for its impressive mimicry skills?",
+            [
+                new AnswerRecord("Parrot", true),
+                new AnswerRecord("Owl"),
+                new AnswerRecord("Eagle"),
+                new AnswerRecord("Peacock")
+            ]
+        );
+
+        AddQuestion(
+            quiz.Id,
+            "What is the largest mammal on Earth?",
+            [
+                new AnswerRecord("African Elephant"),
+                new AnswerRecord("Blue Whale", true),
+                new AnswerRecord("Giraffe"),
+                new AnswerRecord("Hippopotamus")
+            ]
+        );
+
+        AddQuestion(
+            quiz.Id,
+            "What is a group of lions called?",
+            [
+                new AnswerRecord("Pack"),
+                new AnswerRecord("Herd"),
+                new AnswerRecord("Pride", true),
+                new AnswerRecord("Flock")
+            ]
+        );
+
+        AddQuestion(
+            quiz.Id,
+            "Which animal is known as the 'Ship of the Desert'?",
+            [
+                new AnswerRecord("Horse"),
+                new AnswerRecord("Camel", true),
+                new AnswerRecord("Elephant"),
+                new AnswerRecord("Llama")
+            ]
+        );
+
+        _context.SaveChanges();
+    }
+
     private void SeedBreakingBadQuiz()
     {
         var quiz = new Quiz
         {
             Id = Guid.NewGuid(),
-            Name = "The Breaking Bad Challenge",
-            Description = "Test your knowledge of Walter White’s transformation and the dark world of Breaking Bad!",
+            Name = "Breaking Bad Chemistry",
+            Description = "Challenge yourself with questions about Walter White's and the dark world of Breaking Bad!",
         };
         _context.Quiz.Add(quiz);
 
@@ -137,13 +209,149 @@ internal class SeederService : ISeederService
         _context.SaveChanges();
     }
 
+    private void SeedFootballQuiz()
+    {
+        var quiz = new Quiz
+        {
+            Id = Guid.NewGuid(),
+            Name = "Football Frenzy",
+            Description = "Show off your knowledge of the beautiful game with this football trivia challenge!",
+        };
+        _context.Quiz.Add(quiz);
+
+        AddQuestion(
+            quiz.Id,
+            "Which country won the first-ever FIFA World Cup in 1930?",
+            [
+                new AnswerRecord("Brazil"),
+                new AnswerRecord("Uruguay", true),
+                new AnswerRecord("Argentina"),
+                new AnswerRecord("Italy")
+            ]
+        );
+
+        AddQuestion(
+            quiz.Id,
+            "Who holds the record for the most Ballon d'Or awards?",
+            [
+                new AnswerRecord("Cristiano Ronaldo"),
+                new AnswerRecord("Lionel Messi", true),
+                new AnswerRecord("Pelé"),
+                new AnswerRecord("Diego Maradona")
+            ]
+        );
+
+        AddQuestion(
+            quiz.Id,
+            "Which club has won the most UEFA Champions League titles?",
+            [
+                new AnswerRecord("Barcelona"),
+                new AnswerRecord("Real Madrid", true),
+                new AnswerRecord("Bayern Munich"),
+                new AnswerRecord("Manchester United")
+            ]
+        );
+
+        AddQuestion(
+            quiz.Id,
+            "What is the maximum duration of a football match, excluding stoppage time?",
+            [
+                new AnswerRecord("80 minutes"),
+                new AnswerRecord("90 minutes", true),
+                new AnswerRecord("100 minutes"),
+                new AnswerRecord("120 minutes")
+            ]
+        );
+
+        AddQuestion(
+            quiz.Id,
+            "Which player scored the 'Hand of God' goal in the 1986 FIFA World Cup?",
+            [
+                new AnswerRecord("Zinedine Zidane"),
+                new AnswerRecord("Pelé"),
+                new AnswerRecord("Diego Maradona", true),
+                new AnswerRecord("Ronaldo Nazário")
+            ]
+        );
+
+        _context.SaveChanges();
+    }
+
+    private void SeedFormulaOneQuiz()
+    {
+        var quiz = new Quiz
+        {
+            Id = Guid.NewGuid(),
+            Name = "Formula One Fanatic",
+            Description = "Put your motorsport knowledge to the test with this Formula One trivia quiz!",
+        };
+        _context.Quiz.Add(quiz);
+
+        AddQuestion(
+            quiz.Id,
+            "Who holds the record for the most Formula One World Championship titles?",
+            [
+                new AnswerRecord("Ayrton Senna"),
+                new AnswerRecord("Michael Schumacher", true),
+                new AnswerRecord("Lewis Hamilton"),
+                new AnswerRecord("Sebastian Vettel")
+            ]
+        );
+
+        AddQuestion(
+            quiz.Id,
+            "Which team has the most Constructors' Championship titles?",
+            [
+                new AnswerRecord("Mercedes"),
+                new AnswerRecord("Red Bull Racing"),
+                new AnswerRecord("Ferrari", true),
+                new AnswerRecord("McLaren")
+            ]
+        );
+
+        AddQuestion(
+            quiz.Id,
+            "How many points is a Formula One race win worth?",
+            [
+            new AnswerRecord("25", true),
+            new AnswerRecord("10"),
+            new AnswerRecord("100"),
+            new AnswerRecord("20")
+            ]
+        );
+
+        AddQuestion(
+            quiz.Id,
+            "Which flag indicates the end of a race?",
+            [
+                new AnswerRecord("Yellow Flag"),
+                new AnswerRecord("Checkered Flag", true),
+                new AnswerRecord("Red Flag"),
+                new AnswerRecord("Green Flag")
+            ]
+        );
+
+        AddQuestion(
+            quiz.Id,
+            "Which driver famously won his first World Championship with McLaren in 2008?",
+            [
+                new AnswerRecord("Fernando Alonso"),
+                new AnswerRecord("Kimi Räikkönen"),
+                new AnswerRecord("Lewis Hamilton", true),
+                new AnswerRecord("Jenson Button")
+            ]
+        );
+
+        _context.SaveChanges();
+    }
+
     private void SeedGameOfThronesQuiz()
     {
         var quiz = new Quiz
         {
             Id = Guid.NewGuid(),
-            Name = "The Iron Throne Challenge",
-            Description = "Test your knowledge of the Seven Kingdoms with our thrilling Game of Thrones trivia quiz!",
+            Name = "A Song of Trivia and Fire",
+            Description = "Put your knowledge of the Seven Kingdoms to the test with this exciting Game of Thrones trivia quiz!",
         };
         _context.Quiz.Add(quiz);
 
@@ -211,6 +419,11 @@ internal class SeederService : ISeederService
 
         var quizzes = _context.Quiz.Include(q => q.Questions).ToList();
 
+        if (quizzes.Count == 0)
+        {
+            return;
+        }
+
         var fakeData = new Faker<Game>()
             .RuleFor(m => m.Id, f => f.Random.Guid())
             .RuleFor(m => m.Played, f => f.Date.Recent(30))
@@ -231,8 +444,8 @@ internal class SeederService : ISeederService
         var quiz = new Quiz
         {
             Id = Guid.NewGuid(),
-            Name = "The Wizarding World Challenge",
-            Description = "Step into the magical world of Harry Potter and test your knowledge with our enchanting trivia quiz!",
+            Name = "Wonders of the Wizarding World",
+            Description = "Step into the magical world of Harry Potter and test your knowledge with this enchanting trivia quiz!",
         };
         _context.Quiz.Add(quiz);
 
@@ -299,8 +512,8 @@ internal class SeederService : ISeederService
         var quiz = new Quiz
         {
             Id = Guid.NewGuid(),
-            Name = "The One Ring Quest",
-            Description = "Dive into the epic world of Middle-earth with our Lord of the Rings trivia quiz!",
+            Name = "Quest for the One Ring",
+            Description = "Delve into the epic world of Middle-earth and conquer this Lord of the Rings trivia quiz!",
         };
         _context.Quiz.Add(quiz);
 
@@ -367,6 +580,74 @@ internal class SeederService : ISeederService
                 new AnswerRecord("The Golden Perch"),
                 new AnswerRecord("The Prancing Pony", true),
                 new AnswerRecord("The Ivy Bush")
+            ]
+        );
+
+        _context.SaveChanges();
+    }
+
+    private void SeedNatureQuiz()
+    {
+        var quiz = new Quiz
+        {
+            Id = Guid.NewGuid(),
+            Name = "Nature's Wonders",
+            Description = "Explore the beauty and mystery of the natural world with this nature trivia quiz!",
+        };
+        _context.Quiz.Add(quiz);
+
+        AddQuestion(
+            quiz.Id,
+            "What is the tallest type of tree in the world?",
+            [
+                new AnswerRecord("Oak"),
+                new AnswerRecord("Redwood", true),
+                new AnswerRecord("Maple"),
+                new AnswerRecord("Pine")
+            ]
+        );
+
+        AddQuestion(
+            quiz.Id,
+            "Which natural phenomenon is measured by the Richter scale?",
+            [
+                new AnswerRecord("Hurricanes"),
+                new AnswerRecord("Earthquakes", true),
+                new AnswerRecord("Tsunamis"),
+                new AnswerRecord("Volcanic eruptions")
+            ]
+        );
+
+        AddQuestion(
+            quiz.Id,
+            "What is the largest rainforest in the world?",
+            [
+                new AnswerRecord("The Amazon Rainforest", true),
+                new AnswerRecord("The Congo Rainforest"),
+                new AnswerRecord("The Daintree Rainforest"),
+                new AnswerRecord("The Sundarbans")
+            ]
+        );
+
+        AddQuestion(
+            quiz.Id,
+            "What gas do plants absorb from the atmosphere during photosynthesis?",
+            [
+                new AnswerRecord("Oxygen"),
+                new AnswerRecord("Carbon Dioxide", true),
+                new AnswerRecord("Nitrogen"),
+                new AnswerRecord("Methane")
+            ]
+        );
+
+        AddQuestion(
+            quiz.Id,
+            "Which layer of the Earth is the hottest?",
+            [
+                new AnswerRecord("The Mantle"),
+                new AnswerRecord("The Outer Core"),
+                new AnswerRecord("The Inner Core", true),
+                new AnswerRecord("The Crust")
             ]
         );
 
