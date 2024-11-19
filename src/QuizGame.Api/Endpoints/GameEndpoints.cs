@@ -21,21 +21,6 @@ public static class GameEndpoints
             : TypedResults.BadRequest(new { error = "Unable to create game." });
     }
 
-    public static async Task<IResult> DeleteGameAsync([FromRoute] Guid id, [FromServices] IGameService service)
-    {
-        var entity = await service.ReturnByIdAsync(id);
-        if (entity is null)
-        {
-            return TypedResults.NotFound();
-        }
-
-        var deleted = await service.DeleteAsync(entity);
-
-        return deleted
-            ? TypedResults.NoContent()
-            : TypedResults.BadRequest(new { error = "Unable to delete game." });
-    }
-
     public static async Task<IResult> GetGameAsync([FromRoute] Guid id, [FromServices] IGameService service)
     {
         var entity = await service.ReturnByIdAsync(id);
@@ -73,28 +58,5 @@ public static class GameEndpoints
         var entities = await service.ReturnByQuizIdAsync(id);
 
         return TypedResults.Ok(entities.Select(x => x.ToResponse()));
-    }
-
-    public static async Task<IResult> UpdateGameAsync([FromRoute] Guid id, [FromBody] GameUpdateRequest request, [FromServices] IGameService service)
-    {
-        var entity = await service.ReturnByIdAsync(id);
-        if (entity is null)
-        {
-            return TypedResults.NotFound();
-        }
-
-        var updatedEntity = new Game
-        {
-            Id = entity.Id,
-            QuizId = entity.QuizId,
-            Played = request.Played,
-            Score = request.Score,
-        };
-
-        var updated = await service.UpdateAsync(updatedEntity);
-
-        return updated
-            ? TypedResults.Ok(updatedEntity.ToResponse())
-            : TypedResults.BadRequest(new { error = "Unable to update game." });
     }
 }

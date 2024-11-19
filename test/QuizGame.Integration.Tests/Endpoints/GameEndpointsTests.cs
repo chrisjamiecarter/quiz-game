@@ -29,7 +29,7 @@ public class GameEndpointsTests
         // Arrange.
         var quiz = await _context.Quiz.AsNoTracking().FirstAsync();
         var questionsCount = await _context.Question.AsNoTracking().Where(x => x.QuizId == quiz.Id).CountAsync();
-        var request = new GameCreateRequest(quiz.Id, DateTime.Now, Random.Shared.Next(questionsCount + 1));
+        var request = new GameCreateRequest(quiz.Id, DateTime.Now, Random.Shared.Next(questionsCount + 1), questionsCount);
 
         // Act.
         var response = await _client.PostAsJsonAsync($"/api/v1/quizgame/games", request);
@@ -44,23 +44,6 @@ public class GameEndpointsTests
         dbResult.Should().NotBeNull();
 
         apiResult.Should().BeEquivalentTo(dbResult!.ToResponse());
-    }
-
-    [Fact]
-    public async Task DeleteGameAsync_ShouldDelete_WhenDataIsValid()
-    {
-        // Arrange.
-        var request = await _context.Game.AsNoTracking().FirstAsync();
-
-        // Act.
-        var response = await _client.DeleteAsync($"/api/v1/quizgame/games/{request.Id}");
-        var apiResult = await response.Content.ReadAsStringAsync();
-        var dbResult = await _context.Game.AsNoTracking().SingleOrDefaultAsync(x => x.Id == request.Id);
-
-        // Assert.
-        response.StatusCode.Should().Be(HttpStatusCode.NoContent);
-        apiResult.Should().BeEmpty();
-        dbResult.Should().BeNull();
     }
 
     [Fact]
@@ -170,27 +153,5 @@ public class GameEndpointsTests
         dbResult.Should().NotBeNull();
 
         apiResult.Should().BeEquivalentTo(dbResult);
-    }
-
-    [Fact]
-    public async Task UpdateGameAsync_ShouldUpdate_WhenDataIsValid()
-    {
-        // Arrange.
-        var game = await _context.Game.AsNoTracking().FirstAsync();
-        var questionsCount = await _context.Question.AsNoTracking().Where(x => x.QuizId == game.QuizId).CountAsync();
-        var request = new GameUpdateRequest(DateTime.Now, Random.Shared.Next(questionsCount + 1));
-
-        // Act.
-        var response = await _client.PutAsJsonAsync($"/api/v1/quizgame/games/{game.Id}", request);
-        var apiResult = await response.Content.ReadFromJsonAsync<GameResponse>();
-        var dbResult = await _context.Game.AsNoTracking().SingleOrDefaultAsync(x => x.Id == game.Id);
-
-        // Assert.
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-        apiResult.Should().NotBeNull();
-        dbResult.Should().NotBeNull();
-
-        apiResult.Should().BeEquivalentTo(dbResult!.ToResponse());
     }
 }

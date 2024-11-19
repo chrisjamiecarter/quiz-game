@@ -11,6 +11,8 @@ public class Game
 
     public required int Score { get; set; }
 
+    public required int MaxScore { get; set; }
+
     public required Guid QuizId { get; set; }
 
     public Quiz? Quiz { get; set; }

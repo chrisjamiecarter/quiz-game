@@ -51,6 +51,9 @@ namespace QuizGame.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("MaxScore")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Played")
                         .HasColumnType("datetime2");
 

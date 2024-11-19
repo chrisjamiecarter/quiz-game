@@ -12,7 +12,7 @@ using QuizGame.Infrastructure.Contexts;
 namespace QuizGame.Infrastructure.Migrations
 {
     [DbContext(typeof(QuizGameDataContext))]
-    [Migration("20241025134044_InitialCreate")]
+    [Migration("20241119195317_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -53,6 +53,9 @@ namespace QuizGame.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("MaxScore")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Played")
                         .HasColumnType("datetime2");
