@@ -11,6 +11,8 @@ internal class GameModel
 
     public required int Score { get; set; }
 
+    public required int MaxScore { get; set; }
+
     public required Guid QuizId { get; set; }
 
     public QuizModel? Quiz { get; set; }

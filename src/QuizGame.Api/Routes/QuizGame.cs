@@ -100,17 +100,6 @@ public static class QuizGame
                .MapToApiVersion(1)
                .WithRequestValidation<GameCreateRequest>();
 
-        builder.MapPut("/{id}", GameEndpoints.UpdateGameAsync)
-               .WithName(nameof(GameEndpoints.UpdateGameAsync))
-               .WithSummary("Update an existing Quiz Game game.")
-               .MapToApiVersion(1)
-               .WithRequestValidation<GameUpdateRequest>();
-
-        builder.MapDelete("/{id}", GameEndpoints.DeleteGameAsync)
-               .WithName(nameof(GameEndpoints.DeleteGameAsync))
-               .WithSummary("Delete an existing Quiz Game game.")
-               .MapToApiVersion(1);
-
         return app;
     }
 

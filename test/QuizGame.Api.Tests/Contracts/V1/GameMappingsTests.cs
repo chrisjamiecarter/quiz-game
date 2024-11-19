@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using Azure.Core;
+using FluentAssertions;
 using QuizGame.Api.Contracts.V1;
 using QuizGame.Domain.Entities;
 
@@ -10,7 +11,8 @@ public class GameMappingsTests
     public void ToDomain_ShouldMapCreateRequestToDomain()
     {
         // Arrange
-        var request = new GameCreateRequest(Guid.NewGuid(), DateTime.UtcNow, Random.Shared.Next(0, 5));
+        var questionCount = 4;
+        var request = new GameCreateRequest(Guid.NewGuid(), DateTime.UtcNow, Random.Shared.Next(0, questionCount + 1), questionCount);
 
         // Act
         var result = request.ToDomain();
@@ -21,53 +23,32 @@ public class GameMappingsTests
         result.QuizId.Should().Be(request.QuizId);
         result.Played.Should().Be(request.Played);
         result.Score.Should().Be(request.Score);
-    }
-
-    [Fact]
-    public void ToDomain_ShouldMapUpdateRequestToDomain()
-    {
-        // Arrange
-        var originalEntity = new Game
-        {
-            Id = Guid.NewGuid(),
-            QuizId = Guid.NewGuid(),
-            Played = DateTime.UtcNow.AddHours(-1),
-            Score = Random.Shared.Next(0, 5),
-        };
-
-        var updateRequest = new GameUpdateRequest(DateTime.UtcNow, Random.Shared.Next(0, 5));
-
-        // Act
-        var result = updateRequest.ToDomain(originalEntity);
-
-        // Assert
-        result.Should().NotBeNull();
-        result.Id.Should().Be(originalEntity.Id);
-        result.QuizId.Should().Be(originalEntity.QuizId);
-        result.Played.Should().Be(updateRequest.Played);
-        result.Score.Should().Be(updateRequest.Score);
+        result.MaxScore.Should().Be(request.MaxScore);
     }
 
     [Fact]
     public void ToResponse_ShouldMapDomainToResponse()
     {
         // Arrange
-        var domainEntity = new Game
+        var questionCount = 4;
+        var entity = new Game
         {
             Id = Guid.NewGuid(),
             QuizId = Guid.NewGuid(),
             Played = DateTime.UtcNow,
-            Score = Random.Shared.Next(0, 5),
+            Score = Random.Shared.Next(0, questionCount + 1),
+            MaxScore = questionCount,
         };
 
         // Act
-        var result = domainEntity.ToResponse();
+        var result = entity.ToResponse();
 
         // Assert
         result.Should().NotBeNull();
-        result.Id.Should().Be(domainEntity.Id);
-        result.QuizId.Should().Be(domainEntity.QuizId);
-        result.Played.Should().Be(domainEntity.Played);
-        result.Score.Should().Be(domainEntity.Score);
+        result.Id.Should().Be(entity.Id);
+        result.QuizId.Should().Be(entity.QuizId);
+        result.Played.Should().Be(entity.Played);
+        result.Score.Should().Be(entity.Score);
+        result.MaxScore.Should().Be(entity.MaxScore);
     }
 }

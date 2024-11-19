@@ -72,6 +72,10 @@ export class GamesComponent implements AfterViewInit {
       .subscribe((data) => (this.games = data));
   }
 
+  getScorePercentage(score: number, maxScore: number): number {
+    return Math.floor((100 * score) / maxScore);
+  }
+
   handlePageEvent(e: PageEvent) {
     this.totalRecords = e.length;
     this.pageIndex = e.pageIndex;

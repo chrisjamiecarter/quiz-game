@@ -12,6 +12,7 @@ public class GameCreateRequestValidator : AbstractValidator<GameCreateRequest>
     {
         RuleFor(x => x.QuizId).NotEmpty();
         RuleFor(x => x.Played).NotEmpty();
-        RuleFor(x => x.Score).NotEmpty();
+        RuleFor(x => x.Score).GreaterThanOrEqualTo(0);
+        RuleFor(x => x.MaxScore).GreaterThanOrEqualTo(0);
     }
 }

@@ -26,13 +26,6 @@ public class GameService : IGameService
         return created > 0;
     }
 
-    public async Task<bool> DeleteAsync(Game game)
-    {
-        await _unitOfWork.Games.DeleteAsync(game);
-        var deleted = await _unitOfWork.SaveAsync();
-        return deleted > 0;
-    }
-
     public async Task<(int totalRecords, IEnumerable<Game> gameRecords)> ReturnPaginatedGames(Guid? quizId, string? sortBy, int? pageIndex, int? pageSize)
     {
         pageIndex ??= 1;
@@ -56,12 +49,5 @@ public class GameService : IGameService
     {
         var games = await _unitOfWork.Games.ReturnByQuizIdAsync(quizId);
         return games.OrderBy(x => x.Played);
-    }
-
-    public async Task<bool> UpdateAsync(Game game)
-    {
-        await _unitOfWork.Games.UpdateAsync(game);
-        var updated = await _unitOfWork.SaveAsync();
-        return updated > 0;
     }
 }

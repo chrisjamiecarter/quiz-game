@@ -429,7 +429,8 @@ internal class SeederService : ISeederService
             .RuleFor(m => m.Played, f => f.Date.Recent(30))
             .RuleFor(m => m.Quiz, f => f.PickRandom(quizzes))
             .RuleFor(m => m.QuizId, (f, m) => m.Quiz!.Id)
-            .RuleFor(m => m.Score, (f, m) => f.Random.Int(0, m.Quiz!.Questions.Count));
+            .RuleFor(m => m.Score, (f, m) => f.Random.Int(0, m.Quiz!.Questions.Count))
+            .RuleFor(m => m.MaxScore, (f, m) => m.Quiz!.Questions.Count);
 
         foreach (var fake in fakeData.Generate(100))
         {

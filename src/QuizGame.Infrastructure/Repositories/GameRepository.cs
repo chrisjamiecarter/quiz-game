@@ -24,15 +24,6 @@ internal class GameRepository : IGameRepository
         await _context.Game.AddAsync(game);
     }
 
-    public async Task DeleteAsync(Game game)
-    {
-        var entity = await _context.Game.FindAsync(game.Id);
-        if (entity is not null)
-        {
-            _context.Game.Remove(entity);
-        }
-    }
-
     public async Task<(int totalRecords, IReadOnlyList<Game> gameRecords)> ReturnPaginatedGames(Guid? quizId, string? sortBy, int pageIndex, int pageSize)
     {
         var query = _context.Game.Include(x => x.Quiz).AsQueryable();
@@ -72,16 +63,5 @@ internal class GameRepository : IGameRepository
     public async Task<IReadOnlyList<Game>> ReturnByQuizIdAsync(Guid quizId)
     {
         return await _context.Game.Include(x => x.Quiz).Where(a => a.QuizId == quizId).ToListAsync();
-    }
-
-    public async Task UpdateAsync(Game game)
-    {
-        var entity = await _context.Game.FindAsync(game.Id);
-        if (entity is not null)
-        {
-            entity.Played = game.Played;
-            entity.Score = game.Score;
-            _context.Game.Update(entity);
-        }
     }
 }

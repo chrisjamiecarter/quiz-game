@@ -15,22 +15,12 @@ public static class GameMappings
             QuizId = request.QuizId,
             Played = request.Played,
             Score = request.Score,
-        };
-    }
-
-    public static Game ToDomain(this GameUpdateRequest request, Game entity)
-    {
-        return new Game
-        {
-            Id = entity.Id,
-            QuizId = entity.QuizId,
-            Played = request.Played,
-            Score = request.Score,
+            MaxScore = request.MaxScore,
         };
     }
 
     public static GameResponse ToResponse(this Game entity)
     {
-        return new GameResponse(entity.Id, entity.QuizId, entity.Quiz?.Name ?? "", entity.Played, entity.Score);
+        return new GameResponse(entity.Id, entity.QuizId, entity.Quiz?.Name ?? "", entity.Played, entity.Score, entity.MaxScore);
     }
 }

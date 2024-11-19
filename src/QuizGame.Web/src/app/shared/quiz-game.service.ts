@@ -12,16 +12,16 @@ import {
   tap,
   throwError,
 } from 'rxjs';
+import { Answer } from './answer.interface';
+import { AnswerCreate } from './answer-create.interface';
+import { AnswerUpdate } from './answer-update.interface';
 import { Games } from './games.interface';
+import { Question } from './question.interface';
+import { QuestionCreate } from './question-create.interface';
+import { QuestionUpdate } from './question-update.interface';
 import { Quiz } from './quiz.interface';
 import { QuizCreate } from './quiz-create.interface';
-import { QuestionCreate } from './question-create.interface';
-import { Question } from './question.interface';
-import { AnswerCreate } from './answer-create.interface';
-import { Answer } from './answer.interface';
 import { QuizUpdate } from './quiz-update.interface';
-import { AnswerUpdate } from './answer-update.interface';
-import { QuestionUpdate } from './question-update.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -75,6 +75,7 @@ export class QuizGameService {
       catchError(this.handleError),
     );
   }
+
   deleteQuiz(id: string): Observable<object> {
     let url = `${this.baseUrl}/quizzes/${id}`;
 
@@ -85,37 +86,6 @@ export class QuizGameService {
       catchError(this.handleError),
       tap(() => this._isStale.next(true))
     );
-  }
-  
-  editAnswer(answer: Answer): Observable<Answer> {
-    let url = `${this.baseUrl}/answers/${answer.id}`;
-
-    const request: AnswerUpdate = {
-      text: answer.text,
-      isCorrect: answer.isCorrect,
-    };
-
-    return this.http
-      .post<Answer>(url, request, this.httpOptions)
-      .pipe(
-        retry(3),
-        catchError(this.handleError),
-      );
-  }
-
-  editQuestion(question: Question): Observable<Question> {
-    let url = `${this.baseUrl}/questions/${question.id}`;
-
-    const request: QuestionUpdate = {
-      text: question.text,
-    };
-
-    return this.http
-      .post<Question>(url, request, this.httpOptions)
-      .pipe(
-        retry(3),
-        catchError(this.handleError),
-      );
   }
 
   editQuiz(quiz: Quiz): Observable<Quiz> {

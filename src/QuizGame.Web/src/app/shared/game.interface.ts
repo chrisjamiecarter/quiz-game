@@ -4,4 +4,5 @@ export interface Game {
   quizName: string;
   played: Date;
   score: number;
+  maxScore: number;
 }

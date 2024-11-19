@@ -4,4 +4,4 @@
 /// Represents only the necessary information for returning a game as an API response back to 
 /// the client.
 /// </summary>
-public record GameResponse(Guid Id, Guid QuizId, string QuizName, DateTime Played, int Score);
+public record GameResponse(Guid Id, Guid QuizId, string QuizName, DateTime Played, int Score, int MaxScore);
