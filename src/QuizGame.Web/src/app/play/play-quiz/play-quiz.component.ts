@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ErrorComponent } from '../../error/error.component';
 import { QuizGameService } from '../../shared/quiz-game.service';
 import { Quiz } from '../../shared/quiz.interface';
@@ -36,6 +37,7 @@ import { UserAnswer } from '../../shared/user-answer.interface';
     MatProgressSpinner,
     MatRadioModule,
     MatStepperModule,
+    MatTooltipModule,
   ],
   templateUrl: './play-quiz.component.html',
   styleUrl: './play-quiz.component.css',
@@ -107,6 +109,10 @@ export class PlayQuizComponent implements OnInit {
       }
     });
     return score;
+  }
+
+  isQuestionAnswered(index: number): boolean {
+    return !!this.userAnswers[index]?.answerId;
   }
 
   onAnswerSelect(questionId: string, answerId: string): void {

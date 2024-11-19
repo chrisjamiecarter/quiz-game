@@ -1,4 +1,4 @@
-<h1>{{ quiz.name }}</h1>
+<h3>{{ quiz.name }}</h3>
 
 <div class="component-container">
   <div *ngIf="isLoading" class="loading-shade">
@@ -11,19 +11,20 @@
     <mat-step label="Quiz" state="quiz" >
       <p>{{ quiz.description }}</p>
       <p>Press next begin.</p>
-      <div>
-        <button mat-button matStepperNext>Next</button>
+      <div class="buttons-container">
+        <button mat-stroked-button matStepperNext>Next</button>
       </div>
     </mat-step>
     <mat-step
       *ngFor="let question of questions; let i = index"
-      [completed]="!!userAnswers[i]?.answerId"
+      [completed]="isQuestionAnswered(i)"
       label="Question i"
       state="question"
     >
       <ng-template matStepLabel>{{ i + 1 }}</ng-template>
       <p>{{ question.text }}</p>
       <mat-radio-group
+      class="form-container"
         (change)="onAnswerSelect(question.id, $event.value)"
         aria-label="Select an option"
       >
@@ -34,17 +35,21 @@
           {{ answer.text }}</mat-radio-button
         >
       </mat-radio-group>
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext [disabled]="!userAnswers[i]?.answerId">Next</button>
+      <div class="buttons-container">
+        <button mat-stroked-button matStepperPrevious>Back</button>
+        <div matTooltip="Answer the current question to continue." [matTooltipDisabled]="isQuestionAnswered(i)">
+          <button mat-stroked-button matStepperNext [disabled]="!isQuestionAnswered(i)">Next</button>
+        </div>
       </div>
     </mat-step>
     
     <mat-step label="Complete" state="publish">
-      <p>Congratulations! Press submit to see your score.</p>
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button (click)="onSubmit()">Submit</button>
+      <p>Congratulations!</p>
+      <p>You have reached the end of {{ quiz.name }}.</p>
+      <p>Press submit to see your score.</p>
+      <div class="buttons-container">
+        <button mat-stroked-button matStepperPrevious>Back</button>
+        <button mat-stroked-button (click)="onSubmit()">Submit</button>
       </div>
     </mat-step>
 
