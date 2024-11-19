@@ -368,7 +368,7 @@ internal class SeederService : ISeederService
 
         AddQuestion(
             quiz.Id,
-            "Who is known as the 'Mother of Dragon'?",
+            "Who is known as the 'Mother of Dragons'?",
             [
                 new AnswerRecord("Cersei Lannister"),
                 new AnswerRecord("Melisandre"),
