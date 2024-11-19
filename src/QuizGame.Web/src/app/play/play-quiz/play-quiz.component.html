@@ -1,3 +1,61 @@
-<h1> {{ quizId }}</h1>
-<p>play-quiz works!</p>
+<h1>{{ quiz.name }}</h1>
 
+<div class="component-container">
+  <div *ngIf="isLoading" class="loading-shade">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <app-error *ngIf="isError" [message]="errorMessage"></app-error>
+
+  <mat-stepper linear *ngIf="quiz">
+    <mat-step label="Quiz" state="quiz" >
+      <p>{{ quiz.description }}</p>
+      <p>Press next begin.</p>
+      <div>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </mat-step>
+    <mat-step
+      *ngFor="let question of questions; let i = index"
+      [completed]="!!userAnswers[i]?.answerId"
+      label="Question i"
+      state="question"
+    >
+      <ng-template matStepLabel>{{ i + 1 }}</ng-template>
+      <p>{{ question.text }}</p>
+      <mat-radio-group
+        (change)="onAnswerSelect(question.id, $event.value)"
+        aria-label="Select an option"
+      >
+        <mat-radio-button
+          *ngFor="let answer of answers[question.id]"
+          [value]="answer.id"
+        >
+          {{ answer.text }}</mat-radio-button
+        >
+      </mat-radio-group>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext [disabled]="!userAnswers[i]?.answerId">Next</button>
+      </div>
+    </mat-step>
+    
+    <mat-step label="Complete" state="publish">
+      <p>Congratulations! Press submit to see your score.</p>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="onSubmit()">Submit</button>
+      </div>
+    </mat-step>
+
+    <ng-template matStepperIcon="quiz">
+      <mat-icon>quiz</mat-icon>
+    </ng-template>
+    <ng-template matStepperIcon="question">
+      <mat-icon>question_mark</mat-icon>
+    </ng-template>
+    <ng-template matStepperIcon="publish">
+      <mat-icon>publish</mat-icon>
+    </ng-template>
+  </mat-stepper>
+</div>

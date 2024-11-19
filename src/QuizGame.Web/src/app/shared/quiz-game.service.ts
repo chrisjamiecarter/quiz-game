@@ -162,6 +162,12 @@ export class QuizGameService {
       .get<Question[]>(`${this.baseUrl}/questions/quiz/${quizId}`)
       .pipe(retry(3), catchError(this.handleError));
   }
+  
+  getQuiz(id: string): Observable<Quiz> {
+    return this.http
+      .get<Quiz>(`${this.baseUrl}/quizzes/${id}`)
+      .pipe(retry(3), catchError(this.handleError));
+  }
 
   getQuizzes(): Observable<Quiz[]> {
     return this.http
