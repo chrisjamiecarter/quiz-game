@@ -11,6 +11,8 @@ public class Quiz
 
     public string Description { get; set; } = "";
 
+    public string ImageUrl { get; set; } = "https://chrisjamiecarter.github.io/quiz-game/img/default.png";
+
     public ICollection<Game> Games { get; set; } = [];
 
     public ICollection<Question> Questions { get; set; } = [];

@@ -16,8 +16,9 @@ namespace QuizGame.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: ""),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: ""),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: "https://chrisjamiecarter.github.io/quiz-game/img/default.png")
                 },
                 constraints: table =>
                 {

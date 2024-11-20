@@ -28,7 +28,7 @@ public class QuizEndpointsTests
     {
         // Arrange.
         var quiz = await _context.Quiz.AsNoTracking().FirstAsync();
-        var request = new QuizCreateRequest("Sample Quiz Name", "Sample Quiz Description");
+        var request = new QuizCreateRequest("Sample Quiz Name", "Sample Quiz Description", "Sample Quiz ImageUrl");
 
         // Act.
         var response = await _client.PostAsJsonAsync($"/api/v1/quizgame/quizzes", request);
@@ -106,7 +106,7 @@ public class QuizEndpointsTests
     {
         // Arrange.
         var quiz = await _context.Quiz.AsNoTracking().FirstAsync();
-        var request = new QuizUpdateRequest($"{quiz.Name} - Updated", $"{quiz.Description} - Updated");
+        var request = new QuizUpdateRequest($"{quiz.Name} - Updated", $"{quiz.Description} - Updated", $"{quiz.ImageUrl} - Updated");
 
         // Act.
         var response = await _client.PutAsJsonAsync($"/api/v1/quizgame/quizzes/{quiz.Id}", request);

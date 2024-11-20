@@ -12,7 +12,7 @@ using QuizGame.Infrastructure.Contexts;
 namespace QuizGame.Infrastructure.Migrations
 {
     [DbContext(typeof(QuizGameDataContext))]
-    [Migration("20241119195317_InitialCreate")]
+    [Migration("20241120172700_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -101,13 +101,19 @@ namespace QuizGame.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("https://chrisjamiecarter.github.io/quiz-game/img/default.png");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

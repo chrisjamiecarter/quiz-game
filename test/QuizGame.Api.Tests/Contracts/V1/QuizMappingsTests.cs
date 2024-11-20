@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using Azure.Core;
+using FluentAssertions;
 using QuizGame.Api.Contracts.V1;
 using QuizGame.Domain.Entities;
 
@@ -10,7 +11,7 @@ public class QuizMappingsTests
     public void ToDomain_ShouldMapCreateRequestToDomain()
     {
         // Arrange
-        var request = new QuizCreateRequest("Sample Name", "Sample Description");
+        var request = new QuizCreateRequest("Sample Name", "Sample Description", "Sample ImageUrl");
 
         // Act
         var result = request.ToDomain();
@@ -20,6 +21,7 @@ public class QuizMappingsTests
         result.Id.Should().NotBeEmpty();
         result.Name.Should().Be(request.Name);
         result.Description.Should().Be(request.Description);
+        result.ImageUrl.Should().Be(request.ImageUrl);
     }
 
     [Fact]
@@ -33,36 +35,39 @@ public class QuizMappingsTests
             Description = "Original Description",
         };
 
-        var updateRequest = new QuizUpdateRequest("Updated Name", "Updated Description");
+        var request = new QuizUpdateRequest("Updated Name", "Updated Description", "Updated ImageUrl");
 
         // Act
-        var result = updateRequest.ToDomain(originalEntity);
+        var result = request.ToDomain(originalEntity);
 
         // Assert
         result.Should().NotBeNull();
         result.Id.Should().Be(originalEntity.Id);
-        result.Name.Should().Be(updateRequest.Name);
-        result.Description.Should().Be(updateRequest.Description);
+        result.Name.Should().Be(request.Name);
+        result.Description.Should().Be(request.Description);
+        result.ImageUrl.Should().Be(request.ImageUrl);
     }
 
     [Fact]
     public void ToResponse_ShouldMapDomainToResponse()
     {
         // Arrange
-        var domainEntity = new Quiz
+        var entity = new Quiz
         {
             Id = Guid.NewGuid(),
             Name = "Quiz Name",
-            Description = "Quiz Description"
+            Description = "Quiz Description",
+            ImageUrl = "Quiz ImageUrl",
         };
 
         // Act
-        var result = domainEntity.ToResponse();
+        var result = entity.ToResponse();
 
         // Assert
         result.Should().NotBeNull();
-        result.Id.Should().Be(domainEntity.Id);
-        result.Name.Should().Be(domainEntity.Name);
-        result.Description.Should().Be(domainEntity.Description);
+        result.Id.Should().Be(entity.Id);
+        result.Name.Should().Be(entity.Name);
+        result.Description.Should().Be(entity.Description);
+        result.ImageUrl.Should().Be(entity.ImageUrl);
     }
 }

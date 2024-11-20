@@ -69,6 +69,7 @@ internal class SeederService : ISeederService
             Id = Guid.NewGuid(),
             Name = "Animal Kingdom Challenge",
             Description = "Test your knowledge of the amazing creatures that roam the Earth in this animal trivia quiz!",
+            ImageUrl = "https://chrisjamiecarter.github.io/quiz-game/img/animal-kingdom-challenge.png",
         };
         _context.Quiz.Add(quiz);
 
@@ -137,6 +138,7 @@ internal class SeederService : ISeederService
             Id = Guid.NewGuid(),
             Name = "Breaking Bad Chemistry",
             Description = "Challenge yourself with questions about Walter White's and the dark world of Breaking Bad!",
+            ImageUrl = "https://chrisjamiecarter.github.io/quiz-game/img/breaking-bad-chemistry.png",
         };
         _context.Quiz.Add(quiz);
 
@@ -216,6 +218,7 @@ internal class SeederService : ISeederService
             Id = Guid.NewGuid(),
             Name = "Football Frenzy",
             Description = "Show off your knowledge of the beautiful game with this football trivia challenge!",
+            ImageUrl = "https://chrisjamiecarter.github.io/quiz-game/img/football-frenzy.png",
         };
         _context.Quiz.Add(quiz);
 
@@ -284,6 +287,7 @@ internal class SeederService : ISeederService
             Id = Guid.NewGuid(),
             Name = "Formula One Fanatic",
             Description = "Put your motorsport knowledge to the test with this Formula One trivia quiz!",
+            ImageUrl = "https://chrisjamiecarter.github.io/quiz-game/img/formula-one-fanatic.png",
         };
         _context.Quiz.Add(quiz);
 
@@ -352,6 +356,7 @@ internal class SeederService : ISeederService
             Id = Guid.NewGuid(),
             Name = "A Song of Trivia and Fire",
             Description = "Put your knowledge of the Seven Kingdoms to the test with this exciting Game of Thrones trivia quiz!",
+            ImageUrl = "https://chrisjamiecarter.github.io/quiz-game/img/a-song-of-trivia-and-fire.png",
         };
         _context.Quiz.Add(quiz);
 
@@ -447,6 +452,7 @@ internal class SeederService : ISeederService
             Id = Guid.NewGuid(),
             Name = "Wonders of the Wizarding World",
             Description = "Step into the magical world of Harry Potter and test your knowledge with this enchanting trivia quiz!",
+            ImageUrl = "https://chrisjamiecarter.github.io/quiz-game/img/wonders-of-the-wizarding-world.png",
         };
         _context.Quiz.Add(quiz);
 
@@ -515,6 +521,7 @@ internal class SeederService : ISeederService
             Id = Guid.NewGuid(),
             Name = "Quest for the One Ring",
             Description = "Delve into the epic world of Middle-earth and conquer this Lord of the Rings trivia quiz!",
+            ImageUrl = "https://chrisjamiecarter.github.io/quiz-game/img/quest-for-the-one-ring.png",
         };
         _context.Quiz.Add(quiz);
 
@@ -594,6 +601,7 @@ internal class SeederService : ISeederService
             Id = Guid.NewGuid(),
             Name = "Nature's Wonders",
             Description = "Explore the beauty and mystery of the natural world with this nature trivia quiz!",
+            ImageUrl = "https://chrisjamiecarter.github.io/quiz-game/img/natures-wonders.png",
         };
         _context.Quiz.Add(quiz);
 

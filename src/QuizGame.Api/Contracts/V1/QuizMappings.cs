@@ -14,6 +14,7 @@ public static class QuizMappings
             Id = Guid.NewGuid(),
             Name = request.Name,
             Description = request.Description,
+            ImageUrl = request.ImageUrl,
         };
     }
 
@@ -24,11 +25,12 @@ public static class QuizMappings
             Id = entity.Id,
             Name = request.Name,
             Description = request.Description,
+            ImageUrl = request.ImageUrl,
         };
     }
 
     public static QuizResponse ToResponse(this Quiz entity)
     {
-        return new QuizResponse(entity.Id, entity.Name, entity.Description);
+        return new QuizResponse(entity.Id, entity.Name, entity.Description, entity.ImageUrl);
     }
 }

@@ -50,6 +50,7 @@ internal class QuizRepository : IQuizRepository
         {
             entity.Name = quiz.Name;
             entity.Description = quiz.Description;
+            entity.ImageUrl = quiz.ImageUrl;
             _context.Quiz.Update(entity);
         }
     }
