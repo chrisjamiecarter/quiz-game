@@ -1,0 +1,28 @@
+<div class="component-container">
+  <div *ngIf="isLoading" class="loading-shade">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <app-error *ngIf="isError" [message]="errorMessage"></app-error>
+
+  <div *ngIf="game" class="game-score-container">
+    <div class="game-summary">
+      <h1>Game Summary</h1>
+      <p><strong>Quiz Name:</strong> {{ game.quizName }}</p>
+      <p><strong>Date Played:</strong> {{ formattedDate }}</p>
+      <p><strong>Your Score:</strong> {{ formattedScore }}</p>
+    </div>
+    
+    <div>
+      <h2 class="game-message-header">{{ gameMessageHeader }}</h2>
+      <p class="game-message-text">{{ gameMessageText }}</p>
+    </div>
+    
+    <div class="buttons-container">
+      <button mat-stroked-button (click)="onHomeClicked()">Home</button>
+      <button mat-stroked-button (click)="onPlayAgainClicked()">
+        Play Again
+      </button>
+    </div>
+  </div>
+</div>

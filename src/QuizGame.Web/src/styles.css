@@ -28,6 +28,13 @@ body {
   justify-content: flex-end;
 }
 
+.buttons-container-left {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  justify-content: flex-start;
+}
+
 .form-container {
   display: flex;
   flex-direction: column;

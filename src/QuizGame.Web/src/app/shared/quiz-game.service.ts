@@ -14,14 +14,14 @@ import {
 } from 'rxjs';
 import { Answer } from './answer.interface';
 import { AnswerCreate } from './answer-create.interface';
-import { AnswerUpdate } from './answer-update.interface';
 import { Games } from './games.interface';
 import { Question } from './question.interface';
 import { QuestionCreate } from './question-create.interface';
-import { QuestionUpdate } from './question-update.interface';
 import { Quiz } from './quiz.interface';
 import { QuizCreate } from './quiz-create.interface';
 import { QuizUpdate } from './quiz-update.interface';
+import { Game } from './game.interface';
+import { GameCreate } from './game-create.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -42,6 +42,14 @@ export class QuizGameService {
 
     return this.http
       .post<Answer>(url, request, this.httpOptions)
+      .pipe(retry(3), catchError(this.handleError));
+  }
+
+  addGame(request: GameCreate): Observable<Game> {
+    let url = `${this.baseUrl}/games`;
+
+    return this.http
+      .post<Game>(url, request, this.httpOptions)
       .pipe(retry(3), catchError(this.handleError));
   }
 
@@ -108,6 +116,12 @@ export class QuizGameService {
   getAnswersByQuestionId(questionId: string): Observable<Answer[]> {
     return this.http
       .get<Answer[]>(`${this.baseUrl}/answers/question/${questionId}`)
+      .pipe(retry(3), catchError(this.handleError));
+  }
+
+  getGame(id: string): Observable<Game> {
+    return this.http
+      .get<Game>(`${this.baseUrl}/games/${id}`)
       .pipe(retry(3), catchError(this.handleError));
   }
 

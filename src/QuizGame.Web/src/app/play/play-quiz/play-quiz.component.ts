@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,19 +10,21 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { throwError } from 'rxjs';
 import { ErrorComponent } from '../../error/error.component';
 import { QuizGameService } from '../../shared/quiz-game.service';
-import { Quiz } from '../../shared/quiz.interface';
-import { Question } from '../../shared/question.interface';
 import { Answer } from '../../shared/answer.interface';
-import { throwError } from 'rxjs';
+import { Game } from '../../shared/game.interface';
+import { Question } from '../../shared/question.interface';
+import { Quiz } from '../../shared/quiz.interface';
+import { GameCreate } from '../../shared/game-create.interface';
 import { UserAnswer } from '../../shared/user-answer.interface';
 
 @Component({
   providers: [
     {
       provide: STEPPER_GLOBAL_OPTIONS,
-      useValue: {displayDefaultIndicatorType: false, showError: true },
+      useValue: { displayDefaultIndicatorType: false, showError: true },
     },
   ],
   selector: 'app-play-quiz',
@@ -50,9 +52,10 @@ export class PlayQuizComponent implements OnInit {
   questions: Question[] = [];
   answers: { [key: string]: Answer[] } = {};
   userAnswers: UserAnswer[] = [];
-  
-  readonly route = inject(ActivatedRoute);
-  readonly quizGameService = inject(QuizGameService);
+
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly quizGameService = inject(QuizGameService);
 
   ngOnInit(): void {
     this.isLoading = true;
@@ -81,7 +84,9 @@ export class PlayQuizComponent implements OnInit {
     this.quizGameService.getQuestionsByQuizId(quizId).subscribe({
       next: (questions: Question[]) => {
         this.questions = questions;
-        questions.forEach((question: Question) => this.loadAnswers(question.id));
+        questions.forEach((question: Question) =>
+          this.loadAnswers(question.id)
+        );
       },
       error: (error) => {
         throwError(() => new Error(error));
@@ -103,7 +108,9 @@ export class PlayQuizComponent implements OnInit {
   private calculateScore(): number {
     let score = 0;
     this.userAnswers.forEach((ua: UserAnswer) => {
-      const correctAnswer = this.answers[ua.questionId].find((a) => a.isCorrect);
+      const correctAnswer = this.answers[ua.questionId].find(
+        (a) => a.isCorrect
+      );
       if (correctAnswer && correctAnswer.id === ua.answerId) {
         score++;
       }
@@ -116,11 +123,12 @@ export class PlayQuizComponent implements OnInit {
   }
 
   onAnswerSelect(questionId: string, answerId: string): void {
-    const existingAnswer = this.userAnswers.find((userAnswer: UserAnswer) => userAnswer.questionId === questionId);
+    const existingAnswer = this.userAnswers.find(
+      (userAnswer: UserAnswer) => userAnswer.questionId === questionId
+    );
     if (existingAnswer) {
       existingAnswer.answerId = answerId;
-    }
-    else {
+    } else {
       const userAnswer: UserAnswer = {
         questionId: questionId,
         answerId: answerId,
@@ -130,11 +138,22 @@ export class PlayQuizComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log("questions", this.questions);
-    console.log("answers", this.answers);
-    console.log("user", this.userAnswers);
-
     const score = this.calculateScore();
-    console.log("score", score);
+
+    const request: GameCreate = {
+      quizId: this.quiz.id,
+      played: new Date(),
+      score: score,
+      maxScore: this.questions.length,
+    };
+
+    this.quizGameService.addGame(request).subscribe({
+      next: (game: Game) => {
+        this.router.navigate(['games/score', game.id]);
+      },
+      error: (error) => {
+        (this.isError = true), (this.errorMessage = error);
+      },
+    });
   }
 }
