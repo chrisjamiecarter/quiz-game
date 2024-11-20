@@ -69,6 +69,7 @@ export class QuizUpsertDialogComponent implements OnInit {
       id: this.isUpdate ? this.data.id : '',
       name: [this.isUpdate ? this.data.name : '', Validators.required],
       description: this.isUpdate ? this.data.description : '',
+      imageUrl: this.isUpdate ? this.data.imageUrl : '',
     });
 
     this.initialiseInsertForm();
@@ -199,6 +200,7 @@ export class QuizUpsertDialogComponent implements OnInit {
     const quizRequest: QuizCreate = {
       name: this.quizForm.value.name,
       description: this.quizForm.value.description,
+      imageUrl: this.quizForm.value.imageUrl,
     };
 
     this.quizGameService
@@ -213,6 +215,7 @@ export class QuizUpsertDialogComponent implements OnInit {
       id: this.quizForm.value.id,
       name: this.quizForm.value.name,
       description: this.quizForm.value.description,
+      imageUrl: this.quizForm.value.imageUrl,
     };
     
     this.quizGameService.getQuestionsByQuizId(quiz.id).subscribe({

@@ -17,6 +17,8 @@ internal class QuizConfiguration : IEntityTypeConfiguration<Quiz>
 
         builder.Property(p => p.Name).IsRequired();
 
-        builder.Property(p => p.Name).HasDefaultValue("");
+        builder.Property(p => p.Description).HasDefaultValue("");
+
+        builder.Property(p => p.ImageUrl).HasDefaultValue("https://chrisjamiecarter.github.io/quiz-game/img/default.png");
     }
 }

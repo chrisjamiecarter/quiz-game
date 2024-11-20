@@ -46,6 +46,7 @@ export class QuizDeleteDialogComponent implements OnInit {
     this.quizForm = this.formBuilder.group({
       name: this.data.name,
       description: this.data.description,
+      imageUrl: this.data.imageUrl,
     });
   }
 

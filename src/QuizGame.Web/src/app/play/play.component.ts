@@ -35,7 +35,7 @@ export class PlayComponent implements AfterViewInit {
   quizzes: Quiz[] = [];
   pagedQuizzes: Quiz[] = [];
   pageIndex: number = 0;
-  pageSize: number = 4;
+  pageSize: number = 6;
 
   private readonly quizGameService = inject(QuizGameService);
 

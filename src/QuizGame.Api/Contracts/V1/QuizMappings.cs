@@ -9,26 +9,40 @@ public static class QuizMappings
 {
     public static Quiz ToDomain(this QuizCreateRequest request)
     {
-        return new Quiz
+        var quiz = new Quiz
         {
             Id = Guid.NewGuid(),
             Name = request.Name,
             Description = request.Description,
         };
+
+        if (!string.IsNullOrWhiteSpace(request.ImageUrl))
+        {
+            quiz.ImageUrl = request.ImageUrl;
+        }
+        
+        return quiz;
     }
 
     public static Quiz ToDomain(this QuizUpdateRequest request, Quiz entity)
     {
-        return new Quiz
+        var quiz = new Quiz
         {
             Id = entity.Id,
             Name = request.Name,
             Description = request.Description,
         };
+
+        if (!string.IsNullOrWhiteSpace(request.ImageUrl))
+        {
+            quiz.ImageUrl = request.ImageUrl;
+        }
+
+        return quiz;
     }
 
     public static QuizResponse ToResponse(this Quiz entity)
     {
-        return new QuizResponse(entity.Id, entity.Name, entity.Description);
+        return new QuizResponse(entity.Id, entity.Name, entity.Description, entity.ImageUrl);
     }
 }
