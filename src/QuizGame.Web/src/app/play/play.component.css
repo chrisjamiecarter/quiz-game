@@ -1,0 +1,19 @@
+.component-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  mat-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  mat-card-content {
+    flex-grow: 1;
+    font-size: medium;
+    margin: 1rem 0;
+  }
+  
