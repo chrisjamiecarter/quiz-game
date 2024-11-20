@@ -102,6 +102,7 @@ export class QuizGameService {
     const request: QuizUpdate = {
       name: quiz.name,
       description: quiz.description,
+      imageUrl: quiz.imageUrl,
     };
 
     return this.http

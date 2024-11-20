@@ -1,29 +1,34 @@
 <h2 mat-dialog-title>Delete Quiz</h2>
 
 <mat-dialog-content>
-    <form [formGroup]="quizForm" class="form-container">
-      <mat-form-field appearance="outline" class="mt">
-        <mat-label>Name</mat-label>
-        <input
-          matInput
-          type="text"
-          formControlName="name"
-          readonly
-        />
-        <mat-icon matPrefix>abc</mat-icon>
-      </mat-form-field>
-  
-      <mat-form-field appearance="outline">
-        <mat-label>Description</mat-label>
-        <textarea
-          matInput
-          type="text"
-          formControlName="description"
-          readonly
-        ></textarea>
-        <mat-icon matPrefix>description</mat-icon>
-      </mat-form-field>
-    </form>
+  <form [formGroup]="quizForm" class="form-container">
+    <mat-form-field appearance="outline" class="mt">
+      <mat-label>Name</mat-label>
+      <input matInput
+             type="text"
+             formControlName="name"
+             readonly />
+      <mat-icon matPrefix>abc</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea matInput
+                type="text"
+                formControlName="description"
+                readonly></textarea>
+      <mat-icon matPrefix>description</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Image URL</mat-label>
+      <input matInput
+                type="text"
+                formControlName="imageUrl"
+                readonly />
+      <mat-icon matPrefix>image</mat-icon>
+    </mat-form-field>
+  </form>
   </mat-dialog-content>
   
   <mat-dialog-actions class="buttons-container">
@@ -45,4 +50,3 @@
       Delete
     </button>
   </mat-dialog-actions>
-  

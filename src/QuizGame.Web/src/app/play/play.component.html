@@ -5,23 +5,28 @@
 
   <app-error *ngIf="isError" [message]="errorMessage"></app-error>
 
-  <mat-grid-list cols="2" rowHeight="20rem" gutterSize="1rem">
+  <mat-grid-list cols="3" rowHeight="21rem" gutterSize="1rem">
     <mat-grid-tile *ngFor="let quiz of pagedQuizzes">
       <mat-card appearance="outlined">
-        <mat-card-header>
-          <mat-card-title-group>
-            <mat-card-title> {{ quiz.name }} </mat-card-title>
-          </mat-card-title-group>
-        </mat-card-header>
-        <mat-card-content>
-          {{ quiz.description }}
-        </mat-card-content>
-        <mat-card-actions class="buttons-container">
-          <a mat-stroked-button [routerLink]="['/play/quiz', quiz.id]">
-            <mat-icon>sports_esports</mat-icon>
-            Play
-          </a>
-        </mat-card-actions>
+          <mat-card-header>
+              <mat-card-title> {{ quiz.name }} </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="content-container">
+              <div class="quiz-image-container">
+                <img mat-card-image [src]="quiz.imageUrl" alt="Quiz image">
+              </div>
+              <div class="quiz-description-container">
+                {{ quiz.description }}
+              </div>
+            </div>
+          </mat-card-content>
+          <mat-card-actions class="buttons-container">
+            <a mat-stroked-button [routerLink]="['/play/quiz', quiz.id]">
+              <mat-icon>sports_esports</mat-icon>
+              Play
+            </a>
+          </mat-card-actions>
       </mat-card>
     </mat-grid-tile>
   </mat-grid-list>

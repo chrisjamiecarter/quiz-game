@@ -17,20 +17,23 @@
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Description</mat-label>
-          <textarea
-            matInput
-            type="text"
-            formControlName="description"
-          ></textarea>
+          <textarea matInput
+                    type="text"
+                    formControlName="description"></textarea>
           <mat-icon matPrefix>description</mat-icon>
         </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Image URL</mat-label>
+          <input matInput
+                  type="text"
+                  formControlName="imageUrl" />
+          <mat-icon matPrefix>image</mat-icon>
+        </mat-form-field>
         <div class="buttons-container">
-          <button
-            mat-stroked-button
-            mat-dialog-close
-            color="accent"
-            cdkFocusInitial
-          >
+          <button mat-stroked-button
+                  mat-dialog-close
+                  color="accent"
+                  cdkFocusInitial>
             Cancel
           </button>
           <button mat-stroked-button matStepperNext>Next</button>
