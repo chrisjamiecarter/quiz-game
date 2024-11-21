@@ -1,0 +1,13 @@
+td,
+th {
+  width: 33.3%;
+}
+
+mat-form-field {
+    width: 100%;
+}
+
+.filter-container {
+    display: flex;
+    gap: 0.5rem;
+  }

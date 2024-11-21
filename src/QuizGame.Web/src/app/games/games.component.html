@@ -6,6 +6,32 @@
   <app-error *ngIf="isError" [message]="errorMessage"></app-error>
 
   <div class="table-container">
+    <div class="filter-container">
+      <mat-form-field appearance="outline">
+        <mat-label>Filter from</mat-label>
+        <input matInput [matDatepicker]="fromPicker" (dateChange)="onFilterDateChanged()" [(ngModel)]="tableFilterFromDate"/>
+        <mat-datepicker-toggle matIconSuffix [for]="fromPicker"></mat-datepicker-toggle>
+        <mat-datepicker #fromPicker></mat-datepicker>
+      </mat-form-field>
+    
+      <mat-form-field appearance="outline">
+        <mat-label>Filter to</mat-label>
+        <input matInput [matDatepicker]="toPicker" (dateChange)="onFilterDateChanged()" [(ngModel)]="tableFilterToDate">
+        <mat-datepicker-toggle matIconSuffix [for]="toPicker"></mat-datepicker-toggle>
+        <mat-datepicker #toPicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Select an option</mat-label>
+        <mat-select (selectionChange)="onFilterSelectionChanged()" [(ngModel)]="tableFilterQuizId">
+          <mat-option>None</mat-option>
+          <mat-option *ngFor="let quiz of quizzes" [value]="quiz.id"> {{ quiz.name }} </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-fab extended color="accent" (click)="onResetFilter()">Reset</button>
+    </div>
+
     <div class="mat-elevation-z8">
       <table mat-table [dataSource]="games" matSort (matSortChange)="handleSortEvent($event)">
         <!-- played Column -->
