@@ -6,6 +6,8 @@
     align-items: center;
 }
 
+
+.game-message-header,
 .game-message-text {
     text-align: center;
 }

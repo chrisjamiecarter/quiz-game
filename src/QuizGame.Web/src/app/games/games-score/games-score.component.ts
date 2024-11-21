@@ -11,9 +11,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-games-score',
   standalone: true,
-  imports: [CommonModule, ErrorComponent, MatButtonModule, MatProgressSpinnerModule],
+  imports: [
+    CommonModule,
+    ErrorComponent,
+    MatButtonModule,
+    MatProgressSpinnerModule,
+  ],
   templateUrl: './games-score.component.html',
-  styleUrl: './games-score.component.css'
+  styleUrl: './games-score.component.css',
 })
 export class GamesScoreComponent implements OnInit {
   isLoading: boolean = false;
@@ -29,7 +34,7 @@ export class GamesScoreComponent implements OnInit {
     const gameId = this.route.snapshot.paramMap.get('id')!;
     this.loadGame(gameId);
   }
-  
+
   private launchConfetti(): void {
     const duration: number = 5 * 1000;
     const end: number = Date.now() + duration;
@@ -39,7 +44,7 @@ export class GamesScoreComponent implements OnInit {
         particleCount: 7,
         angle: Math.random() * 60 + 150,
         spread: 55,
-        origin: { x: Math.random(), y: Math.random() - 0.2},
+        origin: { x: Math.random(), y: Math.random() - 0.2 },
       });
 
       if (Date.now() < end) {
@@ -80,16 +85,16 @@ export class GamesScoreComponent implements OnInit {
         return 'Better luck next time!';
     }
   }
-  
+
   get gameMessageText(): string {
     const percentage = this.scorePercentage();
     switch (true) {
       case percentage >= 100:
-        return 'That was the maximum score, try another quiz.';
+        return 'You’ve achieved the maximum score possible for this quiz. Why not challenge yourself with a different one?';
       case percentage >= 75:
-        return 'So close, try again, or choose another quiz!';
+        return 'You were so close to perfection. Try the quiz again or explore a new challenge!';
       default:
-        return 'Keep practicing to improve your score.';
+        return 'Don’t give up! Keep practicing, and you’ll see your score improve in no time.';
     }
   }
 
@@ -102,16 +107,16 @@ export class GamesScoreComponent implements OnInit {
     const percentage = this.scorePercentage();
     return `${this.game.score} out of ${this.game.maxScore} - ${percentage}%`;
   }
-  
+
   private scorePercentage(): number {
     return Math.floor((100 * this.game.score) / this.game.maxScore);
   }
 
-  onHomeClicked():void {
+  onHomeClicked(): void {
     this.router.navigate(['']);
   }
-  
-  onPlayAgainClicked():void {
+
+  onPlayAgainClicked(): void {
     this.router.navigate(['play/quiz/', this.game.quizId]);
   }
 }
