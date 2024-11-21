@@ -125,14 +125,28 @@ export class QuizGameService {
       .get<Game>(`${this.baseUrl}/games/${id}`)
       .pipe(retry(3), catchError(this.handleError));
   }
-
-  getGames(index: number, size: number, sort: string): Observable<Games> {
+  
+  getGames(quizId: string | null, from: Date | null, to: Date | null, index: number, size: number, sort: string): Observable<Games> {
     let url = `${this.baseUrl}/games/page?`;
+
+    // Optional.
+    if (quizId) {
+      url += `quizId=${quizId}&`;
+    }
+
+    if (from) {
+      url += `from=${from.toISOString()}&`;
+    }
+
+    if (to) {
+      url += `to=${to.toISOString()}&`;
+    }
 
     if (sort != '') {
       url += `sort=${sort}&`;
     }
 
+    // Required (not enforced, just otherwise will default to 0 and 10).
     url += `index=${index}&size=${size}`;
     
     return this.http.get<Games>(url);

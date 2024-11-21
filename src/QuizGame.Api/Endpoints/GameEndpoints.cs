@@ -39,6 +39,8 @@ public static class GameEndpoints
 
     public static async Task<IResult> GetPaginatedGamesAsync([FromServices] IGameService service,
                                                              [FromQuery] Guid? quizId = null,
+                                                             [FromQuery] DateTime? from = null,
+                                                             [FromQuery] DateTime? to = null,
                                                              [FromQuery] string? sort = null,
                                                              [FromQuery] int? index = null,
                                                              [FromQuery] int? size = null)
@@ -48,7 +50,7 @@ public static class GameEndpoints
             return TypedResults.BadRequest(new { error = "Invalid query parameters." });
         }
 
-        var (totalRecords, gameRecords) = await service.ReturnPaginatedGames(quizId, sort, index, size);
+        var (totalRecords, gameRecords) = await service.ReturnPaginatedGames(quizId, from, to, sort, index, size);
 
         return TypedResults.Ok(new PaginatedGameResponse(totalRecords, gameRecords.Select(x => x.ToResponse()).ToList()));
     }

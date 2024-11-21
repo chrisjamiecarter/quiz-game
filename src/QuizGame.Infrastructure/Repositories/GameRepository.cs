@@ -24,13 +24,23 @@ internal class GameRepository : IGameRepository
         await _context.Game.AddAsync(game);
     }
 
-    public async Task<(int totalRecords, IReadOnlyList<Game> gameRecords)> ReturnPaginatedGames(Guid? quizId, string? sortBy, int pageIndex, int pageSize)
+    public async Task<(int totalRecords, IReadOnlyList<Game> gameRecords)> ReturnPaginatedGames(Guid? quizId, DateTime? dateFrom, DateTime? dateTo, string? sortBy, int pageIndex, int pageSize)
     {
         var query = _context.Game.Include(x => x.Quiz).AsQueryable();
 
         if (quizId != null)
         {
             query = query.Where(x => x.QuizId == quizId);
+        }
+
+        if (dateFrom != null)
+        {
+            query = query.Where(x => x.Played >= dateFrom);
+        }
+
+        if (dateTo != null)
+        {
+            query = query.Where(x => x.Played <= dateTo);
         }
 
         query = sortBy switch

@@ -26,12 +26,12 @@ public class GameService : IGameService
         return created > 0;
     }
 
-    public async Task<(int totalRecords, IEnumerable<Game> gameRecords)> ReturnPaginatedGames(Guid? quizId, string? sortBy, int? pageIndex, int? pageSize)
+    public async Task<(int totalRecords, IEnumerable<Game> gameRecords)> ReturnPaginatedGames(Guid? quizId, DateTime? dateFrom, DateTime? dateTo, string? sortBy, int? pageIndex, int? pageSize)
     {
         pageIndex ??= 1;
         pageSize ??= 10;
 
-        return await _unitOfWork.Games.ReturnPaginatedGames(quizId, sortBy, pageIndex.Value, pageSize.Value);
+        return await _unitOfWork.Games.ReturnPaginatedGames(quizId, dateFrom, dateTo, sortBy, pageIndex.Value, pageSize.Value);
     }
 
     public async Task<IEnumerable<Game>> ReturnAllAsync()

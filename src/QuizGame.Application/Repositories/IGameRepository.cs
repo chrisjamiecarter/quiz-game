@@ -9,7 +9,7 @@ namespace QuizGame.Application.Repositories;
 public interface IGameRepository
 {
     Task CreateAsync(Game game);
-    Task<(int totalRecords, IReadOnlyList<Game> gameRecords)> ReturnPaginatedGames(Guid? quizId, string? sortBy, int pageIndex, int pageSize);
+    Task<(int totalRecords, IReadOnlyList<Game> gameRecords)> ReturnPaginatedGames(Guid? quizId, DateTime? dateFrom, DateTime? dateTo, string? sortBy, int pageIndex, int pageSize);
     Task<IReadOnlyList<Game>> ReturnAsync();
     Task<Game?> ReturnAsync(Guid id);
     Task<IReadOnlyList<Game>> ReturnByQuizIdAsync(Guid quizId);
