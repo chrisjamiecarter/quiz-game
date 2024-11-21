@@ -40,7 +40,7 @@ export class QuizzesComponent implements AfterViewInit {
   isError: boolean = false;
   errorMessage: string = '';
   quizzes: Quiz[] = [];
-  tableColumns: string[] = ['name', 'description', 'actions'];
+  tableColumns: string[] = ['avatar', 'name', 'description', 'actions'];
   tableDataSource: MatTableDataSource<Quiz> = new MatTableDataSource<Quiz>([]);
   tableFilterText: string = '';
 

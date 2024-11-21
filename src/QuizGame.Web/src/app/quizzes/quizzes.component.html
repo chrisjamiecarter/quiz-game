@@ -13,6 +13,15 @@
 
     <div class="mat-elevation-z8">
       <table mat-table [dataSource]="tableDataSource">
+        <ng-container matColumnDef="avatar">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let quiz">
+            <div class="avatar-container">
+              <img class="avatar-image" [src]="quiz.imageUrl" alt="Quiz image" />
+            </div>
+          </td>
+        </ng-container>
+
         <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef>Name</th>
           <td mat-cell *matCellDef="let quiz">{{ quiz.name }}</td>

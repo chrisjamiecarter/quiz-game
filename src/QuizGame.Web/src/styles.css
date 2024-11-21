@@ -62,3 +62,17 @@ body {
   align-items: center;
   justify-content: center;
 }
+
+.avatar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar-image {
+  padding: 0.5rem;
+  max-height: 3rem;
+  max-width: 3rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
