@@ -29,6 +29,7 @@ import { QuestionCreate } from '../../shared/question-create.interface';
 import { Question } from '../../shared/question.interface';
 import { AnswerCreate } from '../../shared/answer-create.interface';
 import { Answer } from '../../shared/answer.interface';
+import { validateCorrectAnswers } from '../../validators/correct-answers.validator';
 
 @Component({
   selector: 'app-quiz-upsert-dialog',
@@ -139,7 +140,8 @@ export class QuizUpsertDialogComponent implements OnInit {
         this.createEmptyAnswerFormGroup(),
         this.createEmptyAnswerFormGroup(),
         this.createEmptyAnswerFormGroup(),
-      ]),
+      ],
+      validateCorrectAnswers),
     });
   }
 
@@ -150,7 +152,7 @@ export class QuizUpsertDialogComponent implements OnInit {
     return this.formBuilder.group({
       id: question.id,
       text: [question.text, Validators.required],
-      answers: this.formBuilder.array(answerFormGroups),
+      answers: this.formBuilder.array(answerFormGroups, validateCorrectAnswers),
     });
   }
 

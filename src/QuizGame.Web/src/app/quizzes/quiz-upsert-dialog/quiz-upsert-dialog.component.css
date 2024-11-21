@@ -1,11 +1,3 @@
-.mat-stepper-horizontal {
-  margin-top: 1rem;
-}
-
-.question-button {
-  justify-content: flex-end;
-}
-
 mat-form-field {
   width: 100%;
 }
@@ -16,7 +8,10 @@ mat-form-field {
   gap: 1rem;
 }
 
-/* Input field takes up remaining space */
 .answer-input {
   flex: 1;
+}
+
+.question-button {
+  justify-content: flex-end;
 }
