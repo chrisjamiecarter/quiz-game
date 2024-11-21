@@ -60,6 +60,11 @@
 
         <tr mat-header-row *matHeaderRowDef="tableColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: tableColumns"></tr>
+        
+        <!-- No data. -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="3">No data found.</td>
+        </tr>
       </table>
 
       <mat-paginator
