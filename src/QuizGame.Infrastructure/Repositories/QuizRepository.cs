@@ -35,7 +35,7 @@ internal class QuizRepository : IQuizRepository
 
     public async Task<IReadOnlyList<Quiz>> ReturnAsync()
     {
-        return await _context.Quiz.ToListAsync();
+        return await _context.Quiz.OrderBy(o => o.Name).ToListAsync();
     }
 
     public async Task<Quiz?> ReturnAsync(Guid id)
