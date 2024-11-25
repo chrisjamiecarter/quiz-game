@@ -13,13 +13,18 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        builder.Services.AddApi()
-                        .AddApplication()
-                        .AddInfrastructure(builder.Configuration);
+        
+        if (builder.Environment.IsDevelopment())
+        {
+            builder.Configuration.AddUserSecrets<Program>();
+        }
+;       builder.Services.AddApi();
+        builder.Services.AddApplication();
+        builder.Services.AddInfrastructure(builder.Configuration);
 
         var app = builder.Build();
-        app.AddMiddleware()
-           .SetUpDatabase()
-           .Run();
+        app.AddMiddleware();
+        app.SetUpDatabase();
+        app.Run();
     }
 }
