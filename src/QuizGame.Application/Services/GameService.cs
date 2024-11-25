@@ -28,7 +28,7 @@ public class GameService : IGameService
 
     public async Task<(int totalRecords, IEnumerable<Game> gameRecords)> ReturnPaginatedGames(Guid? quizId, DateTime? dateFrom, DateTime? dateTo, string? sortBy, int? pageIndex, int? pageSize)
     {
-        pageIndex ??= 1;
+        pageIndex ??= 0;
         pageSize ??= 10;
 
         return await _unitOfWork.Games.ReturnPaginatedGames(quizId, dateFrom, dateTo, sortBy, pageIndex.Value, pageSize.Value);

@@ -4,6 +4,7 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using QuizGame.Api.Contracts.V1;
+using QuizGame.Domain.Entities;
 using QuizGame.Infrastructure.Contexts;
 using QuizGame.Infrastructure.Services;
 using QuizGame.Integration.Tests.Factories;
@@ -109,13 +110,17 @@ public class GameEndpointsTests
     public async Task GetPaginatedGamesAsync_ShouldGet_WhenDefaultParametersSupplied()
     {
         // Arrange.
+        int defaultPageIndex = 0;
+        int defaultPageSize = 10;
 
         // Act.
         var response = await _client.GetAsync($"/api/v1/quizgame/games/page");
         var apiResult = await response.Content.ReadFromJsonAsync<PaginatedGameResponse>();
 
-        var dbCount = await _context.Game.AsNoTracking().CountAsync();
-        var dbRecords = await _context.Game.Include(x => x.Quiz).AsNoTracking().OrderBy(x => x.Played).Skip(0).Take(10).ToListAsync();
+        var query = _context.Game.Include(x => x.Quiz).AsNoTracking().OrderByDescending(x => x.Played);
+
+        var dbCount = await query.CountAsync();
+        var dbRecords = await query.Skip(defaultPageIndex * defaultPageSize).Take(defaultPageSize).ToListAsync();
         var dbResult = new PaginatedGameResponse(dbCount, dbRecords.Select(x => x.ToResponse()).ToList());
 
         // Assert.
@@ -133,17 +138,17 @@ public class GameEndpointsTests
         // Arrange.
         var quiz = await _context.Quiz.AsNoTracking().FirstAsync();
         string sortBy = "score-desc";
-        int page = 2;
-        int size = 5;
+        int pageIndex = 2;
+        int pageSize = 5;
 
         // Act.
-        var response = await _client.GetAsync($"/api/v1/quizgame/games/page?quizId={quiz.Id}&sortBy={sortBy}&page={page}&size={size}");
+        var response = await _client.GetAsync($"/api/v1/quizgame/games/page?quizId={quiz.Id}&sort={sortBy}&index={pageIndex}&size={pageSize}");
         var apiResult = await response.Content.ReadFromJsonAsync<PaginatedGameResponse>();
 
         var query = _context.Game.Include(x => x.Quiz).AsNoTracking().Where(x => x.QuizId == quiz.Id).OrderByDescending(x => x.Score);
 
         var dbCount = await query.CountAsync();
-        var dbRecords = await query.Skip((page - 1) * size).Take(size).ToListAsync();
+        var dbRecords = await query.Skip(pageIndex * pageSize).Take(pageSize).ToListAsync();
         var dbResult = new PaginatedGameResponse(dbCount, dbRecords.Select(x => x.ToResponse()).ToList());
 
         // Assert.
