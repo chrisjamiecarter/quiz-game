@@ -63,6 +63,26 @@ public class QuestionEndpointsTests
     }
 
     [Fact]
+    public async Task GetQuestionAnswersAsync_ShouldGetAnswers_WhenValidQuizId()
+    {
+        // Arrange.
+        var request = await _context.Question.AsNoTracking().FirstAsync();
+
+        // Act.
+        var response = await _client.GetAsync($"/api/v1/quizgame/questions/{request.Id}/answers");
+        var apiResult = await response.Content.ReadFromJsonAsync<IReadOnlyList<AnswerResponse>>();
+        var dbResult = await _context.Answer.AsNoTracking().Where(x => x.QuestionId == request.Id).ToListAsync();
+
+        // Assert.
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        apiResult.Should().NotBeEmpty();
+        dbResult.Should().NotBeEmpty();
+
+        apiResult.Should().BeEquivalentTo(dbResult.Select(x => x.ToResponse()));
+    }
+
+    [Fact]
     public async Task GetQuestionAsync_ShouldGet_WhenDataIsValid()
     {
         // Arrange.
@@ -91,26 +111,6 @@ public class QuestionEndpointsTests
         var response = await _client.GetAsync($"/api/v1/quizgame/questions");
         var apiResult = await response.Content.ReadFromJsonAsync<IReadOnlyList<QuestionResponse>>();
         var dbResult = await _context.Question.AsNoTracking().ToListAsync();
-
-        // Assert.
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-        apiResult.Should().NotBeEmpty();
-        dbResult.Should().NotBeEmpty();
-
-        apiResult.Should().BeEquivalentTo(dbResult.Select(x => x.ToResponse()));
-    }
-
-    [Fact]
-    public async Task GetQuizQuestionsAsync_ShouldGet_WhenDataIsValid()
-    {
-        // Arrange.
-        var request = await _context.Quiz.AsNoTracking().FirstAsync();
-
-        // Act.
-        var response = await _client.GetAsync($"/api/v1/quizgame/questions/quiz/{request.Id}");
-        var apiResult = await response.Content.ReadFromJsonAsync<IReadOnlyList<QuestionResponse>>();
-        var dbResult = await _context.Question.AsNoTracking().Where(x => x.QuizId == request.Id).ToListAsync();
 
         // Assert.
         response.StatusCode.Should().Be(HttpStatusCode.OK);

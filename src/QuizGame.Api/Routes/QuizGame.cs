@@ -43,11 +43,6 @@ public static class QuizGame
                .WithSummary("Get a Quiz Game answer by ID.")
                .MapToApiVersion(1);
 
-        builder.MapGet("/question/{id}", AnswerEndpoints.GetQuestionAnswersAsync)
-               .WithName(nameof(AnswerEndpoints.GetQuestionAnswersAsync))
-               .WithSummary("Get all Quiz Game answers for a question ID.")
-               .MapToApiVersion(1);
-
         builder.MapPost("/", AnswerEndpoints.CreateAnswerAsync)
                .WithName(nameof(AnswerEndpoints.CreateAnswerAsync))
                .WithSummary("Create a new Quiz Game answer.")
@@ -89,11 +84,6 @@ public static class QuizGame
                .WithSummary("Get a Quiz Game game by ID.")
                .MapToApiVersion(1);
 
-        builder.MapGet("/quiz/{id}", GameEndpoints.GetQuizGamesAsync)
-               .WithName(nameof(GameEndpoints.GetQuizGamesAsync))
-               .WithSummary("Get all Quiz Game games for a quiz ID.")
-               .MapToApiVersion(1);
-
         builder.MapPost("/", GameEndpoints.CreateGameAsync)
                .WithName(nameof(GameEndpoints.CreateGameAsync))
                .WithSummary("Create a new Quiz Game game.")
@@ -119,9 +109,9 @@ public static class QuizGame
                .WithSummary("Get a Quiz Game question by ID.")
                .MapToApiVersion(1);
 
-        builder.MapGet("/quiz/{id}", QuestionEndpoints.GetQuizQuestionsAsync)
-               .WithName(nameof(QuestionEndpoints.GetQuizQuestionsAsync))
-               .WithSummary("Get all Quiz Game questions for a quiz ID.")
+        builder.MapGet("/{id}/answers", QuestionEndpoints.GetQuestionAnswersAsync)
+               .WithName(nameof(QuestionEndpoints.GetQuestionAnswersAsync))
+               .WithSummary("Get all answers for a Quiz Game question by ID.")
                .MapToApiVersion(1);
 
         builder.MapPost("/", QuestionEndpoints.CreateQuestionAsync)
@@ -160,6 +150,16 @@ public static class QuizGame
                .WithSummary("Get a Quiz Game quiz by ID.")
                .MapToApiVersion(1);
 
+        builder.MapGet("/{id}/games", QuizEndpoints.GetQuizGamesAsync)
+               .WithName(nameof(QuizEndpoints.GetQuizGamesAsync))
+               .WithSummary("Get all games for a Quiz Game quiz by ID.")
+               .MapToApiVersion(1);
+
+        builder.MapGet("/{id}/questions", QuizEndpoints.GetQuizQuestionsAsync)
+               .WithName(nameof(QuizEndpoints.GetQuizQuestionsAsync))
+               .WithSummary("Get all questions for a Quiz Game quiz by ID.")
+               .MapToApiVersion(1);
+        
         builder.MapPost("/", QuizEndpoints.CreateQuizAsync)
                .WithName(nameof(QuizEndpoints.CreateQuizAsync))
                .WithSummary("Create a new Quiz Game quiz.")
@@ -175,6 +175,11 @@ public static class QuizGame
         builder.MapDelete("/{id}", QuizEndpoints.DeleteQuizAsync)
                .WithName(nameof(QuizEndpoints.DeleteQuizAsync))
                .WithSummary("Delete an existing Quiz Game quiz.")
+               .MapToApiVersion(1);
+
+        builder.MapDelete("/{id}/questions", QuizEndpoints.DeleteQuizQuestionsAsync)
+               .WithName(nameof(QuizEndpoints.DeleteQuizQuestionsAsync))
+               .WithSummary("Delete all questions for a Quiz Game quiz by ID.")
                .MapToApiVersion(1);
 
         return app;
