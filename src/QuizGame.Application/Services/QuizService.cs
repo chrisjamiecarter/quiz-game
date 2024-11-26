@@ -46,6 +46,22 @@ public class QuizService : IQuizService
         return deleted > 0;
     }
 
+    public async Task<bool> DeleteQuestionsAsync(Quiz quiz)
+    {
+        var cacheKey = $"quiz_{quiz.Id}";
+        await _cacheService.RemoveAsync(cacheKey);
+        await _cacheService.RemoveAsync(AllQuizzesCacheKey);
+
+        var expected = quiz.Questions.Count;
+        foreach (var question in quiz.Questions)
+        {
+            await _unitOfWork.Questions.DeleteAsync(question);
+        }
+
+        var deleted = await _unitOfWork.SaveAsync();
+        return deleted == expected;
+    }
+
     public async Task<IEnumerable<Quiz>> ReturnAllAsync()
     {
         var cachedData = await _cacheService.GetAsync<IEnumerable<Quiz>>(AllQuizzesCacheKey);

@@ -63,6 +63,23 @@ public class QuizEndpointsTests
     }
 
     [Fact]
+    public async Task DeleteQuestionsAsyncAsync_ShouldDeleteQuestions_WhenDataIsValid()
+    {
+        // Arrange.
+        var request = await _context.Quiz.AsNoTracking().FirstAsync();
+
+        // Act.
+        var response = await _client.DeleteAsync($"/api/v1/quizgame/quizzes/{request.Id}/questions");
+        var apiResult = await response.Content.ReadAsStringAsync();
+        var dbResult = await _context.Quiz.Include(q => q.Questions).AsNoTracking().SingleOrDefaultAsync(x => x.Id == request.Id);
+
+        // Assert.
+        response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        apiResult.Should().BeEmpty();
+        dbResult.Questions.Should().BeEmpty();
+    }
+
+    [Fact]
     public async Task GetQuizAsync_ShouldGet_WhenDataIsValid()
     {
         // Arrange.

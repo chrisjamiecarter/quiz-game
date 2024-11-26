@@ -73,17 +73,6 @@ export class QuizGameService {
     );
   }
 
-  deleteQuestion(id: string): Observable<object> {
-    let url = `${this.baseUrl}/questions/${id}`;
-
-    return this.http
-    .delete<object>(url)
-    .pipe(
-      retry(3),
-      catchError(this.handleError),
-    );
-  }
-
   deleteQuiz(id: string): Observable<object> {
     let url = `${this.baseUrl}/quizzes/${id}`;
 
@@ -94,6 +83,17 @@ export class QuizGameService {
       catchError(this.handleError),
       tap(() => this._isStale.next(true))
     );
+  }
+
+  deleteQuizQuestions(id: string): Observable<object> {
+    let url = `${this.baseUrl}/quizzes/${id}/questions`;
+
+    return this.http
+      .delete<object>(url)
+      .pipe(
+        retry(3),
+        catchError(this.handleError),
+      );
   }
 
   editQuiz(quiz: Quiz): Observable<Quiz> {
@@ -125,7 +125,7 @@ export class QuizGameService {
       .get<Game>(`${this.baseUrl}/games/${id}`)
       .pipe(retry(3), catchError(this.handleError));
   }
-  
+
   getGames(quizId: string | null, from: Date | null, to: Date | null, index: number, size: number, sort: string): Observable<Games> {
     let url = `${this.baseUrl}/games/page?`;
 
@@ -148,7 +148,7 @@ export class QuizGameService {
 
     // Required (not enforced, just otherwise will default to 0 and 10).
     url += `index=${index}&size=${size}`;
-    
+
     return this.http.get<Games>(url);
   }
 
@@ -157,7 +157,7 @@ export class QuizGameService {
       .get<Question[]>(`${this.baseUrl}/questions/quiz/${quizId}`)
       .pipe(retry(3), catchError(this.handleError));
   }
-  
+
   getQuiz(id: string): Observable<Quiz> {
     return this.http
       .get<Quiz>(`${this.baseUrl}/quizzes/${id}`)

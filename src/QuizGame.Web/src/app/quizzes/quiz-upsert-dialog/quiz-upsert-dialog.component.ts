@@ -219,10 +219,8 @@ export class QuizUpsertDialogComponent implements OnInit {
       description: this.quizForm.value.description,
       imageUrl: this.quizForm.value.imageUrl,
     };
-    
-    this.quizGameService.getQuestionsByQuizId(quiz.id).subscribe({
-      next: (questions: Question[]) => questions.map((question: Question) => this.quizGameService.deleteQuestion(question.id).subscribe()),
-    });
+
+    this.quizGameService.deleteQuizQuestions(quiz.id).subscribe();
 
     this.quizGameService
       .editQuiz(quiz)

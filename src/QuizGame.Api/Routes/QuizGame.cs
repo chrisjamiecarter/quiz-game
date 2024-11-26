@@ -177,6 +177,11 @@ public static class QuizGame
                .WithSummary("Delete an existing Quiz Game quiz.")
                .MapToApiVersion(1);
 
+        builder.MapDelete("/{id}/questions", QuizEndpoints.DeleteQuestionsAsync)
+            .WithName(nameof(QuizEndpoints.DeleteQuestionsAsync))
+            .WithSummary("Delete all questions for a Quiz Game quiz by ID.")
+            .MapToApiVersion(1);
+
         return app;
     }
 }

@@ -35,6 +35,21 @@ public static class QuizEndpoints
             ? TypedResults.NoContent()
             : TypedResults.BadRequest(new { error = "Unable to delete quiz." });
     }
+    
+    public static async Task<IResult> DeleteQuestionsAsync([FromRoute] Guid id, [FromServices] IQuizService service)
+    {
+        var entity = await service.ReturnByIdAsync(id);
+        if (entity is null)
+        {
+            return TypedResults.NotFound();
+        }
+        
+        var deleted = await service.DeleteQuestionsAsync(entity);
+
+        return deleted
+            ? TypedResults.NoContent()
+            : TypedResults.BadRequest(new { error = "Unable to delete questions." });
+    }
 
     public static async Task<IResult> GetQuizAsync([FromRoute] Guid id, [FromServices] IQuizService service)
     {
