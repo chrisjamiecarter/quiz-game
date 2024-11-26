@@ -35,12 +35,12 @@ internal class QuizRepository : IQuizRepository
 
     public async Task<IReadOnlyList<Quiz>> ReturnAsync()
     {
-        return await _context.Quiz.Include(q => q.Questions).OrderBy(o => o.Name).ToListAsync();
+        return await _context.Quiz.OrderBy(o => o.Name).ToListAsync();
     }
 
     public async Task<Quiz?> ReturnAsync(Guid id)
     {
-        return await _context.Quiz.Include(q => q.Questions).SingleOrDefaultAsync(q => q.Id == id);
+        return await _context.Quiz.FindAsync(id);
     }
 
     public async Task UpdateAsync(Quiz quiz)

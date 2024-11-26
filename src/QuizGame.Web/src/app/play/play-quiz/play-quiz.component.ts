@@ -81,7 +81,7 @@ export class PlayQuizComponent implements OnInit {
   }
 
   private loadQuestions(quizId: string) {
-    this.quizGameService.getQuestionsByQuizId(quizId).subscribe({
+    this.quizGameService.getQuizQuestions(quizId).subscribe({
       next: (questions: Question[]) => {
         this.questions = questions;
         questions.forEach((question: Question) =>
@@ -95,7 +95,7 @@ export class PlayQuizComponent implements OnInit {
   }
 
   private loadAnswers(questionId: string) {
-    this.quizGameService.getAnswersByQuestionId(questionId).subscribe({
+    this.quizGameService.getQuestionAnswers(questionId).subscribe({
       next: (answers: Answer[]) => {
         this.answers[questionId] = answers;
       },

@@ -36,6 +36,13 @@ public static class QuestionEndpoints
             : TypedResults.BadRequest(new { error = "Unable to delete question." });
     }
 
+    public static async Task<IResult> GetQuestionAnswersAsync([FromRoute] Guid id, [FromServices] IAnswerService service)
+    {
+        var entities = await service.ReturnByQuestionIdAsync(id);
+
+        return TypedResults.Ok(entities.Select(x => x.ToResponse()));
+    }
+
     public static async Task<IResult> GetQuestionAsync([FromRoute] Guid id, [FromServices] IQuestionService service)
     {
         var entity = await service.ReturnByIdAsync(id);
@@ -49,13 +56,6 @@ public static class QuestionEndpoints
     {
         var entities = await service.ReturnAllAsync();
         
-        return TypedResults.Ok(entities.Select(x => x.ToResponse()));
-    }
-
-    public static async Task<IResult> GetQuizQuestionsAsync([FromRoute] Guid id, [FromServices] IQuestionService service)
-    {
-        var entities = await service.ReturnByQuizIdAsync(id);
-
         return TypedResults.Ok(entities.Select(x => x.ToResponse()));
     }
 

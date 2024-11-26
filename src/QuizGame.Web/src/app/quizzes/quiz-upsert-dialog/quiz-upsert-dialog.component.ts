@@ -91,12 +91,12 @@ export class QuizUpsertDialogComponent implements OnInit {
   }
 
   initialiseUpdateForm(quizId: string): void {
-    this.quizGameService.getQuestionsByQuizId(quizId).subscribe({
+    this.quizGameService.getQuizQuestions(quizId).subscribe({
       next: (questions: Question[]) => {
         const questionFormGroups: FormGroup[] = [];
 
         questions.forEach((question: Question, index: number) => {
-          this.quizGameService.getAnswersByQuestionId(question.id).subscribe({
+          this.quizGameService.getQuestionAnswers(question.id).subscribe({
             next: (answers) => {
               const questionFormGroup = this.createQuestionFormGroup(
                 question,

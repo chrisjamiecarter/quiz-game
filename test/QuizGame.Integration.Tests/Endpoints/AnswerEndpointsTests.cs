@@ -102,26 +102,6 @@ public class AnswerEndpointsTests
     }
 
     [Fact]
-    public async Task GetQuestionAnswersAsync_ShouldGet_WhenDataIsValid()
-    {
-        // Arrange.
-        var request = await _context.Question.AsNoTracking().FirstAsync();
-
-        // Act.
-        var response = await _client.GetAsync($"/api/v1/quizgame/answers/question/{request.Id}");
-        var apiResult = await response.Content.ReadFromJsonAsync<IReadOnlyList<AnswerResponse>>();
-        var dbResult = await _context.Answer.AsNoTracking().Where(x => x.QuestionId == request.Id).ToListAsync();
-
-        // Assert.
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-        apiResult.Should().NotBeEmpty();
-        dbResult.Should().NotBeEmpty();
-
-        apiResult.Should().BeEquivalentTo(dbResult.Select(x => x.ToResponse()));
-    }
-
-    [Fact]
     public async Task UpdateAnswerAsync_ShouldUpdate_WhenDataIsValid()
     {
         // Arrange.

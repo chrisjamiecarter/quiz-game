@@ -114,12 +114,6 @@ export class QuizGameService {
       );
   }
 
-  getAnswersByQuestionId(questionId: string): Observable<Answer[]> {
-    return this.http
-      .get<Answer[]>(`${this.baseUrl}/answers/question/${questionId}`)
-      .pipe(retry(3), catchError(this.handleError));
-  }
-
   getGame(id: string): Observable<Game> {
     return this.http
       .get<Game>(`${this.baseUrl}/games/${id}`)
@@ -152,21 +146,27 @@ export class QuizGameService {
     return this.http.get<Games>(url);
   }
 
-  getQuestionsByQuizId(quizId: string): Observable<Question[]> {
-    return this.http
-      .get<Question[]>(`${this.baseUrl}/questions/quiz/${quizId}`)
-      .pipe(retry(3), catchError(this.handleError));
-  }
-
   getQuiz(id: string): Observable<Quiz> {
     return this.http
       .get<Quiz>(`${this.baseUrl}/quizzes/${id}`)
       .pipe(retry(3), catchError(this.handleError));
   }
 
+  getQuizQuestions(quizId: string): Observable<Question[]> {
+    return this.http
+      .get<Question[]>(`${this.baseUrl}/quizzes/${quizId}/questions`)
+      .pipe(retry(3), catchError(this.handleError));
+  }
+
   getQuizzes(): Observable<Quiz[]> {
     return this.http
       .get<Quiz[]>(`${this.baseUrl}/quizzes`)
+      .pipe(retry(3), catchError(this.handleError));
+  }
+
+  getQuestionAnswers(questionId: string): Observable<Answer[]> {
+    return this.http
+      .get<Answer[]>(`${this.baseUrl}/questions/${questionId}/answers`)
       .pipe(retry(3), catchError(this.handleError));
   }
 

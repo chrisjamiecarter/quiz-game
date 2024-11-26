@@ -52,13 +52,6 @@ public static class AnswerEndpoints
         return TypedResults.Ok(entities.Select(x => x.ToResponse()));
     }
 
-    public static async Task<IResult> GetQuestionAnswersAsync([FromRoute] Guid id, [FromServices] IAnswerService service)
-    {
-        var entities = await service.ReturnByQuestionIdAsync(id);
-
-        return TypedResults.Ok(entities.Select(x => x.ToResponse()));
-    }
-
     public static async Task<IResult> UpdateAnswerAsync([FromRoute] Guid id, [FromBody] AnswerUpdateRequest request, [FromServices] IAnswerService service)
     {
         var entity = await service.ReturnByIdAsync(id);

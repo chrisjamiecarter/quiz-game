@@ -54,11 +54,4 @@ public static class GameEndpoints
 
         return TypedResults.Ok(new PaginatedGameResponse(totalRecords, gameRecords.Select(x => x.ToResponse()).ToList()));
     }
-
-    public static async Task<IResult> GetQuizGamesAsync([FromRoute] Guid id, [FromServices] IGameService service)
-    {
-        var entities = await service.ReturnByQuizIdAsync(id);
-
-        return TypedResults.Ok(entities.Select(x => x.ToResponse()));
-    }
 }

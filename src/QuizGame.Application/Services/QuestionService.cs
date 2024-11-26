@@ -31,7 +31,20 @@ public class QuestionService : IQuestionService
         var deleted = await _unitOfWork.SaveAsync();
         return deleted > 0;
     }
+    
+    public async Task<bool> DeleteAsync(IEnumerable<Question> questions)
+    {
+        int requests = 0;
+        foreach (var question in questions)
+        {
+            requests++;
+            await _unitOfWork.Questions.DeleteAsync(question);
+        }
 
+        int deleted = await _unitOfWork.SaveAsync();
+        return deleted == requests;
+    }
+    
     public async Task<IEnumerable<Question>> ReturnAllAsync()
     {
         var questions = await _unitOfWork.Questions.ReturnAsync();

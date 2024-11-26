@@ -63,7 +63,7 @@ public class QuizEndpointsTests
     }
 
     [Fact]
-    public async Task DeleteQuestionsAsyncAsync_ShouldDeleteQuestions_WhenDataIsValid()
+    public async Task DeleteQuizQuestionsAsync_ShouldDeleteQuestions_WhenValidQuizId()
     {
         // Arrange.
         var request = await _context.Quiz.AsNoTracking().FirstAsync();
@@ -77,6 +77,26 @@ public class QuizEndpointsTests
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         apiResult.Should().BeEmpty();
         dbResult.Questions.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task GetQuizGamesAsync_ShouldGetGames_WhenValidQuizId()
+    {
+        // Arrange.
+        var request = await _context.Quiz.AsNoTracking().FirstAsync();
+
+        // Act.
+        var response = await _client.GetAsync($"/api/v1/quizgame/quizzes/{request.Id}/games");
+        var apiResult = await response.Content.ReadFromJsonAsync<IReadOnlyList<GameResponse>>();
+        var dbResult = await _context.Game.Include(x => x.Quiz).AsNoTracking().Where(x => x.QuizId == request.Id).ToListAsync();
+
+        // Assert.
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        apiResult.Should().NotBeEmpty();
+        dbResult.Should().NotBeEmpty();
+
+        apiResult.Should().BeEquivalentTo(dbResult.Select(x => x.ToResponse()));
     }
 
     [Fact]
@@ -118,6 +138,26 @@ public class QuizEndpointsTests
         apiResult.Should().BeEquivalentTo(dbResult.Select(x => x.ToResponse()));
     }
 
+    [Fact]
+    public async Task GetQuizQuestionsAsync_ShouldGetQuestions_WhenValidQuizId()
+    {
+        // Arrange.
+        var request = await _context.Quiz.AsNoTracking().FirstAsync();
+
+        // Act.
+        var response = await _client.GetAsync($"/api/v1/quizgame/quizzes/{request.Id}/questions");
+        var apiResult = await response.Content.ReadFromJsonAsync<IReadOnlyList<QuestionResponse>>();
+        var dbResult = await _context.Question.AsNoTracking().Where(x => x.QuizId == request.Id).ToListAsync();
+
+        // Assert.
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        apiResult.Should().NotBeEmpty();
+        dbResult.Should().NotBeEmpty();
+
+        apiResult.Should().BeEquivalentTo(dbResult.Select(x => x.ToResponse()));
+    }
+    
     [Fact]
     public async Task UpdateQuizAsync_ShouldUpdate_WhenDataIsValid()
     {
