@@ -99,7 +99,9 @@ export class QuizzesComponent implements AfterViewInit {
   }
 
   private openSnackBar(message: string) {
-    this.snackBar.open(message, 'Close');
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
+    });
   }
 
   onCreateQuiz() {
