@@ -5,7 +5,7 @@
 
   <app-error *ngIf="isError" [message]="errorMessage"></app-error>
 
-  <mat-grid-list cols="3" rowHeight="21rem" gutterSize="1rem">
+  <mat-grid-list cols="3" rowHeight="20rem" gutterSize="1rem">
     <mat-grid-tile *ngFor="let quiz of pagedQuizzes">
       <mat-card appearance="outlined">
           <mat-card-header>

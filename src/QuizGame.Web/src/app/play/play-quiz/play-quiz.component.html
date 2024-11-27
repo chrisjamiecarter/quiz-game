@@ -24,7 +24,7 @@
       <ng-template matStepLabel>{{ i + 1 }}</ng-template>
       <p>{{ question.text }}</p>
       <mat-radio-group
-      class="form-container"
+        class="form-container"
         (change)="onAnswerSelect(question.id, $event.value)"
         aria-label="Select an option"
       >
@@ -37,19 +37,37 @@
       </mat-radio-group>
       <div class="buttons-container-left">
         <button mat-stroked-button matStepperPrevious>Back</button>
-        <div matTooltip="Answer the current question to continue." [matTooltipDisabled]="isQuestionAnswered(i)">
-          <button mat-stroked-button matStepperNext [disabled]="!isQuestionAnswered(i)">Next</button>
+        <div
+          matTooltip="Answer the current question to continue."
+          [matTooltipDisabled]="isQuestionAnswered(i)"
+        >
+          <button
+            mat-stroked-button
+            matStepperNext
+            [disabled]="!isQuestionAnswered(i)"
+          >
+            Next
+          </button>
         </div>
       </div>
     </mat-step>
-    
+
     <mat-step label="Complete" state="publish">
       <p>Congratulations!</p>
       <p>You have reached the end of {{ quiz.name }}.</p>
       <p>Press submit to see your score.</p>
       <div class="buttons-container-left">
-        <button mat-stroked-button matStepperPrevious>Back</button>
-        <button mat-stroked-button (click)="onSubmit()">Submit</button>
+        <mat-spinner
+          *ngIf="isInProgress"
+          diameter="40"
+          mode="indeterminate"
+        ></mat-spinner>
+        <button *ngIf="!isInProgress" mat-stroked-button matStepperPrevious>
+          Back
+        </button>
+        <button *ngIf="!isInProgress" mat-stroked-button (click)="onSubmit()">
+          Submit
+        </button>
       </div>
     </mat-step>
 
