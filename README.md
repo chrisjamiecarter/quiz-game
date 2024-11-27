@@ -28,6 +28,10 @@ The API back end is delivered by .NET and provides the endpoints to manage the d
   - The front end interfaces with the back end through an API layer.
 - **Versioned API**:
   - The API is a versioned API allowing for future feature expansion.
+- **Paginated API Response**:
+  - The Games route includes a paginated endpoint, so that only the required display data is retrieved.
+- **Cached API Response**:
+  - The Quiz route includes memory caching, so that any requests are cached for a period of time and reduces the amount of database trips.
 - **Entity Framework Core**:
   - Entity Framework Core is used as the ORM.
 - **SQL Server**:
@@ -122,6 +126,8 @@ YouTube Video Demonstration:
 - **API Project**: HTTP requests are used to interface the web and api projects.
 - **Quiz**: A Quiz can be created/updated by supplying the Name and a set of questions and answers. Description and Image URL are optional, each question must have one correct answer only. A Quiz can be deleted, and this will delete all associated questions, answers and games for that Quiz.
 - **Game**: A Game can be played by choosing a Quiz and answering the questions. A Game cannot be edited or deleted by itself.
+- **Paginated API Response**: Supply the page index, page size and other query parameters to return a paged games response.
+- **Cached API Response**: IMemoryCache is utilised to add data to the cache for a duration, any create/delete/update requests will invalid the cache.
 - **Data Storage**: A new SQL Server database is created and the required schema is set up at run-time, or an existing database is used if previously created.
 - **Data Access**: Interaction with the database is via Entity Framework Core.
 - **Mock Data**: This project will automatically generate a selection of quizzes and games using the _Bogus_ package.
