@@ -45,6 +45,7 @@ import { UserAnswer } from '../../shared/user-answer.interface';
   styleUrl: './play-quiz.component.css',
 })
 export class PlayQuizComponent implements OnInit {
+  isInProgress: boolean = false;
   isLoading: boolean = false;
   isError: boolean = false;
   errorMessage: string = '';
@@ -138,6 +139,7 @@ export class PlayQuizComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.isInProgress = true;
     const score = this.calculateScore();
 
     const request: GameCreate = {
@@ -149,9 +151,11 @@ export class PlayQuizComponent implements OnInit {
 
     this.quizGameService.addGame(request).subscribe({
       next: (game: Game) => {
+        this.isInProgress = false;
         this.router.navigate(['games/score', game.id]);
       },
       error: (error) => {
+        this.isInProgress = false;
         (this.isError = true), (this.errorMessage = error);
       },
     });

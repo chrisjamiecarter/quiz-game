@@ -4,49 +4,50 @@
   <form [formGroup]="quizForm" class="form-container">
     <mat-form-field appearance="outline" class="mt">
       <mat-label>Name</mat-label>
-      <input matInput
-             type="text"
-             formControlName="name"
-             readonly />
+      <input matInput type="text" formControlName="name" readonly />
       <mat-icon matPrefix>abc</mat-icon>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Description</mat-label>
-      <textarea matInput
-                type="text"
-                formControlName="description"
-                readonly></textarea>
+      <textarea
+        matInput
+        type="text"
+        formControlName="description"
+        readonly
+      ></textarea>
       <mat-icon matPrefix>description</mat-icon>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Image URL</mat-label>
-      <input matInput
-                type="text"
-                formControlName="imageUrl"
-                readonly />
+      <input matInput type="text" formControlName="imageUrl" readonly />
       <mat-icon matPrefix>image</mat-icon>
     </mat-form-field>
   </form>
-  </mat-dialog-content>
-  
-  <mat-dialog-actions class="buttons-container">
-    <mat-spinner
-      *ngIf="inProgress"
-      [diameter]="40"
-      mode="indeterminate"
-    ></mat-spinner>
-    <button
-      mat-stroked-button
-      mat-dialog-close
-      color="accent"
-      [disabled]="inProgress"
-      cdkFocusInitial
-    >
-      Cancel
-    </button>
-    <button mat-stroked-button color="warn" (click)="onDelete()" [disabled]="inProgress">
-      Delete
-    </button>
-  </mat-dialog-actions>
+</mat-dialog-content>
+
+<mat-dialog-actions class="buttons-container">
+  <mat-spinner
+    *ngIf="isInProgress"
+    [diameter]="40"
+    mode="indeterminate"
+  ></mat-spinner>
+  <button
+    *ngIf="!isInProgress"
+    mat-stroked-button
+    mat-dialog-close
+    color="accent"
+    cdkFocusInitial
+  >
+    Cancel
+  </button>
+  <button
+    *ngIf="!isInProgress"
+    mat-stroked-button
+    color="warn"
+    (click)="onDelete()"
+  >
+    Delete
+  </button>
+</mat-dialog-actions>

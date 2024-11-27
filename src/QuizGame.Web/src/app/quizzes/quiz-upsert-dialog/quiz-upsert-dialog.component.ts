@@ -21,6 +21,7 @@ import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatStepperModule } from '@angular/material/stepper';
 import { Quiz } from '../../shared/quiz.interface';
 import { QuizGameService } from '../../shared/quiz-game.service';
@@ -47,6 +48,7 @@ import { validateCorrectAnswers } from '../../validators/correct-answers.validat
     MatDialogTitle,
     MatIconModule,
     MatInputModule,
+    MatProgressSpinnerModule,
     MatStepperModule,
     ReactiveFormsModule,
   ],
@@ -54,6 +56,7 @@ import { validateCorrectAnswers } from '../../validators/correct-answers.validat
   styleUrl: './quiz-upsert-dialog.component.css',
 })
 export class QuizUpsertDialogComponent implements OnInit {
+  isInProgress: boolean = false;
   isUpdate: boolean = false;
   quizForm!: FormGroup;
   questionsForm!: FormGroup;
@@ -135,13 +138,15 @@ export class QuizUpsertDialogComponent implements OnInit {
   createEmptyQuestionFormGroup(): FormGroup {
     return this.formBuilder.group({
       text: ['', Validators.required],
-      answers: this.formBuilder.array([
-        this.createEmptyAnswerFormGroup(),
-        this.createEmptyAnswerFormGroup(),
-        this.createEmptyAnswerFormGroup(),
-        this.createEmptyAnswerFormGroup(),
-      ],
-      validateCorrectAnswers),
+      answers: this.formBuilder.array(
+        [
+          this.createEmptyAnswerFormGroup(),
+          this.createEmptyAnswerFormGroup(),
+          this.createEmptyAnswerFormGroup(),
+          this.createEmptyAnswerFormGroup(),
+        ],
+        validateCorrectAnswers
+      ),
     });
   }
 
@@ -168,65 +173,88 @@ export class QuizUpsertDialogComponent implements OnInit {
     return this.questions.at(index).get('answers') as FormArray;
   }
 
-  insertQuestions(quizId: string) {
+  private insertQuestions(quizId: string): Promise<void> {
     const questions = this.questionsForm.value.questions;
 
-    questions.forEach(
+    const questionPromises = questions.map(
       (question: {
         text: string;
         answers: Array<{ text: string; isCorrect: boolean }>;
       }) => {
-        const questionRequest: QuestionCreate = {
-          quizId: quizId,
-          text: question.text,
-        };
+        return new Promise<void>((resolve, reject) => {
+          const questionRequest: QuestionCreate = {
+            quizId: quizId,
+            text: question.text,
+          };
 
-        this.quizGameService
-          .addQuestion(questionRequest)
-          .subscribe((questionResponse: Question) => {
-            question.answers.forEach((answer) => {
-              const answerRequest: AnswerCreate = {
-                questionId: questionResponse.id,
-                text: answer.text,
-                isCorrect: answer.isCorrect,
-              };
+          this.quizGameService.addQuestion(questionRequest).subscribe({
+            next: (questionResponse: Question) => {
+              const answerPromises = question.answers.map((answer) => {
+                return new Promise<void>((resolveAnswer, rejectAnswer) => {
+                  const answerRequest: AnswerCreate = {
+                    questionId: questionResponse.id,
+                    text: answer.text,
+                    isCorrect: answer.isCorrect,
+                  };
 
-              this.quizGameService.addAnswer(answerRequest).subscribe();
-            });
+                  this.quizGameService.addAnswer(answerRequest).subscribe({
+                    next: () => resolveAnswer(),
+                    error: rejectAnswer,
+                  });
+                });
+              });
+
+              Promise.all(answerPromises)
+                .then(() => resolve())
+                .catch(reject);
+            },
+            error: reject,
           });
+        });
       }
     );
+
+    return Promise.all(questionPromises).then(() => undefined);
   }
 
-  insertQuiz() {
-    const quizRequest: QuizCreate = {
-      name: this.quizForm.value.name,
-      description: this.quizForm.value.description,
-      imageUrl: this.quizForm.value.imageUrl,
-    };
+  private insertQuiz(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const quizRequest: QuizCreate = {
+        name: this.quizForm.value.name,
+        description: this.quizForm.value.description,
+        imageUrl: this.quizForm.value.imageUrl,
+      };
 
-    this.quizGameService
-      .addQuiz(quizRequest)
-      .subscribe((quizResponse: Quiz) => {
-        this.insertQuestions(quizResponse.id);
+      this.quizGameService.addQuiz(quizRequest).subscribe({
+        next: (quizResponse: Quiz) => {
+          this.insertQuestions(quizResponse.id).then(resolve).catch(reject);
+        },
+        error: reject,
       });
+    });
   }
 
-  updateQuiz() {
-    const quiz: Quiz = {
-      id: this.quizForm.value.id,
-      name: this.quizForm.value.name,
-      description: this.quizForm.value.description,
-      imageUrl: this.quizForm.value.imageUrl,
-    };
+  private updateQuiz(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const quiz: Quiz = {
+        id: this.quizForm.value.id,
+        name: this.quizForm.value.name,
+        description: this.quizForm.value.description,
+        imageUrl: this.quizForm.value.imageUrl,
+      };
 
-    this.quizGameService.deleteQuizQuestions(quiz.id).subscribe();
-
-    this.quizGameService
-      .editQuiz(quiz)
-      .subscribe((quizResponse: Quiz) => {
-        this.insertQuestions(quizResponse.id);
+      this.quizGameService.deleteQuizQuestions(quiz.id).subscribe({
+        next: () => {
+          this.quizGameService.editQuiz(quiz).subscribe({
+            next: (quizResponse: Quiz) => {
+              this.insertQuestions(quizResponse.id).then(resolve).catch(reject);
+            },
+            error: reject,
+          });
+        },
+        error: reject,
       });
+    });
   }
 
   onPublish() {
@@ -234,12 +262,28 @@ export class QuizUpsertDialogComponent implements OnInit {
       return;
     }
 
-    if (this.isUpdate) {
-      this.updateQuiz();
-    } else {
-      this.insertQuiz();
-    }
+    this.isInProgress = true;
 
-    this.dialogRef.close();
+    (async () => {
+      if (this.isUpdate) {
+        try {
+          await this.updateQuiz();
+          this.dialogRef.close('Quiz updated successfully!');
+        } catch (error) {
+          this.dialogRef.close('Unable to update Quiz!');
+        } finally {
+          this.isInProgress = false;
+        }
+      } else {
+        try {
+          await this.insertQuiz();
+          this.dialogRef.close('Quiz created successfully!');
+        } catch (error) {
+          this.dialogRef.close('Unable to create Quiz!');
+        } finally {
+          this.isInProgress = false;
+        }
+      }
+    })();
   }
 }

@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ErrorComponent } from '../error/error.component';
@@ -29,6 +30,7 @@ import { QuizDeleteDialogComponent } from './quiz-delete-dialog/quiz-delete-dial
     MatInputModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
+    MatSnackBarModule,
     MatSortModule,
     MatTableModule,
   ],
@@ -44,8 +46,9 @@ export class QuizzesComponent implements AfterViewInit {
   tableDataSource: MatTableDataSource<Quiz> = new MatTableDataSource<Quiz>([]);
   tableFilterText: string = '';
 
-  matDialog = inject(MatDialog);
-  quizGameService = inject(QuizGameService);
+  private readonly matDialog = inject(MatDialog);
+  private readonly quizGameService = inject(QuizGameService);
+  private readonly snackBar = inject(MatSnackBar);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -83,7 +86,7 @@ export class QuizzesComponent implements AfterViewInit {
       const search = this.tableFilterText.toLowerCase();
       const name = quiz.name.toLowerCase();
       const description = quiz.description.toLowerCase();
-      
+
       return name.indexOf(search) >= 0 || description.indexOf(search) >= 0;
     });
 
@@ -95,23 +98,39 @@ export class QuizzesComponent implements AfterViewInit {
     }
   }
 
+  private openSnackBar(message: string) {
+    this.snackBar.open(message, 'Close');
+  }
+
   onCreateQuiz() {
-    this.matDialog.open(QuizUpsertDialogComponent, {
+    const dialogRef = this.matDialog.open(QuizUpsertDialogComponent, {
       width: '40rem',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.openSnackBar(result);
     });
   }
 
   onDeleteQuiz(quiz: Quiz) {
-    this.matDialog.open(QuizDeleteDialogComponent, {
+    const dialogRef = this.matDialog.open(QuizDeleteDialogComponent, {
       width: '40rem',
       data: quiz,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.openSnackBar(result);
     });
   }
 
   onUpdateQuiz(quiz: Quiz) {
-    this.matDialog.open(QuizUpsertDialogComponent, {
+    const dialogRef = this.matDialog.open(QuizUpsertDialogComponent, {
       width: '40rem',
       data: quiz,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.openSnackBar(result);
     });
   }
 }

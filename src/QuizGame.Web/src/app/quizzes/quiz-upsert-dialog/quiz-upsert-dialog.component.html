@@ -123,7 +123,13 @@
       <ng-template matStepLabel>Publish</ng-template>
       <p>Click publish to save your changes.</p>
       <div class="buttons-container">
+        <mat-spinner
+          *ngIf="isInProgress"
+          [diameter]="40"
+          mode="indeterminate"
+        ></mat-spinner>
         <button
+          *ngIf="!isInProgress"
           mat-stroked-button
           mat-dialog-close
           color="accent"
@@ -131,8 +137,12 @@
         >
           Cancel
         </button>
-        <button mat-stroked-button matStepperPrevious>Back</button>
-        <button mat-stroked-button (click)="onPublish()">Publish</button>
+        <button *ngIf="!isInProgress" mat-stroked-button matStepperPrevious>
+          Back
+        </button>
+        <button *ngIf="!isInProgress" mat-stroked-button (click)="onPublish()">
+          Publish
+        </button>
       </div>
     </mat-step>
   </mat-stepper>

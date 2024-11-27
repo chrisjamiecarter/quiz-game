@@ -1,6 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
   MatDialogModule,
@@ -28,15 +33,15 @@ import { Quiz } from '../../shared/quiz.interface';
     MatDialogContent,
     MatIconModule,
     MatInputModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
   ],
   templateUrl: './quiz-delete-dialog.component.html',
   styleUrl: './quiz-delete-dialog.component.css',
 })
 export class QuizDeleteDialogComponent implements OnInit {
-  inProgress: boolean = false;
+  isInProgress: boolean = false;
   quizForm!: FormGroup;
-  
+
   readonly dialogRef = inject(MatDialogRef<QuizDeleteDialogComponent>);
   data: Quiz = inject(MAT_DIALOG_DATA);
   private formBuilder = inject(FormBuilder);
@@ -51,7 +56,16 @@ export class QuizDeleteDialogComponent implements OnInit {
   }
 
   onDelete() {
-    this.quizGameService.deleteQuiz(this.data.id).subscribe();
-    this.dialogRef.close();
+    this.isInProgress = true;
+    this.quizGameService.deleteQuiz(this.data.id).subscribe({
+      next: () => {
+        this.isInProgress = false;
+        this.dialogRef.close("Quiz deleted successfully!");
+      },
+      error: (error) => {
+        this.isInProgress = false;
+        this.dialogRef.close("Unable to delete Quiz!");
+      },
+    });
   }
 }
