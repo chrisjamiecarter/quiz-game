@@ -60,10 +60,11 @@ export class QuizDeleteDialogComponent implements OnInit {
     this.quizGameService.deleteQuiz(this.data.id).subscribe({
       next: () => {
         this.isInProgress = false;
-        this.dialogRef.close();
+        this.dialogRef.close("Quiz deleted successfully!");
       },
       error: (error) => {
         this.isInProgress = false;
+        this.dialogRef.close("Unable to delete Quiz!");
       },
     });
   }

@@ -265,16 +265,24 @@ export class QuizUpsertDialogComponent implements OnInit {
     this.isInProgress = true;
 
     (async () => {
-      try {
-        if (this.isUpdate) {
+      if (this.isUpdate) {
+        try {
           await this.updateQuiz();
-        } else {
-          await this.insertQuiz();
+          this.dialogRef.close('Quiz updated successfully!');
+        } catch (error) {
+          this.dialogRef.close('Unable to update Quiz!');
+        } finally {
+          this.isInProgress = false;
         }
-        this.dialogRef.close();
-      } catch (error) {
-      } finally {
-        this.isInProgress = false;
+      } else {
+        try {
+          await this.insertQuiz();
+          this.dialogRef.close('Quiz created successfully!');
+        } catch (error) {
+          this.dialogRef.close('Unable to create Quiz!');
+        } finally {
+          this.isInProgress = false;
+        }
       }
     })();
   }
