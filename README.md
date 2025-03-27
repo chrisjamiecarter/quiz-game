@@ -52,11 +52,10 @@ The API back end is delivered by .NET and provides the endpoints to manage the d
 
 ## Getting Started
 
-**IMPORTANT NOTE**:
-
-The `InitialCreate` database migration has been created.
-
-On start-up of the **API** application, any required database creation/migrations will be performed programmatically.
+> [!NOTE]
+> The `InitialCreate` database migration has been created.
+>
+> On start-up of the **API** application, any required database creation/migrations will be performed programmatically.
 
 ### Prerequisites
 
